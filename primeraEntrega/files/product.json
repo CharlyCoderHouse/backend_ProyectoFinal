@@ -1,0 +1,158 @@
+[
+	{
+		"title": "Anillo circular Diamante",
+		"description": "Anillo de plata y diamantes, compralo hasta en 12 cuotas.",
+		"price": 1500,
+		"code": "100",
+		"stock": 30,
+		"category": "Joyeria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 1
+	},
+	{
+		"title": "Anillo Bronce",
+		"description": "Anillo de Bronce, compralo hasta en 12 cuotas.",
+		"price": 3500,
+		"code": "200",
+		"stock": 30,
+		"category": "Joyeria",
+		"thumbnail": [
+			"http://localhost:8080/img/reloj.jpg"
+		],
+		"status": true,
+		"id": 2
+	},
+	{
+		"title": "Anillo Mariposas",
+		"description": "Anillo de mariposas y detalles en color violeta, compralo hasta en 12 cuotas.",
+		"price": 5500,
+		"code": "300",
+		"stock": 18,
+		"category": "Joyeria",
+		"thumbnail": [
+			"http://localhost:8080/img/imagen.jpg"
+		],
+		"status": true,
+		"id": 3
+	},
+	{
+		"title": "Smart Watch Time Cuadrado",
+		"description": "Smart Watch con compatibilidad Android, compralo hasta en 12 cuotas.",
+		"price": 8500,
+		"code": "400",
+		"stock": 30,
+		"category": "Relojeria",
+		"thumbnail": [
+			"http://localhost:8080/img/reloj_dam_a.png"
+		],
+		"status": true,
+		"id": 4
+	},
+	{
+		"title": "Smart Watch Time Circular",
+		"description": "Smart Watch circular, compatibilidad Android/Ios, compralo hasta en 12 cuotas",
+		"price": 7500,
+		"code": "500",
+		"stock": 30,
+		"category": "Relojeria",
+		"thumbnail": [
+			"http://localhost:8080/img/reloj.jpg"
+		],
+		"status": true,
+		"id": 5
+	},
+	{
+		"title": "Reloj digital niños",
+		"description": "El primer reloj para los más pequeños, compralo hasta en 12 cuotas.",
+		"price": 999,
+		"code": "600",
+		"stock": 18,
+		"category": "Relojeria",
+		"thumbnail": [
+			"http://localhost:8080/img/reloj_nino_a.png"
+		],
+		"status": true,
+		"id": 6
+	},
+	{
+		"title": "Dije simple con cadena",
+		"description": "Dije simple con cadena a elección, compralo hasta en 3 cuotas.",
+		"price": 750,
+		"code": "700",
+		"stock": 30,
+		"category": "Accesorios",
+		"thumbnail": [
+			"http://localhost:8080/img/dije1.png"
+		],
+		"status": true,
+		"id": 7
+	},
+	{
+		"title": "Dije especial Piedras",
+		"description": "Dije con piedras preciosas de diferentes colores, compralo hasta en 3 cuotas.",
+		"price": 2400,
+		"code": "800",
+		"stock": 30,
+		"category": "Accesorios",
+		"thumbnail": [
+			"http://localhost:8080/img/Dije5_a.png"
+		],
+		"status": true,
+		"id": 8
+	},
+	{
+		"title": "Aros personalizados Corazón",
+		"description": "Aros que no encontraras en otro lado, compralo hasta en 3 cuotas.",
+		"price": 800,
+		"code": "900",
+		"stock": 18,
+		"category": "Accesorios",
+		"thumbnail": [
+			"http://localhost:8080/img/Aros1_a.png"
+		],
+		"status": true,
+		"id": 9
+	},
+	{
+		"title": "Cartera Marrón Boutique",
+		"description": "Marca Queen, ese regalo especial, Oferta del mes del RELOJ, compralo hasta en 12 cuotas.",
+		"price": 5300,
+		"code": "1000",
+		"stock": 30,
+		"category": "Marroniqueria",
+		"thumbnail": [
+			"http://localhost:8080/img/marroqui2_a.png"
+		],
+		"status": true,
+		"id": 10
+	},
+	{
+		"title": "Bolso Maquillaje",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1100",
+		"price": 5500,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 11
+	},
+	{
+		"title": "Bolso Maquillaje",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1200",
+		"price": 5500,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 12
+	}
+]
