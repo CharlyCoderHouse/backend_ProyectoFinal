@@ -75,9 +75,10 @@ export default class productManager {
         try {
             // Traigo los productos
             const products = await this.getProducts();
+            
             // Busco el indice del ID a actualizar
             const codeIndex = products.findIndex(producto => producto.id === id);
-
+            
             // Valido que exista     
             if (codeIndex === -1) {
                 console.log(`El producto con ID ${id} NO existe!`);

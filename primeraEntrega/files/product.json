@@ -1,9 +1,9 @@
 [
 	{
-		"title": "Anillo circular Diamante",
-		"description": "Anillo de plata y diamantes, compralo hasta en 12 cuotas.",
-		"price": 1500,
-		"code": "100",
+		"title": "Anillo prueba",
+		"description": "compralo hasta en 12 cuotas.",
+		"price": 3500,
+		"code": "101",
 		"stock": 30,
 		"category": "Joyeria",
 		"thumbnail": [
