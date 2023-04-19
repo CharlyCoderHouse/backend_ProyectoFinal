@@ -64,20 +64,38 @@ export default class cartManager {
         }
     }
 
-    addProductInCart = async (cart,product) => {
+    addProductInCart = async (cartId,productId) => {
         try {
-            // Traigo los productos
+            // Traigo los Carritos
             const carts = await this.getCarts();
             // Busco el indice del ID a actualizar
-            const codeIndex = carts.findIndex(producto => producto.id === cart.id);
+            const codeIndex = carts.findIndex(carrito => carrito.id === cartId);
+            
+            //Valido si el item esta en el carrito
+            const isInCart = (id) => {
+                return (
+                    carts[codeIndex].products.some(item => item.product === id)
+                )
+            }
 
-            //for (i,product.id )
-            carts.splice(codeIndex, 1, product);
+            if  (isInCart(productId)){
+                const productIndex = carts[codeIndex].products.findIndex(prod => prod.product === productId);
+                console.log(productIndex);
+                carts[codeIndex].products[productIndex].quantity++
+                console.log('esta en el carro');
+            }else{
+                //creo arreglo para el nuevo producto
+                const newProduct = {
+                    product: productId,
+                    quantity: 1
+                };
+                carts[codeIndex].products.push(newProduct);
+                console.log('NO esta en el carro');
+            }
             // Agrego y escribo el archivo
-            //carts.push(cart);   
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
 
-            return cart;
+            return carts;
 
         } catch (error){
             console.log(error);

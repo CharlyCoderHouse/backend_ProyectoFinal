@@ -30,11 +30,11 @@ router.route('/:id')
         const cart = await CartManager.getCartById(cartId);
 
         //Valido el resultado de la búsqueda
-        const response = cart
+        const response = cart !==-1
             ? { status: "Success", data: cart} 
             : { status: "NOT FOUND", data: `El carrito con ID ${cartId} NO existe!` };
 
-        const statusCode = cart ? 200 : 404;
+        const statusCode = cart !==-1 ? 200 : 404;
 
         //muestro resultado
         res.status(statusCode).json(response);
@@ -64,7 +64,7 @@ router.route('/:cid/product/:pid')
         };
 
         // Una vez validado llamar al metodo addProductInCart
-        const result = await CartManager.addProductInCart(cart, product)
+        const result = await CartManager.addProductInCart(cart.id, product.id)
         //const result = await CartManager.addCart(cart)
 
         res.send({ status: 'success', result: 'termino' })
