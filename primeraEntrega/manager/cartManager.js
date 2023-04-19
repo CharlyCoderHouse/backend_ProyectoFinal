@@ -82,7 +82,6 @@ export default class cartManager {
                 const productIndex = carts[codeIndex].products.findIndex(prod => prod.product === productId);
                 console.log(productIndex);
                 carts[codeIndex].products[productIndex].quantity++
-                console.log('esta en el carro');
             }else{
                 //creo arreglo para el nuevo producto
                 const newProduct = {
@@ -90,7 +89,6 @@ export default class cartManager {
                     quantity: 1
                 };
                 carts[codeIndex].products.push(newProduct);
-                console.log('NO esta en el carro');
             }
             // Agrego y escribo el archivo
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, '\t'));
