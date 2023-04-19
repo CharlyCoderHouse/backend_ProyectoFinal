@@ -2,7 +2,7 @@
 
 ## Curso Backend CoderHouse comisión 39760
 
-Este proyecto esta realizado ...., es el proyecto final de el curso de Backend dictado en [CoderHouse](https://www.coderhouse.com).\
+Este proyecto es la primer entrega del proyecto final de el curso de Backend dictado en [CoderHouse](https://www.coderhouse.com).\
 Es un Ecommerce de la Joyería PUGA de la ciudad de Azul, Provincia de Buenos Aires.\
 
 ## Ejecutar con npm start
