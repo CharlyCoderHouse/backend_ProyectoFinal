@@ -67,6 +67,7 @@ router.route('/:cid/product/:pid')
         const result = await CartManager.addProductInCart(cart.id, product.id)
         //const result = await CartManager.addCart(cart)
 
-        res.send({ status: 'success', result: 'termino' })
+        res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
 });    
+
 export default router;
