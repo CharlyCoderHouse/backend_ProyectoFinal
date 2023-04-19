@@ -18,13 +18,14 @@ router.route('/')
         };
 
         //llamar al metodo addCart
-        const result = await CartManager.addCart(cart)
-
-        res.send({ status: 'Success', result })
+        const result = await CartManager.addCart(cart);
+        //Muestro resultado exitoso
+        res.send({ status: 'Success', result });
 });
 
 router.route('/:id')
     .get(async(req, res) => {
+        //Leo el ID por parametros
         const cartId = Number(req.params.id);
         // OBTENGO el carrito QUE HAY EN EL ARCHIVO
         const cart = await CartManager.getCartById(cartId);
@@ -44,6 +45,7 @@ router.route('/:id')
 router.route('/:cid/product/:pid')
     .post(async(req, res) => {
         // Primero Valido que exista el carrito 
+        //Leo el ID del carrito por parametros 
         const cartId = Number(req.params.cid);
         // OBTENGO el carrito QUE HAY EN EL ARCHIVO
         const cart = await CartManager.getCartById(cartId);
@@ -54,6 +56,7 @@ router.route('/:cid/product/:pid')
             return res.status(404).json(response);
         };
         // Segundo Valido que exista el producto
+        //Leo el ID de productos por parametros
         const productId = Number(req.params.pid);
         // OBTENGO el carrito QUE HAY EN EL ARCHIVO
         const product = await ProductManager.getProductById(productId);
@@ -64,9 +67,8 @@ router.route('/:cid/product/:pid')
         };
 
         // Una vez validado llamar al metodo addProductInCart
-        const result = await CartManager.addProductInCart(cart.id, product.id)
-        //const result = await CartManager.addCart(cart)
-
+        await CartManager.addProductInCart(cart.id, product.id);
+        //Muestro resultado exitoso
         res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' })
 });    
 

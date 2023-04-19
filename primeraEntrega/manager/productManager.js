@@ -5,23 +5,24 @@ export default class productManager {
     constructor(path) {
         this.path = path;
         this.products = [];
-    }
+    };
     
     getProducts = async () => {
         try {
             //Verifico que exista el archivo para leerlo
             if (fs.existsSync(this.path)) {
+                //Leo el archivo devolviendo los productos
                 const data = await fs.promises.readFile(this.path, 'utf-8');
                 const product = JSON.parse(data);
                 return product;
             }else {
-                console.log("No se encuentra el archivo");
+                // Devuelvo los productos vacio
                 return [];
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     getProductById = async (id) => {
         try {
@@ -32,7 +33,6 @@ export default class productManager {
 
             // Valido que exista y retorno el resultado
             if (codeIndex===-1) {
-                console.log(`El producto con ID ${id} NO existe!`);
                 return codeIndex         
             } else {
                 return products[codeIndex]
@@ -40,7 +40,7 @@ export default class productManager {
         }catch (error){
             console.log(error);
         }
-    }
+    };
 
     addProduct = async (product) => {
         try {
@@ -69,7 +69,7 @@ export default class productManager {
         } catch (error){
             console.log(error);
         }
-    }
+    };
 
     updateProduct = async (id, data) => {
         try {
@@ -81,9 +81,8 @@ export default class productManager {
             
             // Valido que exista     
             if (codeIndex === -1) {
-                console.log(`El producto con ID ${id} NO existe!`);
                 return codeIndex  
-            }
+            };
             
             // Reemplazo los datos de las propiedades del objeto que recibo en el indice antes buscado
             for (const propiedad in data){
@@ -98,7 +97,7 @@ export default class productManager {
         }catch (error){
             console.log(error);
         }
-    }
+    };
 
     deleteProductById = async (id) => {
         try {
@@ -109,7 +108,6 @@ export default class productManager {
             
             // Valido que exista 
             if (codeIndex===-1) {
-                console.log(`El producto con ID ${id} NO existe!`);
                 return codeIndex;
             } 
             
@@ -124,6 +122,6 @@ export default class productManager {
         }catch (error){
             console.log(error);
         }
-    }
+    };
 };
 

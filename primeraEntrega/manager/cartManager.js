@@ -5,26 +5,28 @@ export default class cartManager {
     constructor(path) {
         this.path = path;
         this.carts = [];
-    }
+    };
 
     getCarts = async () => {
         try {
             //Verifico que exista el archivo para leerlo
             if (fs.existsSync(this.path)) {
+                //Leo el archivo devolviendo los carritos
                 const data = await fs.promises.readFile(this.path, 'utf-8');
                 const cart = JSON.parse(data);
                 return cart;
             }else {
+                // Devuelvo el carrito vacio
                 return [];
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-     addCart = async (cart) => {
+    addCart = async (cart) => {
         try {
-            // Traigo los productos
+            // Traigo los carritos
             const carts = await this.getCarts();
             
             // ASIGNO ID
@@ -32,7 +34,7 @@ export default class cartManager {
                 cart.id = 1;
             } else {
                 cart.id = carts[carts.length - 1].id + 1;
-            }
+            };
 
             // Agrego y escribo el archivo
             carts.push(cart);   
@@ -43,11 +45,11 @@ export default class cartManager {
         } catch (error){
             console.log(error);
         }
-    }    
+    };    
 
     getCartById = async (id) => {
         try {
-            // Traigo los productos
+            // Traigo los carritos
             const carts = await this.getCarts();
            
             // Busco el indice del ID a consultar
@@ -62,7 +64,7 @@ export default class cartManager {
         }catch (error){
             console.log("ERROR:",error);
         }
-    }
+    };
 
     addProductInCart = async (cartId,productId) => {
         try {
@@ -76,14 +78,14 @@ export default class cartManager {
                 return (
                     carts[codeIndex].products.some(item => item.product === id)
                 )
-            }
+            };
 
-            if  (isInCart(productId)){
+            if (isInCart(productId)) {
+                //Como se que existe, busco el indice y actualizo cantidad
                 const productIndex = carts[codeIndex].products.findIndex(prod => prod.product === productId);
-                console.log(productIndex);
-                carts[codeIndex].products[productIndex].quantity++
-            }else{
-                //creo arreglo para el nuevo producto
+                carts[codeIndex].products[productIndex].quantity++;
+            }else {
+                //creo arreglo para el nuevo producto con sus datos
                 const newProduct = {
                     product: productId,
                     quantity: 1

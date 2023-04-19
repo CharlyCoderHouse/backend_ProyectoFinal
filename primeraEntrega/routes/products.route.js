@@ -14,13 +14,13 @@ router.route('/')
         const products = await ProductManager.getProducts();
         //leo el parametro por req.query
         const { limit } = req.query;
-
+        // Nuevo arreglo para el limit
         const nuevoArreglo = [];
 
         if (limit){
             for (let i=0; i<=limit-1 && i < products.length; i++) {
                     nuevoArreglo.push(products[i]) ;    
-            }
+            };
             const response = {
                 status: "Success",
                 data: nuevoArreglo,
@@ -32,8 +32,8 @@ router.route('/')
                 status: "Success",
                 data: products,
             };
-            res.send(response)
-        }
+            res.send(response);
+        };
     })
 
     .post(async(req, res) => {
@@ -43,9 +43,10 @@ router.route('/')
         if (!product.status){
             product.status = true
         }
+        //Valido que los campos estén completos
         if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
             return res.status(400).send({error:'Hay campos que faltan completar!'});
-        }
+        };
         //llamar al metodo addProduct    
         const result = await ProductManager.addProduct(product);
 
@@ -64,7 +65,7 @@ router.route('/')
 router.route('/:pid')
     .get(async (req,res) => {
         //Leo el ID del parametro 
-        const id = Number(req.params.id);
+        const id = Number(req.params.pid);
         // BUsco el ID en el arreglo
         const productById = await ProductManager.getProductById(id);
         
@@ -81,17 +82,20 @@ router.route('/:pid')
 
     .put(async(req,res) =>{
         // llamar al metodo updateProduct para actualizar sin modificar el id
-        const id = Number(req.params.id);
+        //Leo el ID por parametros
+        const id = Number(req.params.pid);
+        //Leo del body los campos a actualizar
         const product = req.body;
         
+        //Valido que los campos estén completos
         if(!product.title || !product.description || !product.code || !product.price || 
             !product.stock || !product.category || !product.status){
             return res.status(400).send({error:'Hay campos que faltan completar!'});
         }
-
+        //Valido que el campo ID no venga para actualizar
         if("id" in product){
             return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
-        }
+        };
 
         //Intento actualizar los datos de productos
         const result = await ProductManager.updateProduct(id,product);
@@ -108,10 +112,12 @@ router.route('/:pid')
     })
 
     .delete(async(req,res)=>{
-        const id = Number(req.params.id)
+        //Leo el ID por parametros
+        const id = Number(req.params.pid)
         //llamar al metodo deleteProduct pasandole como parametro id
         const result = await ProductManager.deleteProductById(id);
-
+        
+        // Valido el resultado del Delete
         const response = result !==-1 
         ? { status: "Success", data: `El producto fue ELIMINADO con éxito!`} 
         : { status: "NOT FOUND", data: `NO existe el producto que desea eliminar!` };
