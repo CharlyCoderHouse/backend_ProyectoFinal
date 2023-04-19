@@ -22,14 +22,14 @@ router.route('/')
                     nuevoArreglo.push(products[i]) ;    
             }
             const response = {
-                status: "OK",
+                status: "Success",
                 data: nuevoArreglo,
             };
     
             res.send(response);
         } else {
             const response = {
-                status: "OK",
+                status: "Success",
                 data: products,
             };
             res.send(response)
@@ -61,7 +61,7 @@ router.route('/')
 });
 
 //Ruta /products/:id Busco producto por ID 
-router.route('/:id')
+router.route('/:pid')
     .get(async (req,res) => {
         //Leo el ID del parametro 
         const id = Number(req.params.id);
@@ -107,10 +107,20 @@ router.route('/:id')
         res.status(statusCode).json(response); 
     })
 
-    .delete((req,res)=>{
-        const id = parseInt(req.params)
+    .delete(async(req,res)=>{
+        const id = Number(req.params.id)
         //llamar al metodo deleteProduct pasandole como parametro id
-        res.send({status: 'success'})
+        const result = await ProductManager.deleteProductById(id);
+
+        const response = result !==-1 
+        ? { status: "Success", data: `El producto fue ELIMINADO con éxito!`} 
+        : { status: "NOT FOUND", data: `NO existe el producto que desea eliminar!` };
+        //Valido marco el estado según el resultado
+        const statusCode = result!==-1 ? 200 : 404;
+
+        //muestro resultado
+        res.status(statusCode).json(response);
+
 });
 
 export default router;
