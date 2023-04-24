@@ -1,0 +1,26 @@
+<h1>Carga tu producto - Desafio Clase 10</h1>
+<form action="/product" method="post">
+    <div class="mb-3">
+        <label for="exampleInput1" class="form-label">Nombre</label> 
+        <input type="text" class="form-control" name="title" placeholder="ingrese nombre">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput2" class="form-label">Precio</label> 
+        <input type="number" class="form-control" name="price" placeholder="ingrese precio">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput3" class="form-label">Foto URL</label> 
+        <input type="text" class="form-control" name="thumbnail" placeholder="url imagen">
+    </div>
+    <button type="submit"  class="btn btn-primary" value="Cargar Producto"> Cargar Producto </button>
+</form>
+
+<br>
+<button id="verProdButton" class="btn btn-secondary"> Ver los Productos</button>
+
+<script>
+    const verProdButton = document.getElementById('verProdButton')
+    verProdButton.addEventListener('click', (event) => {
+        window.location= "/product";
+    });
+</script>

@@ -2,10 +2,10 @@ import { Router } from "express";
 //INICIALIZO ROUTER
 const router = Router();
 
+// RENDERIZO HBS
 router.route('/')
     .get((req, res) => {
-    res.send(`<h1 style="color:darkblue;">Bienvenidos al servidor express</h1> <br>
-    <h2 style="color:darkblue;">Primer Pre-Entrega</h2>`)
+        res.render("home.hbs");
 });
 
 export default router;

@@ -1,0 +1,35 @@
+<h1 style="color:darkblue;">Bienvenidos al servidor express - Joyería Puga</h1> <br>
+<h1>Vista de productos</h1>
+{{#if productos.length}}
+    <div class="table-responsive tabla">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre </th>
+                    <th scope="col"> Precio </th>
+                    <th scope="col"> Foto </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each productos}}
+                    <tr>
+                        <th scope="row"> {{this.title}}</th>
+                        <th scope="row"> {{this.price}}</th>
+                        <th scope="row"> <img src="{{this.thumbnail}}" alt="imagen" width="50" /> </th>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>    
+    </div>
+{{else}}    
+    <h2 style="color: chocolate;">No se encontraron productos </h2>
+{{/if}}
+
+<button id="formButton" class="btn btn-secondary"> Ir a Cargar Productos</button>
+
+<script>
+    const  formButton = document.getElementById('formButton')
+    formButton.addEventListener('click', (event) => {
+        window.location= "/realTimeProducts";
+    });
+</script>
