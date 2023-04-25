@@ -56,5 +56,6 @@ app.set('socketio',io);
 
 io.on('connection', socket => {
     console.log('Nuevo cliente conectado');
-    
+    //const io = req.app.get('socketio');
+    io.emit("showProducts");
 })
