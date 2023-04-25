@@ -8,7 +8,8 @@ const router = Router();
 const ProductManager = new productManager('./primeraEntrega/files/product.json');
 
 router.get('/', async (req, res) => { 
-    res.render('realTimeProducts', { products: ProductManager.getProducts() });
+    const products = await ProductManager.getProducts();
+    res.render('realTimeProducts', { products });
 });
 
 export default router;

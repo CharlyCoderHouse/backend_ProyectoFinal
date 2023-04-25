@@ -26,13 +26,15 @@ router.route('/')
                 data: nuevoArreglo,
             };
     
-            res.send(response);
+            //res.send(response);
+            res.render("products.hbs", { nuevoArreglo });
         } else {
             const response = {
                 status: "Success",
                 data: products,
             };
-            res.send(response);
+            //res.send(response);
+            res.render("products.hbs", { products });
         };
     })
 

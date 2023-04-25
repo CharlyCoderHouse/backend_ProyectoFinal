@@ -1,5 +1,5 @@
 import express, { json, urlencoded } from 'express';
-import __dirname from './utils.js';
+import __dirname from '../utils.js';
 import { join } from 'path';
 import { engine } from "express-handlebars";
 import raizRouter from '../routes/raiz.route.js';
@@ -10,6 +10,7 @@ import viewsProdRouter from '../routes/viewsProd.route.js';
 
 //Creo el Servidor Express
 const app = express();
+// app.use(express.static(path.join(__dirname + "/public")));
 app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
@@ -23,10 +24,10 @@ app.use((req, res, next) => {
 // Creo Plantilla Handlebars
 app.engine('hbs', engine({
     extname: ".hbs",
-    defaultLayout: join(__dirname, "../views/layouts/main.hbs"),
-    layoutsDir: join(__dirname, "../views/layouts"),
+    defaultLayout: join(__dirname, "/views/layouts/main.hbs"),
+    layoutsDir: join(__dirname, "/views/layouts"),
 }))
-app.set('views', join(__dirname, '../views'))
+app.set('views', join(__dirname, '/views'))
 app.set('view engine', 'hbs')
 
 //Routes
