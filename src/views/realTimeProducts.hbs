@@ -1,0 +1,39 @@
+<h1>Carga tu producto</h1>
+<form action="/api/products" method="post">
+    <div class="mb-3">
+        <label for="exampleInput1" class="form-label">Código</label> 
+        <input type="text" class="form-control" name="code" placeholder="ingrese código">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput2" class="form-label">Nombre</label> 
+        <input type="text" class="form-control" name="title" placeholder="ingrese nombre">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput3" class="form-label">Descripción</label> 
+        <input type="text" class="form-control" name="description" placeholder="ingrese descripción">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput4" class="form-label">Categoría</label> 
+        <input type="text" class="form-control" name="category" placeholder="ingrese categoría">
+    </div>        
+    <div class="mb-3">
+        <label for="exampleInput5" class="form-label">Precio</label> 
+        <input type="number" class="form-control" name="price" placeholder="ingrese precio">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput6" class="form-label">Stock</label> 
+        <input type="number" class="form-control" name="stock" placeholder="ingrese precio">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInput7" class="form-label">Foto URL</label> 
+        <input type="text" class="form-control" name="thumbnail" placeholder="url imagen">
+    </div>
+    <button type="submit"  class="btn btn-primary" value="Cargar Producto"> Cargar Producto </button>
+</form>
+
+<br>
+<div id="container"></div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socket.js"></script>

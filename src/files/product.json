@@ -141,5 +141,16 @@
 		],
 		"status": true,
 		"id": 11
+	},
+	{
+		"code": "1013",
+		"title": "Prueba",
+		"description": "Descripción",
+		"category": "Relojeria",
+		"price": "1500",
+		"stock": "10",
+		"thumbnail": "",
+		"status": true,
+		"id": 12
 	}
 ]

@@ -6,9 +6,9 @@ import productManager from '../manager/productManager.js';
 const router = Router();
 
 //Creamos la instancia de la clase Cart
-const CartManager = new cartManager('./primeraEntrega/files/carrito.json');
+const CartManager = new cartManager('./src/files/carrito.json');
 //Creamos la instancia de la clase Product
-const ProductManager = new productManager('./primeraEntrega/files/product.json');
+const ProductManager = new productManager('./src/files/product.json');
 
 router.route('/')
     .post(async(req, res) => {

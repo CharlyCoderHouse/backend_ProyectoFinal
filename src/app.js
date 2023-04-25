@@ -1,11 +1,12 @@
 import express, { json, urlencoded } from 'express';
-import __dirname from '../utils.js';
+import __dirname from './utils.js';
 import { join } from 'path';
 import { engine } from "express-handlebars";
-import raizRouter from '../routes/raiz.route.js';
-import productsRouter from '../routes/products.route.js';
-import cartsRouter from '../routes/cart.route.js';
-import viewsProdRouter from '../routes/viewsProd.route.js';
+import { Server } from 'socket.io';
+import raizRouter from './routes/raiz.route.js';
+import productsRouter from './routes/products.route.js';
+import cartsRouter from './routes/cart.route.js';
+import viewsProdRouter from './routes/viewsProd.route.js';
 
 
 //Creo el Servidor Express
@@ -41,10 +42,19 @@ app.use("/api/cart", cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
 
 //Escuchando puerto 8080 con log de errores
-app.listen(8080, (error) => {
+const server = app.listen(8080, (error) => {
     if(error){
         console.log('Error al iniciar la APP', error);
     }else{
         console.log('Servidor escuchando el puerto 8080');
     }
 });
+
+// Conecto server socket.io
+const io = new Server(server);
+app.set('socketio',io);
+
+io.on('connection', socket => {
+    console.log('Nuevo cliente conectado');
+    
+})

@@ -10,4 +10,3 @@ const  viewProduct = document.getElementById('viewProduct')
 viewProduct.addEventListener('click', (event) => {
     window.location= "/api/products";
 });
-

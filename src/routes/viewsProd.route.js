@@ -5,10 +5,14 @@ import productManager from '../manager/productManager.js';
 const router = Router();
 
 //Creamos la instancia de la clase
-const ProductManager = new productManager('./primeraEntrega/files/product.json');
+const ProductManager = new productManager('./src/files/product.json');
 
 router.get('/', async (req, res) => { 
     const products = await ProductManager.getProducts();
+
+    const io = req.app.get('socketio');
+    io.emit("showProducts", products);
+
     res.render('realTimeProducts', { products });
 });
 

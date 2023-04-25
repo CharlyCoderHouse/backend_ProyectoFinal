@@ -5,7 +5,7 @@ import productManager from '../manager/productManager.js';
 const router = Router();
 
 //Creamos la instancia de la clase
-const ProductManager = new productManager('./primeraEntrega/files/product.json');
+const ProductManager = new productManager('./src/files/product.json');
 
 //Ruta /products + query limits
 router.route('/')
@@ -33,6 +33,7 @@ router.route('/')
                 status: "Success",
                 data: products,
             };
+
             //res.send(response);
             res.render("products.hbs", { products });
         };
@@ -53,11 +54,17 @@ router.route('/')
         const result = await ProductManager.addProduct(product);
 
         //Valido el resultado de la búsqueda
+        if (result !==-1 ) {
+            const io = req.app.get('socketio');
+            io.emit("showProducts", await ProductManager.getProducts());
+        };
+
+        //Valido el resultado de la búsqueda
         const response = result !==-1 
         ? { status: "Success", data: result} 
         : { status: "NOT FOUND", data: `Ya existe el producto que desea crear!` };
         //Valido marco el estado según el resultado
-        const statusCode = result!==-1 ? 200 : 404;
+        const statusCode = result!==-1 ? 200 : 404; 
 
         //muestro resultado
         res.status(statusCode).json(response);
