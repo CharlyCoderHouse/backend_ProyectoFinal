@@ -1,4 +1,23 @@
 <h1>Carga tu producto</h1>
+<div class="table-responsive tabla">
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th scope="col"> Código </th>
+                <th scope="col"> Nombre </th>
+                <th scope="col"> Descripción </th>
+                <th scope="col"> Categoría </th>
+                <th scope="col"> Precio </th>
+                <th scope="col"> Stock </th>
+                <th scope="col"> Imagen </th>
+                <th scope="col"> Eliminar </th>
+            </tr>
+        </thead>
+        <tbody id="container">
+        </tbody>
+    </table>    
+</div>
+<br>
 <form action="/api/products" method="post">
     <div class="mb-3">
         <label for="exampleInput1" class="form-label">Código</label> 
@@ -28,30 +47,8 @@
         <label for="exampleInput7" class="form-label">Foto URL</label> 
         <input type="text" class="form-control" name="thumbnail" placeholder="url imagen">
     </div>
-    <button type="submit"  class="btn btn-primary" value="Cargar Producto"> Cargar Producto </button>
+    <button type="submit"  class="btn btn-primary" value="Cargar Producto" id="butAdd"> Cargar Producto </button>
 </form>
-
-<br>
-<div class="table-responsive tabla">
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th scope="col"> Código </th>
-                <th scope="col"> Nombre </th>
-                <th scope="col"> Descripción </th>
-                <th scope="col"> Categoría </th>
-                <th scope="col"> Precio </th>
-                <th scope="col"> Stock </th>
-                <th scope="col"> Imagen </th>
-                <th scope="col"> Eliminar </th>
-            </tr>
-        </thead>
-        <tbody id="container">
-            
-        </tbody>
-    </table>    
-</div>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/socket.js"></script>

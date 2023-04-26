@@ -143,14 +143,53 @@
 		"id": 11
 	},
 	{
-		"code": "1013",
+		"title": "Bolso Maquillaje",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1206",
+		"price": 5500,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 15
+	},
+	{
+		"code": "1506",
 		"title": "Prueba",
-		"description": "Descripción",
-		"category": "Relojeria",
-		"price": "1500",
-		"stock": "10",
+		"description": "Prueba",
+		"category": "Reloj",
+		"price": "500",
+		"stock": "50",
 		"thumbnail": "",
 		"status": true,
-		"id": 12
+		"id": 18
+	},
+	{
+		"title": "Bolso Maquillaje",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1208",
+		"price": 5500,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 19
+	},
+	{
+		"title": "Bolso Maquillaje",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1209",
+		"price": 5500,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 20
 	}
 ]

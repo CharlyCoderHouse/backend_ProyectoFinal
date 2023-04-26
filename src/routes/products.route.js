@@ -126,6 +126,12 @@ router.route('/:pid')
         //llamar al metodo deleteProduct pasandole como parametro id
         const result = await ProductManager.deleteProductById(id);
         
+        //Valido el resultado de la búsqueda
+        if (result !==-1 ) {
+            const io = req.app.get('socketio');
+            io.emit("showProducts", await ProductManager.getProducts());
+        };
+
         // Valido el resultado del Delete
         const response = result !==-1 
         ? { status: "Success", data: `El producto fue ELIMINADO con éxito!`} 

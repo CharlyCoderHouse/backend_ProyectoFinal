@@ -8,7 +8,6 @@ import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
 
-
 //Creo el Servidor Express
 const app = express();
 // app.use(express.static(path.join(__dirname + "/public")));
@@ -55,7 +54,5 @@ const io = new Server(server);
 app.set('socketio',io);
 
 io.on('connection', socket => {
-    console.log('Nuevo cliente conectado');
-    //const io = req.app.get('socketio');
-    io.emit("showProducts");
-})
+     console.log('Nuevo cliente conectado');
+});
