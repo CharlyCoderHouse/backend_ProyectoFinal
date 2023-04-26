@@ -66,8 +66,9 @@ router.route('/')
         //Valido marco el estado según el resultado
         const statusCode = result!==-1 ? 200 : 404; 
 
-        //muestro resultado
+        //muestro resultado 
         //res.status(statusCode).json(response);
+        //redirijo a la misma página de carga y no muestro el resultado ya que se actualiza la lista
         res.redirect("/realTimeProducts");
 });
 
@@ -141,9 +142,7 @@ router.route('/:pid')
         const statusCode = result!==-1 ? 200 : 404;
 
         //muestro resultado
-        //res.status(statusCode).json(response);
-        res.redirect("/realTimeProducts");
-
+        res.status(statusCode).json(response);
 });
 
 export default router;

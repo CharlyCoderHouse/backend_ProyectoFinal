@@ -17,18 +17,20 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> ${prod.thumbnail}</th>
-                <th scope="row"> <button id="prodDelete" action="/api/products/${prod.id}" method="delete"> Eliminar</button></th>
+                <th scope="row"> <button class="btn btn-secondary" value="${prod.id}" id="butDel"> Eliminar </button>
             </tr>
         `
     })
 });
-const  delProd = document.getElementById('prodDelete')
-delProd.addEventListener('submit', (event) => {
-    event.preventDefault();
-    //window.location= "/api/products";
+delProd = document.getElementById('butDel')
+delProd.addEventListener('click', (event) => {
+  event.preventDefault();
+ /*      fetch('http://localhost:8080/api/products/' + delProd.value, {
+        method: 'DELETE',
+        }).then(res => console.log(res)) */
+        alert("Queres eliminar");
 });
 
 butAdd.addEventListener('submit', (event) => {
     event.preventDefault();
-    //window.location= "/api/products";
 });
