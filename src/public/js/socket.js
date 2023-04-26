@@ -17,14 +17,15 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> ${prod.thumbnail}</th>
-                <th scope="row"> <button class="btn btn-secondary" value="${prod.id}" id="butDel"> Eliminar </button>
+                <th scope="row"> <button type="submit" class="btn btn-secondary" value="${prod.id}" id="butDel"> Eliminar </button>
             </tr>
         `
     })
 });
-delProd = document.getElementById('butDel')
-delProd.addEventListener('click', (event) => {
-  event.preventDefault();
+
+const delProd = document.getElementById('butDel')
+delProd.addEventListener('submit', (event) => {
+    event.preventDefault();
 });
 
 butAdd.addEventListener('submit', (event) => {

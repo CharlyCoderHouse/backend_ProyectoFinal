@@ -141,5 +141,18 @@
 		],
 		"status": true,
 		"id": 11
+	},
+	{
+		"title": "Bolso Maquillaje 2",
+		"description": "Bolso Maquillaje, compralo hasta en 12 cuotas.",
+		"code": "1253",
+		"price": 10,
+		"stock": 35,
+		"category": "Marroquineria",
+		"thumbnail": [
+			"http://localhost:8080/img/bolso.jpg"
+		],
+		"status": true,
+		"id": 12
 	}
 ]
