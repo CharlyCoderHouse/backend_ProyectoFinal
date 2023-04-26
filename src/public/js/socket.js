@@ -25,10 +25,6 @@ socket.on('showProducts', data => {
 delProd = document.getElementById('butDel')
 delProd.addEventListener('click', (event) => {
   event.preventDefault();
- /*      fetch('http://localhost:8080/api/products/' + delProd.value, {
-        method: 'DELETE',
-        }).then(res => console.log(res)) */
-        alert("Queres eliminar");
 });
 
 butAdd.addEventListener('submit', (event) => {
