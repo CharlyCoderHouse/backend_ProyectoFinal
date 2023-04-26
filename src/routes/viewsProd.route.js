@@ -10,8 +10,6 @@ const ProductManager = new productManager('./src/files/product.json');
 router.route('/')
     .get(async (req, res) => { 
         const products = await ProductManager.getProducts();
-        //const io = req.app.get('socketio');
-        //socket.emit("showProducts", products);
         res.render('realTimeProducts', { products });
 });
 

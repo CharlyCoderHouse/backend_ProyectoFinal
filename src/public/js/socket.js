@@ -2,7 +2,6 @@
 const socket = io();
 
 const container = document.getElementById('container');
-
 //Socket
 socket.on('showProducts', data => {
     container.innerHTML = ``
@@ -21,8 +20,8 @@ socket.on('showProducts', data => {
         `
     })
 });
-const  delProd = document.getElementById('prodDelete')
-delProd.addEventListener('click', (event) => {
-    window.location= "/api/products";
-});
+//const  delProd = document.getElementById('prodDelete')
+//delProd.addEventListener('click', (event) => {
+//    window.location= "/api/products";
+//});
 

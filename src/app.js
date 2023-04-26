@@ -7,6 +7,7 @@ import raizRouter from './routes/raiz.route.js';
 import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
+import productManager from './manager/productManager.js';
 
 //Creo el Servidor Express
 const app = express();
@@ -53,6 +54,10 @@ const server = app.listen(8080, (error) => {
 const io = new Server(server);
 app.set('socketio',io);
 
-io.on('connection', socket => {
+//Creamos la instancia de la clase
+const ProductManager = new productManager('./src/files/product.json');
+
+io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
+     io.emit("showProducts", await ProductManager.getProducts());
 });
