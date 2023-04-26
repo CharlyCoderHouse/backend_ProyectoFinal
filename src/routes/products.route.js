@@ -67,7 +67,8 @@ router.route('/')
         const statusCode = result!==-1 ? 200 : 404; 
 
         //muestro resultado
-        res.status(statusCode).json(response);
+        //res.status(statusCode).json(response);
+        res.redirect("/realTimeProducts");
 });
 
 //Ruta /products/:id Busco producto por ID 
@@ -140,7 +141,8 @@ router.route('/:pid')
         const statusCode = result!==-1 ? 200 : 404;
 
         //muestro resultado
-        res.status(statusCode).json(response);
+        //res.status(statusCode).json(response);
+        res.redirect("/realTimeProducts");
 
 });
 

@@ -2,6 +2,8 @@
 const socket = io();
 
 const container = document.getElementById('container');
+const butAdd = document.getElementById('butAdd');
+
 //Socket
 socket.on('showProducts', data => {
     container.innerHTML = ``
@@ -15,13 +17,18 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> ${prod.thumbnail}</th>
-                <th scope="row"> <button id="prodDelete"> Eliminar</button></th>
+                <th scope="row"> <button id="prodDelete" action="/api/products/${prod.id}" method="delete"> Eliminar</button></th>
             </tr>
         `
     })
 });
-//const  delProd = document.getElementById('prodDelete')
-//delProd.addEventListener('click', (event) => {
-//    window.location= "/api/products";
-//});
+const  delProd = document.getElementById('prodDelete')
+delProd.addEventListener('submit', (event) => {
+    event.preventDefault();
+    //window.location= "/api/products";
+});
 
+butAdd.addEventListener('submit', (event) => {
+    event.preventDefault();
+    //window.location= "/api/products";
+});
