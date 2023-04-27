@@ -35,18 +35,23 @@ delAdd.addEventListener('click', (event) => {
         input: 'text',
         inputValidator: (value) =>{
             return !value && "Necesitas escribir un ID para eliminar";
-        }
+        },
+        showCancelButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false
     }).then(result =>{
-        id = result.value;
-        fetch('http://localhost:8080/api/products/' + id, {
-            method: 'DELETE'
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                Swal.fire({
-                    title: 'Producto Eliminado',
-                    icon: 'success'
+        if (result.isConfirmed) {
+            id = result.value;
+            fetch('http://localhost:8080/api/products/' + id, {
+                method: 'DELETE'
                 })
-            })
-    }); 
+                .then((response) => response.json())
+                .then((data) => {
+                    Swal.fire({
+                        title: 'Producto Eliminado',
+                        icon: 'success'
+                    })
+                })
+        }
+   }); 
 }); 
