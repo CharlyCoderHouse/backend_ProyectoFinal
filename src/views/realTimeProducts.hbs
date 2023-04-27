@@ -28,12 +28,14 @@ un producto nuevo y por debajo la lista de productos --}}
     </div>
     <button type="submit" class="btn btn-primary" value="Cargar Producto" id="butAdd"> Cargar Producto </button>
 </form>
-
 <br>
+<button class="btn btn-secondary" id="delProd"> Eliminar Producto </button>
+<br><br>
 <div class="table-responsive tabla">
     <table class="table table-success table-striped">
         <thead>
             <tr>
+                <th scope="col"> Id </th>
                 <th scope="col"> Código </th>
                 <th scope="col"> Nombre </th>
                 <th scope="col"> Descripción </th>
@@ -41,7 +43,6 @@ un producto nuevo y por debajo la lista de productos --}}
                 <th scope="col"> Precio </th>
                 <th scope="col"> Stock </th>
                 <th scope="col"> Imagen </th>
-                <th scope="col"> Eliminar </th>
             </tr>
         </thead>
         <tbody id="container">
@@ -49,5 +50,6 @@ un producto nuevo y por debajo la lista de productos --}}
     </table>    
 </div>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/socket.js"></script>

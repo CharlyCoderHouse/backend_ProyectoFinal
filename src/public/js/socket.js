@@ -10,6 +10,7 @@ socket.on('showProducts', data => {
     data.forEach(prod => {
         container.innerHTML += `
             <tr>
+                <th scope="row"> ${prod.id} </th>
                 <th scope="row"> ${prod.code} </th>
                 <th scope="row"> ${prod.title}</th>
                 <th scope="row"> ${prod.description}</th>
@@ -17,17 +18,35 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> ${prod.thumbnail}</th>
-                <th scope="row"> <button type="submit" class="btn btn-secondary" value="${prod.id}" id="butDel"> Eliminar </button>
             </tr>
         `
     })
 });
 
-const delProd = document.getElementById('butDel')
-delProd.addEventListener('submit', (event) => {
-    event.preventDefault();
-});
-
 butAdd.addEventListener('submit', (event) => {
     event.preventDefault();
-});
+}); 
+
+let id = ""; 
+const delAdd = document.getElementById('delProd');
+delAdd.addEventListener('click', (event) => {
+    Swal.fire({
+        title: 'Ingrese el ID a eliminar',
+        input: 'text',
+        inputValidator: (value) =>{
+            return !value && "Necesitas escribir un ID para eliminar";
+        }
+    }).then(result =>{
+        id = result.value;
+        fetch('http://localhost:8080/api/products/' + id, {
+            method: 'DELETE'
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                Swal.fire({
+                    title: 'Producto Eliminado',
+                    icon: 'success'
+                })
+            })
+    }); 
+}); 
