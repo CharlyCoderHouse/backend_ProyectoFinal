@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import cartManager from '../manager/cartManager.js';
-import productManager from '../manager/productManager.js';
+import cartManager from '../dao/manager/cartManager.js';
+import productManager from '../dao/manager/productManager.js';
 
 //INICIALIZO ROUTER
 const router = Router();

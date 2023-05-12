@@ -7,7 +7,8 @@ import raizRouter from './routes/raiz.route.js';
 import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
-import productManager from './manager/productManager.js';
+import productManager from './dao/manager/productManager.js';
+import mongoose from 'mongoose';
 
 //Creo el Servidor Express
 const app = express();
@@ -61,3 +62,10 @@ io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
      io.emit("showProducts", await ProductManager.getProducts());
 });
+
+/* try {
+    await mongoose.connect('mongodb+srv://carlosdiblasi:pC37lOviWb5KklvJ@codercluster39760.0wyns7x.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    console.log('DB Connect');
+} catch (error) {
+    console.log(error);
+} */
