@@ -7,7 +7,12 @@ import raizRouter from './routes/raiz.route.js';
 import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
-import productManager from './dao/manager/productManager.js';
+//fileSystem
+//import productManager from './dao/manager/productManager.js';
+import viewsMessage from "./routes/viewsMessage.router.js"
+//MongoDB
+import productManager from './dao/dbManager/productManager.js';
+import messageManager from './dao/dbManager/messageManager.js';
 import mongoose from 'mongoose';
 
 //Creo el Servidor Express
@@ -41,6 +46,16 @@ app.use("/api/products", productsRouter);
 app.use("/api/cart", cartsRouter);
 // Carga de productos
 app.use('/realtimeproducts', viewsProdRouter)
+// Page Chat
+app.use('/chat', viewsMessage)
+
+// Conecto a MongoDB Atlas
+try {
+    await mongoose.connect('mongodb+srv://carlosdiblasi:pC37lOviWb5KklvJ@codercluster39760.0wyns7x.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    console.log('DB Connect');
+} catch (error) {
+    console.log(error);
+};
 
 //Escuchando puerto 8080 con log de errores
 const server = app.listen(8080, (error) => {
@@ -55,17 +70,35 @@ const server = app.listen(8080, (error) => {
 const io = new Server(server);
 app.set('socketio',io);
 
-//Creamos la instancia de la clase
-const ProductManager = new productManager('./src/files/product.json');
+//Creamos la instancia de la clase FILESYTEM
+//const ProductManager = new productManager('./src/files/product.json');
+
+//Creamos la instancia de la clase MONGODB
+const ProductManager = new productManager();
+const MessageManager = new messageManager();
+
+const messages = [];
 
 io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
      io.emit("showProducts", await ProductManager.getProducts());
+
+     socket.on('message', data => {
+        messages.push(data);
+        io.emit('messageLogs', messages);
+        
+        // Persistir en MONGO el chat
+        try {
+            const messageUser = MessageManager.addMessage(data);
+        } catch (error) {
+            console.log("Error",error);
+        }
+
+    });
+
+    socket.on('authenticated', data => {
+        socket.emit('messageLogs', messages);
+        socket.broadcast.emit('newUserConnected', data);
+    });
 });
 
-/* try {
-    await mongoose.connect('mongodb+srv://carlosdiblasi:pC37lOviWb5KklvJ@codercluster39760.0wyns7x.mongodb.net/ecommerce?retryWrites=true&w=majority');
-    console.log('DB Connect');
-} catch (error) {
-    console.log(error);
-} */

@@ -1,16 +1,34 @@
 import { Router } from "express";
-import productManager from '../dao/manager/productManager.js';
-
+//FileSystem
+// import productManager from '../dao/manager/productManager.js';
+//MongoDB
+import productManager from "../dao/dbManager/productManager.js"
 //INICIALIZO ROUTER
 const router = Router();
 
-//Creamos la instancia de la clase
-const ProductManager = new productManager('./src/files/product.json');
+//Creamos la instancia de la clase FileSystem
+/* const ProductManager = new productManager('./src/files/product.json'); */
+
+//Creamos la instancia de la clase MongoDB
+const ProductManager = new productManager();
 
 //Ruta /products + query limits
 router.route('/')
     .get(async (req, res) => {
-        // OBTENGO TODOS LOS PRODUCTOS QUE HAY EN EL ARCHIVO
+        //MongoDb
+        //leo el parametro por req.query
+        const { limit } = req.query;
+        try {
+            const products = await ProductManager.getProducts(limit)
+            //Postman
+            res.send({ status: "success", payload: products}); 
+            //Render page
+            // res.render("products.hbs", { products });
+        } catch (error) {
+            res.status(500).send({ status: "error", error });
+        }
+        // FileSystem
+/*         // OBTENGO TODOS LOS PRODUCTOS QUE HAY EN EL ARCHIVO
         const products = await ProductManager.getProducts();
         //leo el parametro por req.query
         const { limit } = req.query;
@@ -36,7 +54,8 @@ router.route('/')
 
             //res.send(response);
             res.render("products.hbs", { products });
-        };
+        }; */
+
     })
 
     .post(async(req, res) => {
@@ -50,7 +69,31 @@ router.route('/')
         if(!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
             return res.status(400).send({error:'Hay campos que faltan completar!'});
         };
-        //llamar al metodo addProduct    
+        //MongoDB
+        try {
+            const result = await ProductManager.addProduct(product);
+    
+             //Valido el resultado de la creacion del producto
+            if (result !==-1 ) {
+                const io = req.app.get('socketio');
+                io.emit("showProducts", await ProductManager.getProducts());
+            };
+              
+            const response = { status: "Success", payload: result};
+    
+            //muestro resultado
+            //Postman
+            res.status(200).json(response);
+            //redirijo a la misma página de carga y no muestro el resultado ya que se actualiza la lista
+            // res.redirect("/realTimeProducts");
+        } catch (error) {
+            const response = { status: "NOT FOUND", payload: `Ya existe el producto que desea crear!` };
+            //Postman
+            res.status(404).json(response);
+        }
+
+        //FileSystem
+ /*        //llamar al metodo addProduct    
         const result = await ProductManager.addProduct(product);
 
         //Valido el resultado de la búsqueda
@@ -69,13 +112,33 @@ router.route('/')
         //muestro resultado 
         //res.status(statusCode).json(response);
         //redirijo a la misma página de carga y no muestro el resultado ya que se actualiza la lista
-        res.redirect("/realTimeProducts");
+        res.redirect("/realTimeProducts"); */
 });
 
 //Ruta /products/:id Busco producto por ID 
 router.route('/:pid')
     .get(async (req,res) => {
+        // MOngoDB
         //Leo el ID del parametro 
+        const id = String(req.params.pid);
+        
+        // BUsco el ID 
+        try {
+            const productById = await ProductManager.getProductById(id);
+            const response = { status: "OK", payload: productById} 
+            //muestro resultado
+            //Postman
+            res.status(200).json(response);
+            //Render page
+            //res.render("products.hbs", { productById });
+        } catch (error) {
+            const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
+            //Postman
+            res.status(404).json(response);
+        };
+        
+        //FileSystem
+   /*      //Leo el ID del parametro 
         const id = Number(req.params.pid);
         // BUsco el ID en el arreglo
         const productById = await ProductManager.getProductById(id);
@@ -88,13 +151,13 @@ router.route('/:pid')
         const statusCode = productById!==-1 ? 200 : 404;
 
         //muestro resultado
-        res.status(statusCode).json(response);
+        res.status(statusCode).json(response); */
     })
 
     .put(async(req,res) =>{
         // llamar al metodo updateProduct para actualizar sin modificar el id
         //Leo el ID por parametros
-        const id = Number(req.params.pid);
+        const id = req.params.pid;
         //Leo del body los campos a actualizar
         const product = req.body;
         
@@ -108,7 +171,19 @@ router.route('/:pid')
             return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
         };
 
-        //Intento actualizar los datos de productos
+        //MongoDB
+        try {
+            const result = await ProductManager.updateProduct(id, product);
+            const response = { status: "Success", payload: `El producto con ID ${id} fue actualizado con éxito!`+ result};       
+            
+            //muestro resultado
+            res.status(statusCode).json(response);
+        } catch (error) {
+            const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
+            res.status(404).send(response);
+        };
+        //FileSystem
+ /*        //Intento actualizar los datos de productos
         const result = await ProductManager.updateProduct(id,product);
 
         // Valido el resultado del Update
@@ -119,12 +194,35 @@ router.route('/:pid')
         const statusCode = result !==-1 ? 200 : 404;
 
         //muestro resultado
-        res.status(statusCode).json(response); 
+        res.status(statusCode).json(response);  */
     })
 
     .delete(async(req,res)=>{
         //Leo el ID por parametros
-        const id = Number(req.params.pid)
+        const id = req.params.pid
+        //MongoDB
+        try {
+            const result = await ProductManager.deleteProductById(id);
+    
+            //Valido el resultado de la búsqueda
+            if (result !==-1 ) {
+                const io = req.app.get('socketio');
+                io.emit("showProducts", await ProductManager.getProducts());
+            };
+    
+            const response = result !==-1 
+            ? { status: "Success", payload: result} 
+            : { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` };
+            //Valido marco el estado según el resultado
+            const statusCode = result!==-1 ? 200 : 404;
+    
+            //muestro resultado
+            res.status(statusCode).json(response);
+        } catch (error) {
+            res.status(500).send({ status: "error", error });
+        };
+        //FileSystem
+        /* 
         //llamar al metodo deleteProduct pasandole como parametro id
         const result = await ProductManager.deleteProductById(id);
         
@@ -142,7 +240,7 @@ router.route('/:pid')
         const statusCode = result!==-1 ? 200 : 404;
 
         //muestro resultado
-        res.status(statusCode).json(response);
+        res.status(statusCode).json(response); */
 });
 
 export default router;
