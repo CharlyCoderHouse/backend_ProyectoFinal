@@ -74,7 +74,7 @@ router.route('/')
             const result = await ProductManager.addProduct(product);
     
              //Valido el resultado de la creacion del producto
-            if (result) {
+            if (result.acknowledged) {
                 const io = req.app.get('socketio');
                 io.emit("showProducts", await ProductManager.getProducts());
             };
