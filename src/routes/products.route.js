@@ -21,9 +21,9 @@ router.route('/')
         try {
             const products = await ProductManager.getProducts(limit)
             //Postman
-            res.send({ status: "success", payload: products}); 
+            // res.send({ status: "success", payload: products}); 
             //Render page
-            // res.render("products.hbs", { products });
+            res.render("products.hbs", { products });
         } catch (error) {
             res.status(500).send({ status: "error", error });
         }
@@ -74,7 +74,7 @@ router.route('/')
             const result = await ProductManager.addProduct(product);
     
              //Valido el resultado de la creacion del producto
-            if (result !==-1 ) {
+            if (result) {
                 const io = req.app.get('socketio');
                 io.emit("showProducts", await ProductManager.getProducts());
             };
@@ -83,9 +83,9 @@ router.route('/')
     
             //muestro resultado
             //Postman
-            res.status(200).json(response);
+            //res.status(200).json(response);
             //redirijo a la misma página de carga y no muestro el resultado ya que se actualiza la lista
-            // res.redirect("/realTimeProducts");
+            res.redirect("/realTimeProducts");
         } catch (error) {
             const response = { status: "NOT FOUND", payload: `Ya existe el producto que desea crear!` };
             //Postman
@@ -128,9 +128,9 @@ router.route('/:pid')
             const response = { status: "OK", payload: productById} 
             //muestro resultado
             //Postman
-            res.status(200).json(response);
+            // res.status(200).json(response);
             //Render page
-            //res.render("products.hbs", { productById });
+            res.render("products.hbs", { productById });
         } catch (error) {
             const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
             //Postman
@@ -157,15 +157,10 @@ router.route('/:pid')
     .put(async(req,res) =>{
         // llamar al metodo updateProduct para actualizar sin modificar el id
         //Leo el ID por parametros
-        const id = req.params.pid;
+        const id = String(req.params.pid);
         //Leo del body los campos a actualizar
         const product = req.body;
         
-        //Valido que los campos estén completos
-        if(!product.title || !product.description || !product.code || !product.price || 
-            !product.stock || !product.category || !product.status){
-            return res.status(400).send({error:'Hay campos que faltan completar!'});
-        }
         //Valido que el campo ID no venga para actualizar
         if("id" in product){
             return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
@@ -174,13 +169,19 @@ router.route('/:pid')
         //MongoDB
         try {
             const result = await ProductManager.updateProduct(id, product);
-            const response = { status: "Success", payload: `El producto con ID ${id} fue actualizado con éxito!`+ result};       
+            //Valido que se realizo el UPDATE
+            if (result.acknowledged & result.modifiedCount!==0) {
+                const response = { status: "Success", payload: `El producto con ID ${id} fue actualizado con éxito!`};       
+                //muestro resultado
+                res.status(200).json(response);
+            } else {
+                //muestro resultado error
+                res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el producto, verifique los datos ingresados"});
+            };
             
-            //muestro resultado
-            res.status(statusCode).json(response);
         } catch (error) {
-            const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
-            res.status(404).send(response);
+            const reserror = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
+            res.status(404).send(reserror);
         };
         //FileSystem
  /*        //Intento actualizar los datos de productos
@@ -199,27 +200,26 @@ router.route('/:pid')
 
     .delete(async(req,res)=>{
         //Leo el ID por parametros
-        const id = req.params.pid
+        const id = String(req.params.pid);
         //MongoDB
         try {
             const result = await ProductManager.deleteProductById(id);
     
             //Valido el resultado de la búsqueda
-            if (result !==-1 ) {
+            if (result.acknowledged & result.deletedCount!==0) {
                 const io = req.app.get('socketio');
                 io.emit("showProducts", await ProductManager.getProducts());
+                const response = { status: "Success", payload: `El producto con ID ${id} fue eliminado!`}; 
+                //muestro resultado
+                res.status(200).json(response);
+            }else{
+                const response = { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!`}; 
+                //muestro resultado
+                res.status(200).json(response);
             };
     
-            const response = result !==-1 
-            ? { status: "Success", payload: result} 
-            : { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` };
-            //Valido marco el estado según el resultado
-            const statusCode = result!==-1 ? 200 : 404;
-    
-            //muestro resultado
-            res.status(statusCode).json(response);
         } catch (error) {
-            res.status(500).send({ status: "error", error });
+            res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
         };
         //FileSystem
         /* 

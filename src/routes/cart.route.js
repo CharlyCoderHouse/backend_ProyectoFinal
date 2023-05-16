@@ -43,17 +43,17 @@ router.route('/')
         res.send({ status: 'Success', result }); */
 });
 
-router.route('/:id')
+router.route('/:cid')
     .get(async(req, res) => {
         //Leo el ID por parametros
-        const cartId = req.params.id;
+        const cartId = String(req.params.cid);
 
         //MongoDB
         try {
             const cart = await CartManager.getCartById(cartId);
             const response ={ status: "Success", payload: cart};
             //muestro resultado
-            res.status(statusCode).json(response);
+            res.status(200).json(response);
         } catch (error) {
             const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
             res.status(404).send(response);
@@ -78,18 +78,17 @@ router.route('/:cid/product/:pid')
     .post(async(req, res) => {
         
         //Leo el ID del carrito y producto por parametros 
-        const cartId = req.params.cid;
-        const productId = req.params.pid;
+        const cartId = String(req.params.cid);
+        const productId = String(req.params.pid);
 
         //MongoDB
-        
         // Primero Valido que exista el carrito 
         try {
             // OBTENGO el carrito QUE HAY EN la BASE
             await CartManager.getCartById(cartId);
         } catch (error) {
             const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
-            res.status(404).json(response);
+            return res.status(404).json(response);
         }
         // Segundo Valido que exista el producto
         try {
@@ -99,16 +98,16 @@ router.route('/:cid/product/:pid')
             const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
             return res.status(404).json(response);
         }
-        
+
         // Una vez validado llamar al metodo addProductInCart
         try {
-            const result = await CartManager.addProductInCart(cart.id, product.id);
-            //console.log(result);
-            if(result) {
-                res.send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
+            const result = await CartManager.addProductInCart(cartId, productId);
+            console.log("router: " + result);
+            if(result.acknowledged) {
+                res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
             };
         } catch (error) {
-            res.status(500).send({ status: "error", error });
+            res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
         };
 
         // FileSystme OBTENGO el carrito QUE HAY EN EL ARCHIVO

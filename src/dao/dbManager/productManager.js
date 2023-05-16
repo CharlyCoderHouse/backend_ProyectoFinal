@@ -29,7 +29,7 @@ export default class productManager {
     };
 
     updateProduct = async (id, product) => {
-        const result = await productModel.updateOne({_id: id}, product);
+        const result = await productModel.updateOne({_id: id}, {$set: product});
         return result;
     };
 

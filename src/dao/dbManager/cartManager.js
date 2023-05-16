@@ -17,26 +17,26 @@ export default class cartManager {
     };    
 
     getCartById = async (id) => {
-        const cart = await cartModel.find({_id:id}).lean();
+
+        const cart = await cartModel.find({_id: id}).lean();
+        console.log(cart);
         return cart;    
     };
 
     addProductInCart = async (cartId,productId) => {
-/* 
-        //Valido si el item esta en el carrito
-        const isInCart = async (cartId, productId) => {
-            return (
-                await cartModel.find({$and:[{_id: {cartId}},{procuct: {productId}}] })
-            )
+        //Intento incrementar la cantidad si se encuentra el producto en el carrito
+        const result = await cartModel.updateOne({_id: cartId, "products.product": productId},{$inc: {"products.$.quantity": 1}});
+        // console.log("result:" + result.modifiedCount);
+        //Pregunto si pudo modificar, sino pudo es que no existe y lo agrego
+        if (result.acknowledged & result.modifiedCount === 0){
+            //creo arreglo para el nuevo producto con sus datos
+            const newProduct = {
+                product: productId,
+                quantity: 1
+                };
+            const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
+            return result
         };
-
-        if (isInCart(cartId, productId)) { */
-            const result = await cartModel.updateOne({$and:[{_id: {cartId}},{procuct: {productId}}] },{$set: {quantity: quantity++} },{$upsert: {_id: cartId}, productId});
-            return result;
-        /* }else{
-            const result = await cartModel.updateOne({_id: cartId}, productId);
-            return result;
-        }
- */      
+        return result
     }    
 };
