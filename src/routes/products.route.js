@@ -17,13 +17,18 @@ router.route('/')
     .get(async (req, res) => {
         //MongoDb
         //leo el parametro por req.query
-        const { limit } = req.query;
+        let { limit, page, query, sort } = req.query;
         try {
-            const products = await ProductManager.getProducts(limit)
+            if (!limit) limit=10;
+            if (!page) page=1;
+            const products = await ProductManager.getProducts(limit, page, query, sort)
+            products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}`:'';
+            products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}`:'';
+            products.isValid= !(page<=0||page>products.totalPages)
             //Postman
             // res.send({ status: "success", payload: products}); 
             //Render page
-            res.render("products.hbs", { products });
+            res.render("products.hbs", products );
         } catch (error) {
             res.status(500).send({ status: "error", error });
         }

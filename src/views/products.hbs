@@ -2,7 +2,7 @@
 no cambia hasta refrescar --}}
 <h1 style="color:darkblue;">Bienvenidos al servidor express - Joyería Puga</h1> <br>
 <h1>Vista de productos</h1>
-{{#if products.length}}
+{{#if isValid}}
     <div class="table-responsive tabla">
         <table class="table table-primary table-striped">
             <thead>
@@ -17,7 +17,7 @@ no cambia hasta refrescar --}}
                 </tr>
             </thead>
             <tbody>
-                {{#each products}}
+                {{#each docs}}
                     <tr>
                         <th scope="row"> {{this.code}} </th>
                         <th scope="row"> {{this.title}}</th>
@@ -25,16 +25,27 @@ no cambia hasta refrescar --}}
                         <th scope="row"> {{this.category}} </th>
                         <th scope="row"> {{this.price}}</th>
                         <th scope="row"> {{this.stock}}</th>
-                        <th scope="row"> {{this.thumbnail}}</th>
+                        <th scope="row"> <img src="{{this.thumbnail}}" alt="products" width="200" height="100"></th> 
                     </tr>
                 {{/each}}
             </tbody>
         </table>    
     </div>
+    <div>
+        {{#if hasPrevPage}}
+            <a class="btn btn-warning" href={{this.prevLink}}><< Anterior</a>  
+        {{/if}}
+        &nbsp;
+        {{this.page}}
+        &nbsp;
+        {{#if hasNextPage}}
+            <a class="btn btn-warning" href={{this.nextLink}}>Siguiente >></a>  
+        {{/if}} 
+    </div>
 {{else}}    
     <h2 style="color: chocolate;">No se encontraron productos </h2>
 {{/if}}
-
+<br/>
 <button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>
 
 <script src="/js/index.js"></script>

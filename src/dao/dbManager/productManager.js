@@ -6,15 +6,11 @@ export default class productManager {
         console.log('Working products with DB');
     };
     
-    getProducts = async (limit) => {
+    getProducts = async (limit, page, query, sort) => {
         //Leo de la base devolviendo los productos
-        if (limit){
-            const products = await productModel.find().skip(0).limit(limit).lean();
-            return products;
-        } else {
-            const products = await productModel.find().lean();
-            return products;
-        };
+        const products = await productModel.paginate({}, {limit: limit, page: page, lean:true})
+        //console.log("1" + JSON.stringify(products, null, '\t'));
+        return products; 
     };
 
     getProductById = async (id) => {
