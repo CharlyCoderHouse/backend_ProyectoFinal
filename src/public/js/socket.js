@@ -17,7 +17,7 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.category} </th>
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
-                <th scope="row"> ${prod.thumbnail}</th>
+                <th scope="row"> <img src="${prod.thumbnail}" alt="products" width="200" height="100"></th> 
             </tr>
         `
     })

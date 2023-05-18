@@ -11,9 +11,22 @@ body {
     background-size: cover;
     font-family: "Roboto", sans-serif; }
 
+h1 {
+        color:darkblue;
+}
+
 th {
     border: 1px solid rgb(190,190,190);
     padding: 10px 20px;
     text-align: center;
     vertical-align: middle;
-    }
+}
+
+.filter{
+    display: flex;
+    margin: 5px;
+}    
+.filter p {
+    margin: 5px;
+    padding: 5px;
+}    

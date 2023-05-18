@@ -21,6 +21,8 @@ router.route('/')
         try {
             if (!limit) limit=10;
             if (!page) page=1;
+            if (query) query= {category: query};
+            console.log(query);
             const products = await ProductManager.getProducts(limit, page, query, sort)
             products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}`:'';
             products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}`:'';

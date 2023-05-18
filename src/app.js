@@ -81,8 +81,8 @@ const messages = [];
 
 io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
-     const products = await ProductManager.getProducts(10)
-     console.log(JSON.stringify(products, null, '\t'));
+     const products = await ProductManager.getProducts()
+     //console.log(JSON.stringify(products, null, '\t'));
      io.emit("showProducts", products.docs);
 
      socket.on('message', data => {
