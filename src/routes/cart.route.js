@@ -52,11 +52,13 @@ router.route('/:cid')
         try {
             const cart = await CartManager.getCartById(cartId);
             const response ={ status: "Success", payload: cart};
-
+            //console.log(cart[0].products);
+            //console.log(JSON.stringify(cart, null, '\t'));
+            cart[0].isValid= cart[0].products.length > 0
             //muestro resultado postman
-            res.status(200).json(response);
+            //res.status(200).json(response);
             //REnderizo vista
-            //res.render("carts.hbs", cart );
+            res.render("carts.hbs", cart[0] );
         } catch (error) {
             const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
             res.status(404).send(response);

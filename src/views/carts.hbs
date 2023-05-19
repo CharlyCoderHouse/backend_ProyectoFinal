@@ -13,30 +13,30 @@ no cambia hasta refrescar --}}
                     <th scope="col"> Descripción </th>
                     <th scope="col"> Categoría </th>
                     <th scope="col"> Precio </th>
-                    <th scope="col"> Stock </th>
+                    <th scope="col"> Cantidad </th>
                     <th scope="col"> Imagen </th>
                 </tr>
             </thead>
             <tbody>
-                {{#each docs}}
+                {{#each products}}
                     <tr>
-                        <th scope="row"> {{this.code}} </th>
-                        <th scope="row"> {{this.title}}</th>
-                        <th scope="row"> {{this.description}}</th>
-                        <th scope="row"> {{this.category}} </th>
-                        <th scope="row"> {{this.price}}</th>
-                        <th scope="row"> {{this.stock}}</th>
-                        <th scope="row"> <img src="{{this.thumbnail}}" alt="products" width="200" height="100"></th> 
+                        <th scope="row"> {{this.product.code}} </th>
+                        <th scope="row"> {{this.product.title}}</th>
+                        <th scope="row"> {{this.product.description}}</th>
+                        <th scope="row"> {{this.product.category}} </th>
+                        <th scope="row"> {{this.product.price}}</th>
+                        <th scope="row"> {{this.quantity}}</th>
+                        <th scope="row"> <img src="{{this.product.thumbnail}}" alt="products" width="200" height="100"></th>     
                     </tr>
                 {{/each}}
             </tbody>
         </table>    
     </div>
 {{else}}    
-    <h2 style="color: chocolate;">No se encontraron productos </h2>
+    <h2 style="color: chocolate;">No se encontraron productos en su carrito </h2>
 {{/if}}
 <br/>
-<button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>
+<button id="viewProduct" class="btn btn-secondary"> Comprar Productos</button>
 <button id="goHome" class="btn btn-secondary"> Ir al Home</button>
 
 <script src="/js/index.js"></script>

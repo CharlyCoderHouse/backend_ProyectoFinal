@@ -40,7 +40,7 @@ router.route('/')
             products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
             products.isValid= !(page<=0||page>products.totalPages)
             //Postman
-            // res.send({ status: "success", payload: products}); 
+             //res.send({ status: "success", payload: products}); 
             //Render page
             res.render("products.hbs", products );
         } catch (error) {
