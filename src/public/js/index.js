@@ -1,44 +1,39 @@
+// Selector de Categoría
 const categSel = document.getElementById('categSel1')
 if(categSel){
-
-    const prueba = categSel.options[categSel.selectedIndex].text;
-    console.log(prueba);
-/* let changeCate = () => {
-    if (categSel.value === "c1" ){
-        const query = "" 
-        console.log(query);
+    categSel.addEventListener('change', () => {
+    if (categSel.options[categSel.selectedIndex].value === "c6" ){
+        window.location= "/api/products";
     }else{
-        const query = categSel.text
-        console.log(query);
-    } 
-    //console.log(query);
-    window.location= "/api/products?"+`${query}`;
-}  */
-categSel.addEventListener('change', (event) => {
-    let query ="";
-    if (categSel.options[categSel.selectedIndex].value !== "c1" ){
-        query = categSel.options[categSel.selectedIndex].text
-        console.log(query);
-    } 
-    //console.log(query);
-    window.location= "/api/products?query:"+`${query}`;
-    console.log(categSel);
+        const query = categSel.options[categSel.selectedIndex].text
+        window.location= "/api/products?query="+`${query}`;
+    }; 
  }); 
-} 
+}; 
 
-
+// Selector de Orden de precio
+const ordPri = document.getElementById('ordPri')
+if(ordPri){
+    ordPri.addEventListener('change', () => {
+    let sort ="";
+    if (ordPri.options[ordPri.selectedIndex].value === "v2" ){
+        sort = 1 
+    }else if (ordPri.options[ordPri.selectedIndex].value === "v3" ){  
+        sort = -1
+    } 
+    window.location= "/api/products?sort="+`${sort}`;
+ }); 
+}; 
 // Botón para ir al HOME
 let goHome = document.getElementById('goHome')
 if(goHome){
     goHome.addEventListener('click', (event) => {
-        console.log(goHome);
         window.location= "/";
     });
 }
 // Botón para agregar productos
 const addProduct = document.getElementById('addProduct')
 if(addProduct){
-    // addProduct.innerHTML = `<button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>`
     addProduct.addEventListener('click', (event) => {
         window.location= "/realTimeProducts";
     });
@@ -46,7 +41,6 @@ if(addProduct){
 // Botón para ver lista de productos
 const viewProduct = document.getElementById('viewProduct')
 if(viewProduct){
-    // viewProduct.innerHTML = `<button id="viewProduct" class="btn btn-secondary"> Ver Productos</button>`
     viewProduct.addEventListener('click', (event) => {
         window.location= "/api/products";
     });
