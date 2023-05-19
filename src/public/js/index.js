@@ -5,7 +5,7 @@ if(categSel){
     if (categSel.options[categSel.selectedIndex].value === "c6" ){
         window.location= "/api/products";
     }else{
-        const query = categSel.options[categSel.selectedIndex].text
+        const query = categSel.options[categSel.selectedIndex].text;
         window.location= "/api/products?query="+`${query}`;
     }; 
  }); 
@@ -17,9 +17,9 @@ if(ordPri){
     ordPri.addEventListener('change', () => {
     let sort ="";
     if (ordPri.options[ordPri.selectedIndex].value === "v2" ){
-        sort = 1 
+        sort = 1; 
     }else if (ordPri.options[ordPri.selectedIndex].value === "v3" ){  
-        sort = -1
+        sort = -1;
     } 
     window.location= "/api/products?sort="+`${sort}`;
  }); 

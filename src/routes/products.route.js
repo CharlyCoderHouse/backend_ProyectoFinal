@@ -17,17 +17,27 @@ router.route('/')
     .get(async (req, res) => {
         //MongoDb
         //leo el parametro por req.query
-        let { limit, page, query, sort } = req.query;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const page = parseInt(req.query.page, 10) || 1;
+        let query = req.query.query; 
+        let sort  = req.query.sort;
         try {
-            //const queryParams = ""
-            if (!limit) limit=10;
-            if (!page) page=1;
-            if (query) query= {category: query};
-            if (sort) sort= {price: sort};
+            let sort1= "";
+            let sort2= "";
+            let query1= "";
+            let query2= "";
+            if (query) {
+                query2= query; 
+                query1= {category: query};
+            }
+            if (sort) {
+                sort2=sort;
+                sort1= {price: sort};
+            }
             //console.log(query);
-            const products = await ProductManager.getProducts(limit, page, query, sort)
-            products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}`:'';
-            products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}`:'';
+            const products = await ProductManager.getProducts(limit, page, query1, sort1);
+            products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}&query=${query2}&sort=${sort2}`:'';
+            products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
             products.isValid= !(page<=0||page>products.totalPages)
             //Postman
             // res.send({ status: "success", payload: products}); 
