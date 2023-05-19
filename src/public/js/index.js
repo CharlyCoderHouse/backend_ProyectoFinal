@@ -53,3 +53,46 @@ if(viewChat){
         window.location= "/chat";
     });
 }
+
+
+// Botón para insertar en carro
+function procesoId(comp){
+    const id = comp.id
+    console.log("1 " + id);
+    const butCart = document.getElementById(`${id}`)
+    if(butCart){ 
+            Swal.fire({
+                title: 'Muy buena eleccion',
+                text: 'Ingrese la cantidad a pedir',
+                input: 'text',
+                inputValidator: (value) =>{
+                    return !value && "Ingrese la cantidad a pedir";
+                },
+                showCancelButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: 'Agregar al Carrito'
+            }).then(result =>{
+                console.log(result);
+                if (result.isConfirmed) {
+                    
+                    Swal.fire({
+                        title: 'Producto Agregado al Carrito',
+                        icon: 'success'
+                    })
+ /*                    id = result.value;
+                        fetch('http://localhost:8080/api/products/' + id, {
+                        method: 'DELETE'
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            Swal.fire({
+                                title: 'Producto Eliminado',
+                                icon: 'success'
+                            })
+                        }) */
+                }
+        }); 
+      
+    }
+}

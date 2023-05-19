@@ -21,33 +21,27 @@ no cambia hasta refrescar --}}
             <option value="v3">Por mayor precio</option>
             </select>
     </div>
-    <div class="table-responsive tabla">
-        <table class="table table-primary table-striped">
-            <thead>
-                <tr>
-                    <th scope="col"> Código </th>
-                    <th scope="col"> Nombre </th>
-                    <th scope="col"> Descripción </th>
-                    <th scope="col"> Categoría </th>
-                    <th scope="col"> Precio </th>
-                    <th scope="col"> Stock </th>
-                    <th scope="col"> Imagen </th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each docs}}
-                    <tr>
-                        <th scope="row"> {{this.code}} </th>
-                        <th scope="row"> {{this.title}}</th>
-                        <th scope="row"> {{this.description}}</th>
-                        <th scope="row"> {{this.category}} </th>
-                        <th scope="row"> {{this.price}}</th>
-                        <th scope="row"> {{this.stock}}</th>
-                        <th scope="row"> <img src="{{this.thumbnail}}" alt="products" width="200" height="100"></th> 
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>    
+    
+    <div class="col cajaProductos">
+    {{#each docs}}        
+        <div class="card h-100 shadow-sm">
+            <img class="card-img-top" src="{{this.thumbnail}}" alt="products">
+            <div class="card-body">
+                <div class="clearfix mb-3">
+                    <span class="float-end badge rounded-pill bg-success">$ {{this.price}}.-</span>
+                </div>
+                <h5 class="card-title">{{this.title}}</h5>
+                <h2 class="description">{{this.description}}</h2>
+                <div class="text-center my-4">
+                    <!-- Botón Modal Carrito -->
+                    <button type="button" class="btn btncaja btn-warning" 
+                        id="{{this._id}}" onclick="procesoId(this)">
+                        Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    {{/each}}           
     </div>
     <div>
         {{#if hasPrevPage}}
@@ -60,6 +54,7 @@ no cambia hasta refrescar --}}
             <a class="btn btn-warning" href={{this.nextLink}}>Siguiente >></a>  
         {{/if}} 
     </div>
+
 {{else}}    
     <h2 style="color: chocolate;">No se encontraron productos </h2>
 {{/if}}
@@ -67,4 +62,5 @@ no cambia hasta refrescar --}}
 <button id="addProduct" class="btn btn-secondary"> Ir a Cargar Productos</button>
 <button id="goHome" class="btn btn-secondary"> Ir al Home</button>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/index.js"></script>
