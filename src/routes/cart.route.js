@@ -176,7 +176,7 @@ router.route('/:cid/product/:pid')
             const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
             return res.status(404).json(response);
         }
-        console.log(cartId, productId, quantity);
+        /* console.log(cartId, productId, quantity); */
         // Una vez validado llamar al metodo addProductInCart
         try {
             const result = await CartManager.addProductInCart(cartId, productId, quantity);
@@ -215,8 +215,10 @@ router.route('/:cid/product/:pid')
     // BORRA UN PRODUCTO DEL CARRO
     .delete(async(req, res) => {
         const cartId = String(req.params.cid);
+        const productId = String(req.params.pid);
         try {
-            const cart = await CartManager.deleteAllProductsInCart(cartId);
+            
+            const cart = await CartManager.deleteProductInCart(cartId,productId);
             const response ={ status: "Success", payload: cart};
             //muestro resultado
             res.status(200).json(response);

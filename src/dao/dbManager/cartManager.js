@@ -43,16 +43,16 @@ export default class cartManager {
     }   
     
     deleteProductInCart = async (cartId, productId) => {
-        const result = await cartModel.updateOne({_id: cartId }, { $pull: { products: [ $productId] }});
+        console.log(cartId, productId);
+        const result = await cartModel.updateOne({_id: cartId}, {$pull: { products: {"product": productId }}});
         console.log("deleteProductsInCart:", result);
         return result;
     };
 
     deleteAllProductsInCart = async (cartId) => {
-        /* const result = await cartModel.updateOne({_id: cartId }, { $pullAll: { products: [] }}); */
         const result = await cartModel.updateOne({_id: cartId }, { $set: { products: [] }});
         console.log("deleteProductsInCart:", result);
         return result;
     };
-    
+
 };
