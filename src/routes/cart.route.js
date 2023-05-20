@@ -56,9 +56,9 @@ router.route('/:cid')
             //console.log(JSON.stringify(cart, null, '\t'));
             cart[0].isValid= cart[0].products.length > 0
             //muestro resultado postman
-            //res.status(200).json(response);
+            res.status(200).json(response);
             //REnderizo vista
-            res.render("carts.hbs", cart[0] );
+            // res.render("carts.hbs", cart[0] );
         } catch (error) {
             const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
             res.status(404).send(response);
@@ -77,14 +77,12 @@ router.route('/:cid')
 
         //muestro resultado
         res.status(statusCode).json(response); */
-});
-
-router.route('/:cid/product/:pid')
-    .post(async(req, res) => {
+    })
+    .put(async(req, res) => {
         
         //Leo el ID del carrito y producto por parametros 
         const cartId = String(req.params.cid);
-        const productId = String(req.params.pid);
+        const { productId, quantity } = req.body;
 
         //MongoDB
         // Primero Valido que exista el carrito 
@@ -106,13 +104,88 @@ router.route('/:cid/product/:pid')
 
         // Una vez validado llamar al metodo addProductInCart
         try {
-            const result = await CartManager.addProductInCart(cartId, productId);
-            console.log("router: " + result);
+            const result = await CartManager.addProductInCart(cartId, productId, quantity);
+            console.log("router: " + JSON.stringify(result, null, '\t'));
             if(result.acknowledged) {
                 res.status(200).send({ status: 'success', payload: 'Se agrego correctamente el producto al carrito' })
             };
         } catch (error) {
             res.status(404).send({ status: "NOT FOUND", payload: `No se pudo agregar el Producto al carrito!` });
+        };
+
+        // FileSystme OBTENGO el carrito QUE HAY EN EL ARCHIVO
+    /*         const cart = await CartManager.getCartById(cartId);
+        //Valido el resultado de la búsqueda
+        if (cart === -1){
+            const response = { status: "Error", data: `El carrito con ID ${cartId} NO existe!` };
+            //muestro resultado
+            return res.status(404).json(response);
+        };
+        // Segundo Valido que exista el producto
+        //Leo el ID de productos por parametros
+        const productId = Number(req.params.pid);
+        // OBTENGO el carrito QUE HAY EN EL ARCHIVO
+        const product = await ProductManager.getProductById(productId);
+        if (product === -1){
+            const response = { status: "Error", data: `El Producto con ID ${productId} NO existe!` };
+            //muestro resultado
+            return res.status(404).json(response);
+        };
+
+        // Una vez validado llamar al metodo addProductInCart
+        await CartManager.addProductInCart(cart.id, product.id);
+        //Muestro resultado exitoso
+        res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' }) */
+    })
+    // BORRA TODOS LOS PRODUCTOS DEL CARRO
+    .delete(async(req, res) => {
+        const cartId = String(req.params.cid);
+        try {
+            const cart = await CartManager.deleteAllProductsInCart(cartId);
+            const response ={ status: "Success", payload: cart};
+            //muestro resultado
+            res.status(200).json(response);
+        } catch (error) {
+            const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+            res.status(404).send(response);
+        };
+    });
+
+router.route('/:cid/product/:pid')
+    .put(async(req, res) => {
+        
+        //Leo el ID del carrito y producto por parametros 
+        const cartId = String(req.params.cid);
+        const productId = String(req.params.pid);
+        const { quantity } = req.body;
+
+        //MongoDB
+        // Primero Valido que exista el carrito 
+        try {
+            // OBTENGO el carrito QUE HAY EN la BASE
+            await CartManager.getCartById(cartId);
+        } catch (error) {
+            const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
+            return res.status(404).json(response);
+        }
+        // Segundo Valido que exista el producto
+        try {
+            // OBTENGO el producto QUE HAY EN la Base
+            await ProductManager.getProductById(productId);
+        } catch (error) {
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
+            return res.status(404).json(response);
+        }
+        console.log(cartId, productId, quantity);
+        // Una vez validado llamar al metodo addProductInCart
+        try {
+            const result = await CartManager.addProductInCart(cartId, productId, quantity);
+            console.log("router: " + JSON.stringify(result, null, '\t'));
+            if(result.acknowledged) {
+                res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
+            };
+        } catch (error) {
+            res.status(404).send({ status: "NOT FOUND", payload: `No se pudo actualizar el Producto al carrito!` });
         };
 
         // FileSystme OBTENGO el carrito QUE HAY EN EL ARCHIVO
@@ -138,6 +211,19 @@ router.route('/:cid/product/:pid')
         await CartManager.addProductInCart(cart.id, product.id);
         //Muestro resultado exitoso
         res.send({ status: 'success', result: 'Se agrego correctamente el producto al carrito' }) */
-});    
+    })
+    // BORRA UN PRODUCTO DEL CARRO
+    .delete(async(req, res) => {
+        const cartId = String(req.params.cid);
+        try {
+            const cart = await CartManager.deleteAllProductsInCart(cartId);
+            const response ={ status: "Success", payload: cart};
+            //muestro resultado
+            res.status(200).json(response);
+        } catch (error) {
+            const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+            res.status(404).send(response);
+        };
+    });    
 
 export default router;
