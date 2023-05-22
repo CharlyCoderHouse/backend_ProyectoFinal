@@ -54,6 +54,13 @@ if(viewChat){
     });
 }
 
+// Botón para ver el carrito de prueba
+const viewCart = document.getElementById('viewCart')
+if(viewCart) {
+    viewCart.addEventListener('click', (event) => {
+        window.location= "/api/carts/6467a3d8f77829babb4827a6";
+    });
+};
 
 // Botón para insertar en carro
 function procesoId(comp){

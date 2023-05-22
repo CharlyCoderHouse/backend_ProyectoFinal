@@ -43,7 +43,7 @@ app.use("/", raizRouter);
 // Productos
 app.use("/api/products", productsRouter);
 // Carrito
-app.use("/api/cart", cartsRouter);
+app.use("/api/carts", cartsRouter);
 // Carga de productos
 app.use('/realtimeproducts', viewsProdRouter)
 // Page Chat
