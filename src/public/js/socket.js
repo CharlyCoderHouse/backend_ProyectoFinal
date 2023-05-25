@@ -42,7 +42,7 @@ delAdd.addEventListener('click', (event) => {
     }).then(result =>{
         if (result.isConfirmed) {
             id = result.value;
-            fetch('http://localhost:8080/api/products/' + id, {
+            fetch('/api/products/' + id, {
                 method: 'DELETE'
                 })
                 .then((response) => response.json())

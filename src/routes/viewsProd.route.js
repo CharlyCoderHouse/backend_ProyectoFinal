@@ -2,7 +2,7 @@ import { Router } from 'express'
 //FileSystem
 //import productManager from '../dao/manager/productManager.js';
 //MongoDB
-import productManager from "../dao/dbManager/productManager.js"
+import productManager from "../dao/dbManager/product.Manager.js"
 //INICIALIZO ROUTER
 const router = Router();
 

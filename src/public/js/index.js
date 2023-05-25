@@ -102,4 +102,20 @@ function procesoId(comp){
         }); 
       
     }
-}
+};
+
+// Botón para ver profile
+const viewProfile = document.getElementById('viewProfile')
+if(viewProfile) {
+    viewProfile.addEventListener('click', (event) => {
+        window.location= "/profile";
+    });
+};
+
+// Botón para logout
+const logout = document.getElementById('logout')
+if(logout) {
+    logout.addEventListener('click', (event) => {
+        window.location= "/api/sessions/logout";
+    });
+};

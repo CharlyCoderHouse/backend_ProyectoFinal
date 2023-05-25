@@ -3,8 +3,8 @@ import { Router } from 'express';
 // import cartManager from '../dao/manager/cartManager.js';
 // import productManager from '../dao/manager/productManager.js';
 // MongoDB
-import productManager from "../dao/dbManager/productManager.js"
-import cartManager from "../dao/dbManager/cartManager.js"
+import productManager from "../dao/dbManager/product.Manager.js"
+import cartManager from "../dao/dbManager/cart.Manager.js"
 
 
 //INICIALIZO ROUTER
