@@ -14,7 +14,9 @@ Es un Ecommerce de la Joyería PUGA de la ciudad de Azul, Provincia de Buenos Ai
 - [Moment](https://momentjs.com/)
 - [Socket.io](https://socket.io/)
 - [Express Handlebars](https://www.npmjs.com/package/express-handlebars)
+- [Express Session](https://www.npmjs.com/package/express-session)
 - [Bse de datos MongoDB](https://www.mongodb.com/)
 - [Mongooose](https://www.npmjs.com/package/mongoose)
 - [Mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2)
-
+- [connect-mongo](https://www.npmjs.com/package/connect-mongo)
+- [cookie-parser](https://www.npmjs.com/package/cookie-parser)
