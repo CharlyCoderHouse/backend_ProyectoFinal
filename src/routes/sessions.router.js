@@ -69,6 +69,29 @@ router.route('/logout')
         })
     });
 
+router.route('/github')
+    .get(passport.authenticate('github', { scope: ['user:email']}), async (req, res) => {
+    res.send({ status: "success", mesage: "User registered"})
+});
+
+router.route('/github-callback')
+    .get(passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
+    //req.session.user = req.user;
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email, 
+        role: "user", 
+        name: `${req.user.first_name} ${req.user.last_name}`
+    };
+
+    if(req.session.user.email === 'adminCoder@coder.com' ) {
+        req.session.user.role = "admin";
+    }
+    res.redirect('/');
+});    
+
 //se comenta el código por implementar PASSPORT
 /* router.route('/register')
     .post(async (req, res) => {
