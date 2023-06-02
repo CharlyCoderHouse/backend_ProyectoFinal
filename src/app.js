@@ -19,6 +19,8 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import session from "express-session";
 import MongoStore from 'connect-mongo';
+import initializePassport from './config/passport.config.js';
+import passport from 'passport';
 
 //Creo el Servidor Express
 const app = express();
@@ -54,6 +56,11 @@ app.use((req, res, next) => {
     console.log(`Nueva ${req.method} - ${req.path}`);
     next();
 });
+
+//PASSPORT
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Creo Plantilla Handlebars
 app.engine('hbs', engine({
