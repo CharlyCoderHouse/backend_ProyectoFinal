@@ -1,9 +1,76 @@
 import { Router } from 'express';
-import userModel from "../dao/models/users.Model.js";
+import passport from 'passport';
+//import userModel from "../dao/models/users.Model.js";
 
 const router = Router();
 
+//REGISTRO con PASSPORT
 router.route('/register')
+    .post(passport.authenticate('register', { failureRedirect: 'fail-register', failureMessage: true }), async (req, res) => {
+        res.send({ status: 'success', message: 'User registered' })
+});
+
+//Si falla REGISTRO con PASSPORT
+router.route('/fail-register')
+    .get(async (req, res) => {
+      /* res.send({ status: 'error', message: 'Register failed' }); */
+      if (req.session.messages == 'User exists') {
+        req.session.messages = null;
+        res.status(400).send({ status: 'error', error: 'User exists'});
+    } else {
+        req.session.messages = null;
+        res.status(500).send({ status: 'error', error: 'Invalid credentials' });
+    }
+});
+
+//LOGIN con PASSPORT
+router.route('/login')
+    .post(passport.authenticate('login', { failureRedirect: 'fail-login', failureMessage: true }), async (req, res) => {
+        if (!req.user) return res.status(400).send({ status: 'error', error: 'Invalid credentials' });
+
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            age: req.user.age,
+            email: req.user.email, 
+            role: "user", 
+            name: `${req.user.first_name} ${req.user.last_name}`
+        };
+
+        if(req.session.user.email === 'adminCoder@coder.com' ) {
+            req.session.user.role = "admin";
+        }
+
+        res.send({ status: 'success', message: 'Login success' })
+});
+
+//Si falla Login con PASSPORT
+router.get('/fail-login', async (req, res) => {
+    //console.log(req.session.messages);
+    //console.log(req.session);
+    if (req.session.messages == 'Incorrect username') {
+        req.session.messages = null;
+        res.status(400).send({ status: 'error', error: 'Incorrect username'});
+    } else if (req.session.messages == 'Incorrect password') {
+        req.session.messages = null;
+        res.status(401).send({ status: 'error', error: 'Incorrect password' });
+    } else{
+        req.session.messages = null;
+        res.status(500).send({ status: 'error', error: 'Invalid credentials' });
+    }
+    
+});
+
+router.route('/logout')
+    .get((req, res) => {
+        req.session.destroy(err => {
+            if(err) return res.status(500).send({ status: 'error', error: 'Logout fail' });
+            res.redirect('/');
+        })
+    });
+
+//se comenta el código por implementar PASSPORT
+/* router.route('/register')
     .post(async (req, res) => {
         try {
             const { first_name, last_name, email, age, password } = req.body;
@@ -52,13 +119,6 @@ router.route('/login')
             res.status(500).send({ status: 'error', error });
         }
     });
-
-router.route('/logout')
-    .get((req, res) => {
-        req.session.destroy(err => {
-            if(err) return res.status(500).send({ status: 'error', error: 'Logout fail' });
-            res.redirect('/');
-        })
-    });
+ */
 
 export default router;

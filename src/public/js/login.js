@@ -39,10 +39,17 @@ form.addEventListener('submit', e => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
-                    title: 'Los datos ingresados son incorrectos, vuelva a intentarlo o registrese',
+                    title: 'El usuario no existe, por favor registrese',
                     showConfirmButton: true,
                 })
-            }else {
+            }else if (result.status === 401) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'La contraseña es incorrecta, vuelva a intentarlo',
+                    showConfirmButton: true,
+                })
+            }else{
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
