@@ -1,47 +1,44 @@
 import { Router } from 'express';
+import { passportCall } from '../utils.js';
+import { responseMessages } from '../helpers/proyect.helpers.js';
 
 const router = Router();
 
+// //Acceso público y privado
 //Acceso público y privado
 const publicAccess = (req, res, next) => {
-    if(req.session.user) return res.redirect('/');
+    console.log(req.user);
+    if(req.user) return res.redirect('/');
     next();
 };
 
 const privateAccess = (req, res, next) => {
-    if(!req.session.user) return res.redirect('/login');
+    console.log(req.user);
+    if(!req.user) return res.redirect('/login.hbs');
     next();
 };
 
 router.route('/register')
-    .get(publicAccess, (req, res) => {
-        res.render('register');
+    .get( (req, res) => {
+        res.render('register.hbs');
     });
 
 router.route('/login')
-    .get(publicAccess, (req, res) => {
-        res.render('login');
-    });
-
-router.route('/logout')
-    .get((req, res) => {
-        req.session.destroy(err => {
-            if(err) return res.status(500).send({ status: 'error', error: 'Logout fail' });
-            res.redirect('/')
-        })
+    .get( (req, res) => {
+        res.render('login.hbs');
     });
     
 router.route('/')
-    .get(privateAccess, (req, res) => {
-        res.render('home', {
-            user: req.session.user
+    .get(passportCall('jwt'), privateAccess, (req, res) => {
+        res.render('home.hbs', {
+            user: req.user
         });
     });
 
 router.route('/profile')
-    .get(privateAccess, (req, res) => {
-        res.render('profile', {
-            user: req.session.user
+    .get(passportCall('jwt'), privateAccess, (req, res) => {
+        res.render('profile.hbs', {
+            user: req.user,
         });
     });
 

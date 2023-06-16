@@ -7,7 +7,7 @@ function delayNavigateOk() {
 };
 
 function navigateOk() {
-    window.location.replace('/');
+    window.location.replace('/home');
 };
 
 const form = document.getElementById('loginForm');
@@ -21,6 +21,7 @@ form.addEventListener('submit', e => {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
     }).then(result => {
@@ -31,7 +32,7 @@ form.addEventListener('submit', e => {
                 title: 'Bienvenid@',
                 showConfirmButton: true,
               })
-            
+
             delayNavigateOk();
             //window.location.replace('/');
         }else{

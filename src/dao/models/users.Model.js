@@ -12,7 +12,25 @@ const userSchema = new mongoose.Schema({
         index: true
     },
     age: String,
-    password: String
+    password: String,
+    cart: {
+        type: {
+                cart: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'carts'
+                }
+            }
+        ,
+        default: {},
+    },
+    role: {
+        type: String,
+        default: 'user'
+    }
+});
+
+userSchema.pre('find', function () {
+    this.populate('carts.cart');
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

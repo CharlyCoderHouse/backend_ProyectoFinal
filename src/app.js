@@ -1,5 +1,5 @@
 import express, { json, urlencoded } from 'express';
-import __dirname from './utils.js';
+import { __dirname } from './utils.js';
 import { join } from 'path';
 import { engine } from "express-handlebars";
 import { Server } from 'socket.io';
@@ -17,14 +17,14 @@ import productManager from './dao/dbManager/product.Manager.js';
 import messageManager from './dao/dbManager/message.Manager.js';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import session from "express-session";
-import MongoStore from 'connect-mongo';
+//SESSION SE UTILIZA JWT
+//import session from "express-session";
+//import MongoStore from 'connect-mongo';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 
 //Creo el Servidor Express
 const app = express();
-// app.use(express.static(path.join(__dirname + "/public")));
 app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
@@ -38,10 +38,11 @@ try {
 };
 
 // Middleware para cookies
-app.use(cookieParser("Coder39760"));
+app.use(cookieParser());
 
-// Middleware para sesiones usando Mongo Storage con conexion compartida
-app.use(session({
+// Middleware para sesiones usando Mongo Storage con conexion compartida 
+//Se utiliza JWT para sesiones
+/* app.use(session({
     store: MongoStore.create({
         client: mongoose.connection.getClient(),
         ttl: 3600
@@ -49,7 +50,7 @@ app.use(session({
     secret: "Coder39760",
     resave: true,
     saveUninitialized: true
-}));
+})); */
 
 //middleware Log conexiones
 app.use((req, res, next) => {
@@ -60,7 +61,8 @@ app.use((req, res, next) => {
 //PASSPORT
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+//Se utiliza JWT para sesiones
+//app.use(passport.session());
 
 // Creo Plantilla Handlebars
 app.engine('hbs', engine({
