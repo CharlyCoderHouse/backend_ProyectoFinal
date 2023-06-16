@@ -74,7 +74,7 @@ router.route('/logout')
 
 router.route('/github')
     .get(passport.authenticate('github', { scope: ['user:email']}), async (req, res) => {
-    res.send({ status: "success", mesage: responseMessages.user_register_ok})
+        res.send({ status: "success", mesage: responseMessages.user_register_ok})
 });
 
 router.route('/github-callback')
@@ -90,11 +90,17 @@ router.route('/github-callback')
     if(req.user.email === 'adminCoder@coder.com' ) {
         req.user.role = "admin";
     }
+    const accessToken = generateToken(user);
+
+    res.cookie(
+        'coderCookieToken', accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
+    ).send({ status: 'success', message: 'Login success' });
+    
     res.redirect('/');
 });    
 
 router.route('/current')
-    .get(passport.authenticate('jwt', { session: false }), (req, res) => {
+    .get(passportCall('jwt'), (req, res) => {
         res.send({ status: 'success', payload: req.user });
 });
 
