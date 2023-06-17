@@ -73,12 +73,13 @@ router.route('/logout')
     });
 
 router.route('/github')
-    .get(passport.authenticate('github', { scope: ['user:email']}), async (req, res) => {
-        res.send({ status: "success", mesage: responseMessages.user_register_ok})
+    .get(passportCall('github', { scope: ['user:email']}), async (req, res) => {
+        res.redirect('/');
+        //res.send({ status: "success", mesage: responseMessages.user_register_ok})
 });
 
 router.route('/github-callback')
-    .get(passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
+    .get(passportCall('github', { failureRedirect: '/login' }), async (req, res) => {
     req.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
@@ -90,11 +91,11 @@ router.route('/github-callback')
     if(req.user.email === 'adminCoder@coder.com' ) {
         req.user.role = "admin";
     }
-    const accessToken = generateToken(user);
+    const accessToken = generateToken(req.user);
 
     res.cookie(
         'coderCookieToken', accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
-    ).send({ status: 'success', message: 'Login success' });
+    )
     
     res.redirect('/');
 });    

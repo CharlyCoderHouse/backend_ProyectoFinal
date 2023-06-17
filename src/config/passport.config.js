@@ -33,13 +33,13 @@ const initializePassport = () => {
                 const user = await userModel.findOne({ email });
                 if (!user) {
                     const newUser = {
-                        first_name: profile._json.name,
-                        last_name: ' - GitHub',
+                        first_name: ' - GitHub',
+                        last_name: profile._json.name,
                         email,
                         age: 18,
                         password: ''
                     }
-        
+                    const result = await userModel.create(newUser);
                     done(null, result);
                     
                 } else {

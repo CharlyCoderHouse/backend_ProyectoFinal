@@ -37,7 +37,7 @@ const passportCall = (strategy) => {
                 return res.redirect('/login')
                 //return res.status(401).send({error: info.messages ? info.messages : info.toString()})
             }
-            console.log(user);
+            //console.log(user);
             req.user = user;
             next();
         })(req, res, next)
