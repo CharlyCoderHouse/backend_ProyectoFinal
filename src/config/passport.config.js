@@ -4,7 +4,7 @@ import jwt from 'passport-jwt';
 import userModel from '../dao/models/users.Model.js';
 //import { generateToken, createHash, isValidPassword } from '../utils.js';
 import GitHubStrategy from 'passport-github2';
-import { PRIVATE_KEY } from '../helpers/proyect.constants.js';
+import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -54,7 +54,7 @@ const initializePassport = () => {
 const cookieExtractor = req => {
     let token = null;
     if (req && req.cookies) {
-        token = req.cookies['coderCookieToken'];
+        token = req.cookies[PRIVATE_COOKIE];
     }
     return token;
 }

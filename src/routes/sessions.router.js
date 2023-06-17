@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import passport from 'passport';
 import { responseMessages } from '../helpers/proyect.helpers.js';
-import { authToken, authorization, generateToken, passportCall, createHash, isValidPassword } from '../utils.js';
+import { generateToken, passportCall, createHash, isValidPassword } from '../utils.js';
 import userModel from "../dao/models/users.Model.js";
+import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.route('/register')
             const { first_name, last_name, email, age, password } = req.body;
             const exists = await userModel.findOne({ email });
             
-            if (exists) return res.status(400).send({ status: 'error', error: 'User already exists' });
+            if (exists) return res.status(400).send({ status: 'error', error: responseMessages.user_exists });
 
             const user = {
                 first_name,
@@ -26,7 +26,7 @@ router.route('/register')
 
             const accessToken = generateToken(user);
 
-            res.send({ status: 'success', message: 'User registered', access_token: accessToken })
+            res.send({ status: 'success', message: responseMessages.user_register_ok, access_token: accessToken })
         } catch (error) {
             res.status(500).send({ status: 'error', error: error.message });
         }
@@ -40,9 +40,9 @@ router.route('/login')
             const user = await userModel.findOne({ email });
 
             console.log(user);
-            if (!user) return res.status(400).send({ status: 'error', error: 'Incorrect credentials' });
+            if (!user) return res.status(400).send({ status: 'error', error: responseMessages.incorrect_user });
 
-            if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: 'Incorrect password' })
+            if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: responseMessages.incorrect_password })
 
             req.user = {
                 first_name: user.first_name,
@@ -59,8 +59,8 @@ router.route('/login')
             const accessToken = generateToken(user);
 
             res.cookie(
-                'coderCookieToken', accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
-            ).send({ status: 'success', message: 'Login success' });
+                PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
+            ).send({ status: 'success', message: responseMessages.login_ok });
         } catch (error) {
             res.status(500).send({ status: 'error', error });
         }
@@ -68,7 +68,7 @@ router.route('/login')
 
 router.route('/logout')
     .get((req, res) => {
-        res.clearCookie('coderCookieToken');
+        res.clearCookie(PRIVATE_COOKIE);
         res.redirect('/login')
     });
 
@@ -94,7 +94,7 @@ router.route('/github-callback')
     const accessToken = generateToken(req.user);
 
     res.cookie(
-        'coderCookieToken', accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
+        PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
     )
     
     res.redirect('/');
