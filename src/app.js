@@ -9,6 +9,7 @@ import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
 import sessionsRouter from './routes/sessions.router.js'
+import './dao/dbManager/dbConfig.js'
 //fileSystem
 //import productManager from './dao/manager/productManager.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
@@ -29,13 +30,13 @@ app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
 
-// Conecto a MongoDB Atlas
-try {
-    await mongoose.connect('mongodb+srv://carlosdiblasi:pC37lOviWb5KklvJ@codercluster39760.0wyns7x.mongodb.net/ecommerce?retryWrites=true&w=majority');
-    console.log('DB Connect');
-} catch (error) {
-    console.log(error);
-};
+// // Conecto a MongoDB Atlas
+// try {
+//     await mongoose.connect();
+//     console.log('DB Connect');
+// } catch (error) {
+//     console.log(error);
+// };
 
 // Middleware para cookies
 app.use(cookieParser());
