@@ -5,6 +5,7 @@ import userModel from '../dao/models/users.Model.js';
 //import { generateToken, createHash, isValidPassword } from '../utils.js';
 import GitHubStrategy from 'passport-github2';
 import { PRIVATE_COOKIE, PRIVATE_KEY } from '../helpers/proyect.constants.js';
+import config from './config.js';
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -23,9 +24,9 @@ const initializePassport = () => {
         }));
 
         passport.use('github', new GitHubStrategy({
-            clientID: "Iv1.75093c0202663bd3",
-            clientSecret: "ec3751326a13c2b9e8c6466dc0754bbc53dc42ef",
-            callbackURL: "http://localhost:8080/api/sessions/github-callback",
+            clientID: config.gitClienteID,
+            clientSecret: config.gitClientSecret,
+            callbackURL: config.gitCallbackURL,
             scope: ['user:email']
         }, async (accessToken, refreshToken, profile, done) => {
             try {
