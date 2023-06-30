@@ -10,6 +10,7 @@ import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
 import sessionsRouter from './routes/sessions.router.js'
 import './dao/dbManager/dbConfig.js'
+import config from './config/config.js';
 //fileSystem
 //import productManager from './dao/manager/productManager.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
@@ -91,12 +92,12 @@ app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsMessage)
 
 
-//Escuchando puerto 8080 con log de errores
-const server = app.listen(8080, (error) => {
+//Escuchando puerto con log de errores
+const server = app.listen(config.port, (error) => {
     if(error){
         console.log('Error al iniciar la APP', error);
     }else{
-        console.log('Servidor escuchando el puerto 8080');
+        console.log(`Servidor escuchando el puerto ${config.port}`);
     }
 });
 
