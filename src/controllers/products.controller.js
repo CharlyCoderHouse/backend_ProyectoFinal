@@ -148,10 +148,20 @@ const deleteProductById = async(req,res)=>{
     };
 };
 
+const realTimeProducts = async (req, res) => { 
+    try {
+       const products = await getProductsService();
+       res.render('realTimeProducts', { products });    
+    } catch (error) {
+        res.status(500).send({ status: "error", error });
+    }
+};
+
 export {
     getProducts,
     postProduct,
     getProductById,
     putProductById,
-    deleteProductById
+    deleteProductById,
+    realTimeProducts
 }

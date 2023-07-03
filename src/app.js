@@ -11,17 +11,11 @@ import viewsProdRouter from './routes/viewsProd.route.js';
 import sessionsRouter from './routes/sessions.router.js'
 import './dao/dbManager/dbConfig.js'
 import config from './config/config.js';
-//fileSystem
-//import productManager from './dao/manager/productManager.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
-//MongoDB
 import productManager from './dao/dbManager/product.Manager.js';
 import messageManager from './dao/dbManager/message.Manager.js';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-//SESSION SE UTILIZA JWT
-//import session from "express-session";
-//import MongoStore from 'connect-mongo';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 
@@ -31,28 +25,10 @@ app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
 
-// // Conecto a MongoDB Atlas
-// try {
-//     await mongoose.connect();
-//     console.log('DB Connect');
-// } catch (error) {
-//     console.log(error);
-// };
 
 // Middleware para cookies
 app.use(cookieParser());
 
-// Middleware para sesiones usando Mongo Storage con conexion compartida 
-//Se utiliza JWT para sesiones
-/* app.use(session({
-    store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-        ttl: 3600
-    }),
-    secret: "Coder39760",
-    resave: true,
-    saveUninitialized: true
-})); */
 
 //middleware Log conexiones
 app.use((req, res, next) => {
@@ -60,11 +36,9 @@ app.use((req, res, next) => {
     next();
 });
 
-//PASSPORT
+//PASSPORT Se utiliza JWT para sesiones
 initializePassport();
 app.use(passport.initialize());
-//Se utiliza JWT para sesiones
-//app.use(passport.session());
 
 // Creo Plantilla Handlebars
 app.engine('hbs', engine({
@@ -104,9 +78,6 @@ const server = app.listen(config.port, (error) => {
 // Conecto server socket.io
 const io = new Server(server);
 app.set('socketio',io);
-
-//Creamos la instancia de la clase FILESYTEM
-//const ProductManager = new productManager('./src/files/product.json');
 
 //Creamos la instancia de la clase MONGODB
 const ProductManager = new productManager();

@@ -1,30 +1,19 @@
 import { Router } from 'express';
 import { passportCall } from '../utils.js';
+import { iniRaiz, loginRaiz, profileRaiz, regRaiz } from '../controllers/raiz.controller.js';
 
 const router = Router();
 
 router.route('/register')
-    .get( (req, res) => {
-        res.render('register.hbs');
-    });
+    .get(regRaiz);
 
 router.route('/login')
-    .get( (req, res) => {
-        res.render('login.hbs');
-    });
+    .get(loginRaiz);
     
 router.route('/')
-    .get(passportCall('jwt'), (req, res) => {
-        res.render('home.hbs', {
-            user: req.user
-        });
-    });
+    .get(passportCall('jwt'), iniRaiz);
 
 router.route('/profile')
-    .get(passportCall('jwt'), (req, res) => {
-        res.render('profile.hbs', {
-            user: req.user,
-        });
-    });
+    .get(passportCall('jwt'), profileRaiz);
 
 export default router;
