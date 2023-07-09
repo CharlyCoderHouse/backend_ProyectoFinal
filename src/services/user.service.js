@@ -1,12 +1,14 @@
-import { USERDAO } from "../dao/index.js";
+import UsersRepository from '../repositories/users.repository.js';
+
+const usersRepository = new UsersRepository();
 
 const getUser = async (email) => {
-    const user = await USERDAO.getUser(email);
+    const user = await usersRepository.getUser(email);
     return user;
 };
 
 const addUser = async (user) => {
-    const result = await USERDAO.addUser(user);
+    const result = await usersRepository.addUser(user);
     return result;
 }; 
 

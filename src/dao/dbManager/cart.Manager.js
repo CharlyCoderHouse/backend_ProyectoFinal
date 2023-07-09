@@ -2,7 +2,7 @@ import { cartModel } from "../models/cart.Model.js"
 
 export default class cartManager {
 
-    constructor(path) {
+    constructor() {
         console.log('Working carts with DB');
     };
 

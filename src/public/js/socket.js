@@ -51,6 +51,7 @@ delAdd.addEventListener('click', (event) => {
                         title: 'Producto Eliminado',
                         icon: 'success'
                     })
+                    window.location= "/realTimeProducts";
                 })
         }
    }); 
