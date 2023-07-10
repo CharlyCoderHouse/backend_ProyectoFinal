@@ -48,7 +48,8 @@ const loginUser =  async (req, res) => {
             role: "user"
         }
 
-        if(email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+        if(user.email === 'adminCoder@coder.com') {
+            //&& password === 'adminCod3r123'
             req.user.role = "admin";
         }
 

@@ -1,7 +1,8 @@
 {{!-- Esta pagina es con WebSockets, como pide la consigna, Agregue un formulario para cargar
 un producto nuevo y por debajo la lista de productos --}}
 <h1>Carga tu producto</h1>
-<form action="/api/products" method="post">
+{{!-- <form action="/api/products" method="post"> --}}
+<form id="productForm">
     <div class="row">
         <div class="mb-3 col">
             <label for="exampleInput1" class="form-label">Código</label> 
@@ -29,8 +30,8 @@ un producto nuevo y por debajo la lista de productos --}}
     <button type="submit" class="btn btn-primary" value="Cargar Producto" id="butAdd"> Cargar Producto </button>
 </form>
 <br>
-<button class="btn btn-secondary" id="delProd"> Eliminar Producto </button>
-<br><br>
+{{!-- <button class="btn btn-secondary" id="delProd"> Eliminar Producto </button>
+<br><br> --}}
 <button id="goHome" class="btn btn-secondary"> Ir al Home</button>
 <br><br>
 <div class="table-responsive tabla">
@@ -45,6 +46,7 @@ un producto nuevo y por debajo la lista de productos --}}
                 <th scope="col"> Precio </th>
                 <th scope="col"> Stock </th>
                 <th scope="col"> Imagen </th>
+                <th scope="col"> Eliminar </th>
             </tr>
         </thead>
         <tbody id="container">

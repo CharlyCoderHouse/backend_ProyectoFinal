@@ -2,7 +2,6 @@
 const socket = io();
 
 const container = document.getElementById('container');
-const butAdd = document.getElementById('butAdd');
 
 //Socket
 socket.on('showProducts', data => {
@@ -18,41 +17,60 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.price}</th>
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> <img src="${prod.thumbnail}" alt="products" width="200" height="100"></th> 
-            </tr>
+                <th scope="row">
+                    <!-- Botón Modal Carrito -->
+                    <button type="button" class="btn btncaja btn-warning" 
+                        id="${prod._id}" onclick="procesDelId(id)">
+                        Eliminar
+                    </button>
+                </th>
+             </tr>
         `
     })
 });
 
-butAdd.addEventListener('submit', (event) => {
-    event.preventDefault();
-}); 
-
-let id = ""; 
-const delAdd = document.getElementById('delProd');
-delAdd.addEventListener('click', (event) => {
-    Swal.fire({
-        title: 'Ingrese el ID a eliminar',
-        input: 'text',
-        inputValidator: (value) =>{
-            return !value && "Necesitas escribir un ID para eliminar";
-        },
-        showCancelButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false
-    }).then(result =>{
-        if (result.isConfirmed) {
-            id = result.value;
-            fetch('/api/products/' + id, {
-                method: 'DELETE'
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    Swal.fire({
-                        title: 'Producto Eliminado',
-                        icon: 'success'
+function procesDelId(comp){
+    //console.log("1 " + comp);
+    const delProduct = document.getElementById(`${comp}`)
+    if(delProduct){ 
+        Swal.fire({
+            title: `Está seguro de eliminar el producto ${comp}? `,
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(result =>{
+            if (result.isConfirmed) {
+                id = result.value;
+                fetch('/api/products/' + comp, {
+                    method: 'DELETE'
                     })
-                    window.location= "/realTimeProducts";
-                })
-        }
-   }); 
-}); 
+                    .then((result) => {
+                        if (result.status === 200) {
+                            Swal.fire({
+                                title: 'Producto Eliminado',
+                                icon: 'success'
+                            })
+                            window.location= "/realTimeProducts";
+                        }else{
+                            if (result.status === 403) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'No cuenta con permisos para realizar dicha acción!',
+                                    showConfirmButton: true,
+                                })
+                            }else {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'Hubo un error al registrar la eliminición del producto, intente luego',
+                                    showConfirmButton: true,
+                                })                
+                            }    
+                        }
+                    })
+            }
+       }); 
+      
+    }
+};
