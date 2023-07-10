@@ -2,6 +2,7 @@ import { getUser as getUserService, addUser as addUserService } from '../service
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
+import UsersDto from '../dao/DTOs/users.dto.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -93,7 +94,8 @@ const gitCallbackUser = async (req, res) => {
 };
 
 const currentUser = (req, res) => {
-    res.send({ status: 'success', payload: req.user });
+    const user = new UsersDto(req.user);
+    res.send({ status: 'success', payload: user });
 };
 
 export { 
