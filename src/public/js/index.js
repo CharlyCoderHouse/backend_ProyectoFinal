@@ -62,7 +62,7 @@ if(viewCart) {
             method: 'GET'
         });
         const data = await prueba.json();
-        const cart =data.payload.cart._id;
+        const cart =data.payload.cart;
         window.location= "/api/carts/"+cart;
     });
 };
@@ -95,7 +95,7 @@ function procesoId(comp){
                     method: 'GET'
                 });
                 const data = await prueba.json();
-                const cart =data.payload.cart._id;
+                const cart =data.payload.cart;
                 const cartId='/api/carts/'+cart+'/product/'+id
                 //console.log(cartId);
                 fetch(cartId, {
