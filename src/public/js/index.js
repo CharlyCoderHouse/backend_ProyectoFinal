@@ -79,14 +79,18 @@ function procesoId(comp){
             allowOutsideClick: false,
             allowEscapeKey: false,
             confirmButtonText: 'Agregar al Carrito'
-        }).then(result =>{
+        }).then(async result =>{
             //console.log(result);
             if (result.isConfirmed) {
                 /* console.log(result.value);
                 console.log(id); */
                 const obj=`{"quantity": ${result.value}}`;
                 //console.log("obj.", obj); 
-                const cartId='/api/carts/'+'6467a3d8f77829babb4827a6'+'/product/'+id
+                const cart = await fetch('/api/carts/', {
+                    method: 'GET'
+                  });
+                console.log(cart.cartId);
+                const cartId='/api/carts/'+cart+'/product/'+id
                 //console.log(cartId);
                 fetch(cartId, {
                     method: 'PUT',
