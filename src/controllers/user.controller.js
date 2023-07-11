@@ -100,7 +100,8 @@ const gitCallbackUser = async (req, res) => {
 };
 
 const currentUser = (req, res) => {
-    const user = new UsersDto(req.user);
+    //const user = new UsersDto(req.user);
+    const user = req.user;
     res.send({ status: 'success', payload: user });
 };
 

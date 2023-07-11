@@ -57,8 +57,13 @@ if(viewChat){
 // Botón para ver el carrito de prueba
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
-    viewCart.addEventListener('click', (event) => {
-        window.location= "/api/carts/";
+    viewCart.addEventListener('click', async (event) => {
+        const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const data = await prueba.json();
+        const cart =data.payload.cart._id;
+        window.location= "/api/carts/"+cart;
     });
 };
 
@@ -86,10 +91,11 @@ function procesoId(comp){
                 console.log(id); */
                 const obj=`{"quantity": ${result.value}}`;
                 //console.log("obj.", obj); 
-                const cart = await fetch('/api/carts/', {
+                const prueba = await fetch('/api/sessions/current', {
                     method: 'GET'
-                  });
-                console.log(cart.cartId);
+                });
+                const data = await prueba.json();
+                const cart =data.payload.cart._id;
                 const cartId='/api/carts/'+cart+'/product/'+id
                 //console.log(cartId);
                 fetch(cartId, {

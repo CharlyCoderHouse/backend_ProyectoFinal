@@ -5,6 +5,7 @@ export default class UsersDto {
         this.email =  user.email 
         this.age = user.age ? user.age : ''
         this.role = user.role
+        this.cart = user.cartId
     }
 
 }
