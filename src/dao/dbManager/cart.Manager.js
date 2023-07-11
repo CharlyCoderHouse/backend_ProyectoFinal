@@ -16,8 +16,8 @@ export default class cartManager {
         return result;
     };    
 
-    getCartById = async (id) => {
-        const cart = await cartModel.find({_id: id}).lean();
+    getCartById = async (cartId) => {
+        const cart = await cartModel.find({_id: cartId}).lean();
         //console.log(cart);
         return cart;    
     };

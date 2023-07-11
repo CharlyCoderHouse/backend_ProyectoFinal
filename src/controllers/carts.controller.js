@@ -90,26 +90,31 @@ const putProductInCart = async(req, res) => {
     const cartId = String(req.params.cid);
     const productId = String(req.params.pid);
     const { quantity } = req.body;
+    //console.log("PASE POR CONTROLLER");
     // Primero Valido que exista el carrito 
     try {
         // OBTENGO el carrito QUE HAY EN la BASE
         await getCartByIdService(cartId);
+        //console.log("Valide carrito" + cartId);
     } catch (error) {
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
+        //console.log("Valide carrito" + cartId);
         return res.status(404).json(response);
     };
     // Segundo Valido que exista el producto
     try {
         // OBTENGO el producto QUE HAY EN la Base
         await getProductByIdService(productId);
+        //console.log("Valide producto" + productId);
     } catch (error) {
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
         return res.status(404).json(response);
     };
     // Una vez validado llamar al metodo addProductInCart en service
     try {
+        //console.log("Intento insertar");
         const result = await putProductInCartService(cartId, productId, quantity);
-        console.log("router: " + JSON.stringify(result, null, '\t'));
+        //console.log("router: " + JSON.stringify(result, null, '\t'));
         if(result.acknowledged) {
             res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
         };

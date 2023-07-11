@@ -68,40 +68,53 @@ function procesoId(comp){
     console.log("1 " + id);
     const butCart = document.getElementById(`${id}`)
     if(butCart){ 
-            Swal.fire({
-                title: 'Muy buena eleccion',
-                text: 'Ingrese la cantidad a pedir',
-                input: 'text',
-                inputValidator: (value) =>{
-                    return !value && "Ingrese la cantidad a pedir";
-                },
-                showCancelButton: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                confirmButtonText: 'Agregar al Carrito'
-            }).then(result =>{
-                console.log(result);
-                if (result.isConfirmed) {
-                    
-                    Swal.fire({
-                        title: 'Producto Agregado al Carrito',
-                        icon: 'success'
-                    })
- /*                    id = result.value;
-                        fetch('http://localhost:8080/api/products/' + id, {
-                        method: 'DELETE'
+        Swal.fire({
+            title: 'Muy buena eleccion',
+            text: 'Ingrese la cantidad a pedir',
+            input: 'text',
+            inputValidator: (value) =>{
+                return !value && "Ingrese la cantidad a pedir";
+            },
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'Agregar al Carrito'
+        }).then(result =>{
+            console.log(result);
+            if (result.isConfirmed) {
+                /* console.log(result.value);
+                console.log(id); */
+                const obj=`{"quantity": ${result.value}}`;
+                //console.log("obj.", obj); 
+                const cartId='/api/carts/'+'6467a3d8f77829babb4827a6'+'/product/'+id
+                //console.log(cartId);
+                fetch(cartId, {
+                    method: 'PUT',
+                    body: obj,
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then((result) => {
+                    console.log(result.status);
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Producto Agregado al Carrito',
+                            icon: 'success'
                         })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            Swal.fire({
-                                title: 'Producto Eliminado',
-                                icon: 'success'
-                            })
-                        }) */
-                }
+                    }else{
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Hubo un error al registrar el producto, intente luego',
+                            showConfirmButton: true,
+                        })
+                    }
+                })
+            }
         }); 
-      
-    }
+    };
 };
 
 // Botón para ver profile

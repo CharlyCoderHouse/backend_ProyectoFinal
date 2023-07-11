@@ -10,8 +10,8 @@ export default class CartsRepository {
         return result;
     }
 
-    getCartById = async (id) => {
-        const result = await this.dao.getCartById(id);
+    getCartById = async (cartId) => {
+        const result = await this.dao.getCartById(cartId);
         return result;
     }
 

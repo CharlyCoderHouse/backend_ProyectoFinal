@@ -7,8 +7,8 @@ const postCart = async (cart) => {
     return result;
 }; 
 
-const getCartById = async (id) => {
-    const cart = await cartsRepository.getCartById(id);
+const getCartById = async (cartId) => {
+    const cart = await cartsRepository.getCartById(cartId);
     return cart;
 };
 
