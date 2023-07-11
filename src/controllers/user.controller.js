@@ -3,6 +3,7 @@ import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
+import { postCart } from '../services/carts.service.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -11,12 +12,15 @@ const registerUser = async (req, res) => {
         
         if (exists) return res.status(400).send({ status: 'error', error: responseMessages.user_exists });
 
+        const cartId = await postCart();
+
         const user = {
             first_name,
             last_name,
             email,
             age,
-            password: createHash(password)
+            password: createHash(password),
+            cart: cartId
         }
 
         await addUserService(user);
@@ -45,9 +49,10 @@ const loginUser =  async (req, res) => {
             last_name: user.last_name,
             email: user.email,
             age: user.age, 
-            role: "user"
+            role: "user",
+            cartId: user.cart._id
         }
-
+        // console.log(req.user);
         if(user.email === 'adminCoder@coder.com') {
             //&& password === 'adminCod3r123'
             req.user.role = "admin";

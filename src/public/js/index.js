@@ -58,14 +58,14 @@ if(viewChat){
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
     viewCart.addEventListener('click', (event) => {
-        window.location= "/api/carts/6467a3d8f77829babb4827a6";
+        window.location= "/api/carts/";
     });
 };
 
 // Botón para insertar en carro
 function procesoId(comp){
     const id = comp.id
-    console.log("1 " + id);
+    //console.log("1 " + id);
     const butCart = document.getElementById(`${id}`)
     if(butCart){ 
         Swal.fire({
@@ -80,7 +80,7 @@ function procesoId(comp){
             allowEscapeKey: false,
             confirmButtonText: 'Agregar al Carrito'
         }).then(result =>{
-            console.log(result);
+            //console.log(result);
             if (result.isConfirmed) {
                 /* console.log(result.value);
                 console.log(id); */
@@ -97,7 +97,7 @@ function procesoId(comp){
                     }
                 })
                 .then((result) => {
-                    console.log(result.status);
+                    //console.log(result.status);
                     if (result.status === 200) {
                         Swal.fire({
                             title: 'Producto Agregado al Carrito',

@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart,deleteProductInCart } from '../controllers/carts.controller.js';
+import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart,deleteProductInCart, getCartUser } from '../controllers/carts.controller.js';
 import { authorization, passportCall } from '../utils.js';
 
 //INICIALIZO ROUTER
 const router = Router();
 
 router.route('/')
+    .get(passportCall('jwt'), getCartUser)
     .post(postCart);
 
 router.route('/:cid')

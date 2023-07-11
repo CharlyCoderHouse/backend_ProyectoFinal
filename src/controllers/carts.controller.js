@@ -10,6 +10,22 @@ import {
     getProductById as getProductByIdService, 
 } from "../services/products.service.js";
 
+const getCartUser = async(req, res) => {
+    //Leo el ID por parametros
+    const cartId = req.user.cart._id;
+    try {
+        const cart = await getCartByIdService(cartId);
+        const response ={ status: "Success", payload: cart};
+        cart[0].isValid= cart[0].products.length > 0
+        //muestro resultado postman
+        //res.status(200).json(response);
+        //REnderizo vista
+        res.render("carts.hbs", cart[0] );
+    } catch (error) {
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(404).send(response);
+    };
+};
 const postCart = async(req, res) => {
     // Inicializo el carrito sin productos
     const cart = {
@@ -138,6 +154,7 @@ const deleteProductInCart = async(req, res) => {
 };
 
 export {
+    getCartUser,
     postCart, 
     getCartById, 
     putCartById, 
