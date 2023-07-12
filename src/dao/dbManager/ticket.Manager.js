@@ -11,13 +11,9 @@ export default class TicketsDao {
         return result;
     }
 
-    createTickets = async (ticket) => {
+    createTicket = async (ticket) => {
         const result = await ticketModel.create(ticket);
         return result;
     }
 
-    updateTickets = async (id, ticket) => {
-        const result = await ticketModel.findByIdAndUpdate(id, ticket);
-        return result;
-    }
 }

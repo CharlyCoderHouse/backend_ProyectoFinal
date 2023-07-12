@@ -30,4 +30,9 @@ export default class ProductsRepository {
         return result;
     }
 
+    stockProduct = async (id, stock) => {
+        const result = await this.dao.stockProduct(id, stock);
+        return result;
+    }
+
 }

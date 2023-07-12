@@ -27,10 +27,16 @@ const deleteProductById = async (id) => {
     return result;
 };
 
+const stockProduct = async (id, stock) => {
+    const result = await productsRepository.stockProduct(id, stock);
+    return result;
+}
+
 export {
     getProducts,
     postProduct,
     getProductById,
     putProductById,
-    deleteProductById
+    deleteProductById,
+    stockProduct
 }
