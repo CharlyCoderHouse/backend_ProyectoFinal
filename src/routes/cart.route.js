@@ -18,7 +18,7 @@ router.route('/:cid/product/:pid')
     .delete(passportCall('jwt'), authorization('user'), deleteProductInCart);    
 
 router.route('/:cid/purchase')
-//    .put(passportCall('jwt'), postPurchase);
+//    .put(passportCall('jwt'), postPurchase); PARA CUANDO TENGA LA VISTA para comprar y validar usuario
     .put(postPurchase);
 
 

@@ -141,22 +141,22 @@ const deleteProductInCart = async(req, res) => {
 
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
-    console.log("1 INGRESO AL PROCESO DE COMPRA");
+    //console.log("1 INGRESO AL PROCESO DE COMPRA");
     const cartId = String(req.params.cid);
-    //const userMail = req.user.email;
+    //const userMail = req.user.email; PARA CUANDO TENGA VISTA SACO EL MAIL DEL USER
     const userMail = "cdiblasi@bykom.com";
-    console.log("2 Leo parametros "  + cartId + " " + userMail);
+    //console.log("2 Leo parametros "  + cartId + " " + userMail);
     // Primero Valido que exista el carrito 
     try {
         const newCart = [];
         const noStockCart = [];
         // OBTENGO el carrito QUE HAY EN la BASE
-        console.log("3 VALIDO CARRITO");
+        //console.log("3 VALIDO CARRITO");
         const cartPuchase = await getCartByIdService(cartId);
-        console.log("3C" + JSON.stringify(cartPuchase[0], null, '\t'));
-        console.log("4 Empiezo a recorrer carrito");
+        //console.log("3C" + JSON.stringify(cartPuchase[0], null, '\t'));
+        //console.log("4 Empiezo a recorrer carrito");
         cartPuchase[0].products.forEach( (product) => {
-            console.log("5 producto" + product.product._id);
+            //console.log("5 producto" + product.product._id);
             if (product.product.stock > product.quantity) {
                 const resultStock = stockProductService(product.product._id, product.quantity*-1)
                 //console.log("7 resultado de baja de stock" + resultStock);
@@ -165,7 +165,7 @@ const postPurchase = async(req, res) => {
                     quantity: product.quantity
                 }
                 newCart.push(prodData)
-                console.log("8 nuevo carrito" + JSON.stringify(newCart, null, '\t'));
+                //console.log("8 nuevo carrito" + JSON.stringify(newCart, null, '\t'));
                 const resultDelete = deleteProductInCartService(cartPuchase[0]._id,product.product._id);
                 //console.log("9 resultado de delete de cart" + resultDelete);
             }else {
@@ -175,11 +175,11 @@ const postPurchase = async(req, res) => {
                 noStockCart.push(prodData);
             }
         });
-        console.log("length " + newCart.length);
+        //console.log("length " + newCart.length);
         if (newCart.length > 0){
-            console.log("10 llamo a grabar ticket");
+            //console.log("10 llamo a grabar ticket");
             const result = await postPurchaseService(newCart, userMail);
-            console.log("11: " + JSON.stringify(result, null, '\t'));
+            //console.log("11: " + JSON.stringify(result, null, '\t'));
             if (noStockCart.length > 0) {
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
             } else {
