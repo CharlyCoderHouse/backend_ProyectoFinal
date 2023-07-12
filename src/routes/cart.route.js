@@ -18,6 +18,8 @@ router.route('/:cid/product/:pid')
     .delete(passportCall('jwt'), authorization('user'), deleteProductInCart);    
 
 router.route('/:cid/purchase')
-    .put(passportCall('jwt'), postPurchase);
+//    .put(passportCall('jwt'), postPurchase);
+    .put(postPurchase);
+
 
 export default router;

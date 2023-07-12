@@ -37,30 +37,25 @@ const deleteProductInCart = async (cartId,productId) => {
 };
 
 const postPurchase = async (cart, userMail) => {
-    //verifico que el Stock a actualizar 
-    const currentProducts = business.products.filter((product) => 
-        products.includes(product.id)
-    );
-
-    const sum = currentProducts.reduce((acc, prev) => {
-        acc += prev.price;
+    //suma precio
+    console.log("1A Ingreso a service grabar ticket");
+    const sum = cart.reduce((acc, prev) => {
+        acc += prev.price * prev.quantity;
         return acc;
     }, 0);
 
-    const orderNumber = Date.now() + Math.floor(Math.random() * 100000 + 1);
+    const code = Date.now() + Math.floor(Math.random() * 100000 + 1);
 
-    const order = {
-        number: orderNumber,
-        business: business._id,
-        user: user._id,
-        status: 'pending',
-        products: currentProducts.map((product) => product.id),
-        total_price: sum
+    const ticket = {
+        code: code,
+        purchase_datetime: new Date(),
+        amount: sum,
+        purchaser: userMail
     };
 
-    console.log(order);
+    console.log(ticket);
 
-    const result = await ticketRepository.createTicket(cartId,productId);
+    const result = await ticketRepository.createTicket(ticket);
     return result;
 };
 

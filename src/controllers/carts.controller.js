@@ -9,6 +9,7 @@ import {
 } from '../services/carts.service.js';
 import { 
     getProductById as getProductByIdService, 
+    stockProduct as stockProductService
 } from "../services/products.service.js";
 
 const postCart = async(req, res) => {
@@ -140,31 +141,58 @@ const deleteProductInCart = async(req, res) => {
 
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
+    console.log("1 INGRESO AL PROCESO DE COMPRA");
     const cartId = String(req.params.cid);
-    const userMail = req.user.email;
-    const cartPuchase = [];
+    //const userMail = req.user.email;
+    const userMail = "cdiblasi@bykom.com";
+    console.log("2 Leo parametros "  + cartId + " " + userMail);
+    const newCart = [];
     // Primero Valido que exista el carrito 
     try {
         // OBTENGO el carrito QUE HAY EN la BASE
-        cartPuchase = await getCartByIdService(cartId);
+        console.log("3 VALIDO CARRITO");
+        const cartPuchase = await getCartByIdService(cartId);
+        //console.log("3B " + JSON.stringify(data, null, '\t'));
+        //cartPuchase.push(data)
+        console.log("3C" + JSON.stringify(cartPuchase, null, '\t'));
+        console.log("4 Empiezo a recorrer carrito");
+        cartPuchase.products.forEach((product) => {
+            console.log(product.stock);
+            console.log(quantity);
+            console.log("5 producto" + product.product);
+            // if (product.stock > product.quantity) {
+            //     const resultStock = await stockProductService(prodResult._id, product.quantity*-1)
+            //     console.log("7 resultado de baja de stock" + resultStock);
+            //     const prodData = {
+            //         price: prodResult.price,
+            //         quantity: product.quantity
+            //     }
+            //     newCart.push(prodData)
+            //     console.log("8 nuevo carrito" + newCart);
+            //     const resultDelete = await deleteProductInCartService(cartPuchase._id,prodResult._id);
+            //     console.log("9 resultado de delete de cart" + resultDelete);
+            // }
+        });
     } catch (error) {
         const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
         return res.status(404).json(response);
     };
-    //Recorro el carrito y verifico que el Stock sea correcto 
-    cartPuchase.forEach((quantity ))
-
-    // Una vez validado llam al metodo addProductInCart en service
+    //Recorro el carrito y verifico que el Stock sea correcto y genero el ticket
     try {
-        //console.log("Intento insertar");
-        const result = await postPurchaseService(cart, userMail);
-        //console.log("router: " + JSON.stringify(result, null, '\t'));
-        if(result.acknowledged) {
-            res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
-        };
+        if (newCart.length > 0){
+            console.log("10 llamo a grabar ticket");
+            const result = await postPurchaseService(newCart, userMail);
+            //console.log("router: " + JSON.stringify(result, null, '\t'));
+            if(result.acknowledged) {
+                res.status(200).send({ status: 'success', payload: 'Se genero correctamente la compra' })
+            };   
+        } else {
+            res.status(404).send({ status: "NOT FOUND", payload: `No hay productos disponible para la compra!` });
+        }
     } catch (error) {
-        res.status(404).send({ status: "NOT FOUND", payload: `No se pudo actualizar el Producto al carrito!` });
-    };
+        const response = { status: "Error", payload: error };
+        return res.status(404).json(response);
+    }
 };
 
 

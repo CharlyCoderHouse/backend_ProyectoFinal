@@ -1,4 +1,4 @@
-import ticketModel from '../models/ticket.Model.js';
+import { ticketModel } from '../models/ticket.Model.js';
 
 export default class TicketsDao {
     getTickets = async () => {
