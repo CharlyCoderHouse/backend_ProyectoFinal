@@ -1,9 +1,7 @@
 import CartsRepository from '../repositories/carts.repository.js';
-import ProductsRepository from '../repositories/products.repository.js';
 import TicketRepository from '../repositories/ticket.repository.js';
 
 const cartsRepository = new CartsRepository();
-const productsRepository = new ProductsRepository();
 const ticketRepository = new TicketRepository();
 
 const postCart = async (cart) => {
@@ -56,6 +54,7 @@ const postPurchase = async (cart, userMail) => {
     console.log(ticket);
 
     const result = await ticketRepository.createTicket(ticket);
+    console.log(result);
     return result;
 };
 

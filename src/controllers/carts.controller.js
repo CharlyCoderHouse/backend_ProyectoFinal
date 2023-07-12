@@ -146,53 +146,44 @@ const postPurchase = async(req, res) => {
     //const userMail = req.user.email;
     const userMail = "cdiblasi@bykom.com";
     console.log("2 Leo parametros "  + cartId + " " + userMail);
-    const newCart = [];
     // Primero Valido que exista el carrito 
     try {
+        const newCart = [];
         // OBTENGO el carrito QUE HAY EN la BASE
         console.log("3 VALIDO CARRITO");
         const cartPuchase = await getCartByIdService(cartId);
         //console.log("3B " + JSON.stringify(data, null, '\t'));
         //cartPuchase.push(data)
-        console.log("3C" + JSON.stringify(cartPuchase, null, '\t'));
+        console.log("3C" + JSON.stringify(cartPuchase[0], null, '\t'));
         console.log("4 Empiezo a recorrer carrito");
-        cartPuchase.products.forEach((product) => {
-            console.log(product.stock);
-            console.log(quantity);
-            console.log("5 producto" + product.product);
-            // if (product.stock > product.quantity) {
-            //     const resultStock = await stockProductService(prodResult._id, product.quantity*-1)
-            //     console.log("7 resultado de baja de stock" + resultStock);
-            //     const prodData = {
-            //         price: prodResult.price,
-            //         quantity: product.quantity
-            //     }
-            //     newCart.push(prodData)
-            //     console.log("8 nuevo carrito" + newCart);
-            //     const resultDelete = await deleteProductInCartService(cartPuchase._id,prodResult._id);
-            //     console.log("9 resultado de delete de cart" + resultDelete);
-            // }
+        cartPuchase[0].products.forEach(async (product) => {
+            console.log("5 producto" + product.product._id);
+            if (product.product.stock > product.quantity) {
+                const resultStock = await stockProductService(product.product._id, product.quantity*-1)
+                //console.log("7 resultado de baja de stock" + resultStock);
+                const prodData = {
+                    price: product.product.price,
+                    quantity: product.quantity
+                }
+                newCart.push(prodData)
+                console.log("8 nuevo carrito" + JSON.stringify(newCart, null, '\t'));
+                const resultDelete = await deleteProductInCartService(cartPuchase[0]._id,product.product._id);
+                //console.log("9 resultado de delete de cart" + resultDelete);
+            }
         });
-    } catch (error) {
-        const response = { status: "Error", payload: `El carrito con ID ${cartId} NO existe!` };
-        return res.status(404).json(response);
-    };
-    //Recorro el carrito y verifico que el Stock sea correcto y genero el ticket
-    try {
+        console.log("length" + newCart.length);
         if (newCart.length > 0){
             console.log("10 llamo a grabar ticket");
             const result = await postPurchaseService(newCart, userMail);
-            //console.log("router: " + JSON.stringify(result, null, '\t'));
-            if(result.acknowledged) {
-                res.status(200).send({ status: 'success', payload: 'Se genero correctamente la compra' })
-            };   
+            console.log("11: " + JSON.stringify(result, null, '\t'));
+            res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
         } else {
             res.status(404).send({ status: "NOT FOUND", payload: `No hay productos disponible para la compra!` });
         }
     } catch (error) {
         const response = { status: "Error", payload: error };
         return res.status(404).json(response);
-    }
+    };
 };
 
 
