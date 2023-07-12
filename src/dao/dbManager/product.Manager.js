@@ -45,5 +45,23 @@ export default class productManager {
         const result = await productModel.deleteOne({_id: id});
         return result;
     };
+
+    stockProduct = async (id) => {
+         //Intento incrementar la cantidad si se encuentra el producto en el carrito
+         const result = await cartModel.updateOne({_id: cartId, "products.product": productId },
+         {$inc: {"products.$.quantity": quantity}});
+         //console.log("result:" + JSON.stringify(result, null, '\t'));
+         //Pregunto si pudo modificar, sino pudo es que no existe y lo agrego
+         if (result.acknowledged & result.modifiedCount === 0){
+             //creo arreglo para el nuevo producto con sus datos
+             const newProduct = {
+                 product: productId,
+                 quantity: quantity
+                 };
+             const result = await cartModel.updateOne({_id: cartId}, {$push: { products: newProduct}});
+             return result;
+         };
+         return result;
+    }
 };
 

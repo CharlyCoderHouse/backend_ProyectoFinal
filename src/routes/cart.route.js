@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart,deleteProductInCart } from '../controllers/carts.controller.js';
+import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart, deleteProductInCart, postPurchase } from '../controllers/carts.controller.js';
 import { authorization, passportCall } from '../utils.js';
 
 //INICIALIZO ROUTER
@@ -16,5 +16,8 @@ router.route('/:cid')
 router.route('/:cid/product/:pid')
     .put(passportCall('jwt'), authorization('user'), putProductInCart)
     .delete(passportCall('jwt'), authorization('user'), deleteProductInCart);    
+
+router.route('/:cid/purchase')
+    .put(passportCall('jwt'), postPurchase);
 
 export default router;
