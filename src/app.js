@@ -8,13 +8,13 @@ import homeRouter from './routes/home.route.js';
 import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
-import sessionsRouter from './routes/sessions.router.js'
+import sessionsRouter from './routes/sessions.router.js';
+import mockingproducts from './routes/mockingproducts.route.js';
 import './dao/dbManager/dbConfig.js'
 import config from './config/config.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
 import productManager from './dao/dbManager/product.Manager.js';
 import messageManager from './dao/dbManager/message.Manager.js';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
@@ -64,7 +64,8 @@ app.use("/api/carts", cartsRouter);
 app.use('/realtimeproducts', viewsProdRouter)
 // Page Chat
 app.use('/chat', viewsMessage)
-
+// MONCKING
+app.use('/mockingproducts', mockingproducts);
 
 //Escuchando puerto con log de errores
 const server = app.listen(config.port, (error) => {
