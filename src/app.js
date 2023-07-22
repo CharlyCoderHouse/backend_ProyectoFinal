@@ -18,6 +18,7 @@ import messageManager from './dao/dbManager/message.Manager.js';
 import cookieParser from 'cookie-parser';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
+import { addLogger } from './utils/logger.js';
 
 //Creo el Servidor Express
 const app = express();
@@ -29,6 +30,8 @@ app.use(urlencoded({extended: true}));
 // Middleware para cookies
 app.use(cookieParser());
 
+// Middleware para logger
+app.use(addLogger());
 
 //middleware Log conexiones
 app.use((req, res, next) => {
