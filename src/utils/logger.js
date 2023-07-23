@@ -1,5 +1,5 @@
 import winston from 'winston';
-import config from './config.js';
+import config from '../config/config.js';
 
 let logger;
 
@@ -14,7 +14,7 @@ const customLevelOptions = {
     }
 }
 
-if (config.ENVIRONMENT === 'production') {
+if (config.ENVIRONMENT === 'PRODUCTION') {
     logger = winston.createLogger({
         levels: customLevelOptions.levels,
         transports: [
@@ -22,7 +22,7 @@ if (config.ENVIRONMENT === 'production') {
                 level: 'info'
             }),
             new winston.transports.File({
-                filename: 'logs/errors.log',
+                filename: 'src/logs/errors.log',
                 level: 'error'
             })
         ]
@@ -40,7 +40,6 @@ if (config.ENVIRONMENT === 'production') {
 
 export const addLogger = (req, res, next) => {
     req.logger = logger;
-    //console.log
     req.logger.info(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
     next();
 }

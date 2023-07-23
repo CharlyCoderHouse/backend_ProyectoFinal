@@ -10,6 +10,7 @@ import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
 import sessionsRouter from './routes/sessions.router.js';
 import mockingproducts from './routes/mockingproducts.route.js';
+import loggerTest from './routes/loggerTest.route.js';
 import './dao/dbManager/dbConfig.js'
 import config from './config/config.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
@@ -31,7 +32,7 @@ app.use(urlencoded({extended: true}));
 app.use(cookieParser());
 
 // Middleware para logger
-app.use(addLogger());
+app.use(addLogger);
 
 //middleware Log conexiones
 app.use((req, res, next) => {
@@ -69,6 +70,8 @@ app.use('/realtimeproducts', viewsProdRouter)
 app.use('/chat', viewsMessage)
 // MONCKING
 app.use('/mockingproducts', mockingproducts);
+// TEST LOGGER
+app.use('/loggerTest', loggerTest);
 
 //Escuchando puerto con log de errores
 const server = app.listen(config.port, (error) => {
