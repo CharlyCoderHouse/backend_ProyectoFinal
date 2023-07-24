@@ -10,7 +10,10 @@ const registerUser = async (req, res) => {
         const { first_name, last_name, email, age, password } = req.body;
         const exists = await getUserService({ email });
         
-        if (exists) return res.status(400).send({ status: 'error', error: responseMessages.user_exists });
+        if (exists) {
+            req.logger.warning(`registerUser = ` + responseMessages.user_exists); 
+            return res.status(400).send({ status: 'error', error: responseMessages.user_exists });
+        }    
 
         const cartId = await postCart();
 
@@ -29,6 +32,7 @@ const registerUser = async (req, res) => {
 
         res.send({ status: 'success', message: responseMessages.user_register_ok, access_token: accessToken })
     } catch (error) {
+        req.logger.error(`registerUser = ` + error.message); 
         res.status(500).send({ status: 'error', error: error.message });
     }
 }; 
@@ -39,11 +43,14 @@ const loginUser =  async (req, res) => {
 
         const user = await getUserService({ email });
 
-        console.log(user);
-        if (!user) return res.status(400).send({ status: 'error', error: responseMessages.incorrect_user });
-
-        if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', error: responseMessages.incorrect_password })
-
+        if (!user) {
+            req.logger.warning(`loginUser = ` + responseMessages.incorrect_user); 
+            return res.status(400).send({ status: 'error', error: responseMessages.incorrect_user });
+        }
+        if (!isValidPassword(user, password)) {
+            req.logger.warning(`loginUser = ` + responseMessages.incorrect_password); 
+            return res.status(401).send({ status: 'error', error: responseMessages.incorrect_password })
+        }
         req.user = {
             first_name: user.first_name,
             last_name: user.last_name,
@@ -52,7 +59,7 @@ const loginUser =  async (req, res) => {
             role: "user",
             cartId: user.cart._id
         }
-        // console.log(req.user);
+        
         if(user.email === 'adminCoder@coder.com') {
             //&& password === 'adminCod3r123'
             req.user.role = "admin";
@@ -64,6 +71,7 @@ const loginUser =  async (req, res) => {
             PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
         ).send({ status: 'success', message: responseMessages.login_ok });
     } catch (error) {
+        req.logger.error(`loginUser = ` + error.message);
         res.status(500).send({ status: 'error', error });
     }
 };
@@ -101,8 +109,6 @@ const gitCallbackUser = async (req, res) => {
 
 const currentUser = (req, res) => {
     const user = new UsersDto(req.user);
-    //console.log(user);
-    //const user = req.user;
     res.send({ status: 'success', payload: user });
 };
 
