@@ -112,10 +112,15 @@ const currentUser = (req, res) => {
     res.send({ status: 'success', payload: user });
 };
 
+const resetPass = (req, res) => {
+    
+};
+
 export { 
     registerUser, 
     loginUser, 
     logoutUser, 
+    resetPass,
     gitUser, 
     gitCallbackUser, 
     currentUser 

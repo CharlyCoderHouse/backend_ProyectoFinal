@@ -1,11 +1,16 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PRIVATE_KEY } from './helpers/proyect.constants.js';
 import { responseMessages } from './helpers/proyect.helpers.js';
 import { fakerES as faker } from '@faker-js/faker';
+import nodemailer from 'nodemailer';
+import config from "./config/config.js"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
@@ -65,8 +70,19 @@ const generateProduct = () => {
     }
 }
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const generateTokenResetPass = (user) => {
+    const tokenResetPass = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '1h' });
+    return tokenResetPass;
+};
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: config.userNodemailer,
+        pass: config.passNodemailer
+    }
+})
 
 export {
     __dirname,
@@ -76,5 +92,7 @@ export {
     passportCall,
     authToken,
     authorization,
-    generateProduct
+    generateProduct,
+    generateTokenResetPass,
+    transporter
 }

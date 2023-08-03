@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { passportCall } from '../utils.js';
-import { iniRaiz, loginRaiz, profileRaiz, regRaiz } from '../controllers/raiz.controller.js';
+import { iniRaiz, loginRaiz, resetRaiz, profileRaiz, regRaiz } from '../controllers/raiz.controller.js';
 
 const router = Router();
 
@@ -9,6 +9,9 @@ router.route('/register')
 
 router.route('/login')
     .get(loginRaiz);
+
+router.route('/resetPassword')
+    .get(resetRaiz);    
     
 router.route('/')
     .get(passportCall('jwt'), iniRaiz);
