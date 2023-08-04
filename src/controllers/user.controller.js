@@ -117,7 +117,7 @@ const currentUser = (req, res) => {
 const passLink = async (req, res) => {
     try {
         const { email } = req.body;
-        req.logger.warning(`email = ` + email); 
+        
         const user = await getUserService({ email });
 
         if (!user) {
@@ -145,15 +145,16 @@ const passLink = async (req, res) => {
 
 const linkPass = (req, res) => {
     //Leo el ID por parametros
-    const token = String(req.params.token);
-
-    const result = authTokenPass(token)
-
-    if (result) {
+    //const token = String(req.params.token);
+    // const authToken = String(req.query.token)
+    // req.logger.warning(`tokkkken = ` + authToken); 
+    // const result = authTokenPass()
+    // req.logger.warning(`result = ` + result); 
+    // if (result) {
         res.render('linkPassword.hbs');
-    } else {
-        res.status(400).send({ status: 'error', result });
-    }
+    // } else {
+    //     res.status(400).send({ status: 'error', result });
+    // }
 };
 
 const putPass = (req, res) =>{

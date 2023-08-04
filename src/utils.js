@@ -75,18 +75,18 @@ const generateTokenResetPass = (user) => {
     return tokenResetPass;
 };
 
-const authTokenPass = (tokenPass) => {
-    return async (req, res, next) => {
-        if(!tokenPass) return res.status(401).send({error: responseMessages.not_authenticated});
+const authTokenPass = (req, res, next) => {
+    const authToken = String(req.query.token)
+    
+    if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
 
-        const token = tokenPass.split(' ')[1];
+    const token = authToken.split(' ')[1];
 
-        jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
-            if (error) return res.status(403).send({error: responseMessages.not_authorized});
-            req.user = credentials.user;
-            next();
-        })
-    }
+    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+        if (error) return res.status(403).send({error: responseMessages.not_authorized});
+        req.user = credentials.user;
+        next();
+    })
 };
 
 const transporter = nodemailer.createTransport({
