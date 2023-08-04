@@ -1,9 +1,11 @@
 import { getUser as getUserService, addUser as addUserService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
-import { generateToken, createHash, isValidPassword } from '../utils.js';
+import { generateToken, generateTokenResetPass, createHash, isValidPassword, authTokenPass } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.service.js';
+import { loginNotification } from '../utils/custom-html.js';
+import { sendEmail } from "../services/mail.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -112,15 +114,59 @@ const currentUser = (req, res) => {
     res.send({ status: 'success', payload: user });
 };
 
-const resetPass = (req, res) => {
-    
+const passLink = async (req, res) => {
+    try {
+        const { email } = req.body;
+        req.logger.warning(`email = ` + email); 
+        const user = await getUserService({ email });
+
+        if (!user) {
+            req.logger.warning(`loginUser = ` + responseMessages.incorrect_user); 
+            return res.status(400).send({ status: 'error', error: responseMessages.incorrect_user });
+        }
+
+        const accessToken = generateTokenResetPass(user);
+
+        const link = `http://localhost:8080/api/sessions/linkPassword?token=${accessToken}`
+        const mail = {
+            to: user.email,
+            subject: 'Reseteo de Contraseña',
+            html: loginNotification(link)
+        }
+        
+        await sendEmail(mail);
+
+        res.send({ status: 'success', message: 'link OK', access_token: accessToken });
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+
 };
+
+const linkPass = (req, res) => {
+    //Leo el ID por parametros
+    const token = String(req.params.token);
+
+    const result = authTokenPass(token)
+
+    if (result) {
+        res.render('linkPassword.hbs');
+    } else {
+        res.status(400).send({ status: 'error', result });
+    }
+};
+
+const putPass = (req, res) =>{
+
+}
 
 export { 
     registerUser, 
     loginUser, 
     logoutUser, 
-    resetPass,
+    passLink,
+    linkPass,
+    putPass,
     gitUser, 
     gitCallbackUser, 
     currentUser 

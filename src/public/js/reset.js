@@ -10,14 +10,20 @@ function navigateOk() {
     window.location.replace('/');
 };
 
-const form = document.getElementById('loginForm');
+const form = document.getElementById('resetForm');
 
 form.addEventListener('submit', e => {
     e.preventDefault();
     const data = new FormData(form);
     const obj = {};
     data.forEach((value, key) => obj[key] = value);
-    fetch('/api/sessions/password-link', {
+    Swal.fire({
+        position: 'center',
+        title: 'Enviando mail ...',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    fetch('/api/sessions/password_link', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
@@ -25,6 +31,7 @@ form.addEventListener('submit', e => {
             'Content-Type': 'application/json'
         }
     }).then(result => {
+        console.log(result.status);
         if (result.status === 200) {
             Swal.fire({
                 position: 'top-end',
@@ -41,13 +48,6 @@ form.addEventListener('submit', e => {
                     position: 'top-end',
                     icon: 'error',
                     title: 'El usuario no existe, por favor registrese',
-                    showConfirmButton: true,
-                })
-            }else if (result.status === 401) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'La contraseña es incorrecta, vuelva a intentarlo',
                     showConfirmButton: true,
                 })
             }else{

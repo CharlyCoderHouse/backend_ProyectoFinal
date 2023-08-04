@@ -33,7 +33,7 @@ const authToken = (req, res, next) => {
         req.user = credentials.user;
         next();
     })
-}
+};
 
 const passportCall = (strategy) => {
     return async (req, res, next) => {
@@ -75,6 +75,20 @@ const generateTokenResetPass = (user) => {
     return tokenResetPass;
 };
 
+const authTokenPass = (tokenPass) => {
+    return async (req, res, next) => {
+        if(!tokenPass) return res.status(401).send({error: responseMessages.not_authenticated});
+
+        const token = tokenPass.split(' ')[1];
+
+        jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+            if (error) return res.status(403).send({error: responseMessages.not_authorized});
+            req.user = credentials.user;
+            next();
+        })
+    }
+};
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 587,
@@ -91,6 +105,7 @@ export {
     generateToken,
     passportCall,
     authToken,
+    authTokenPass,
     authorization,
     generateProduct,
     generateTokenResetPass,

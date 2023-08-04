@@ -8,7 +8,8 @@ const responseMessages = {
     incorrect_password: 'Incorrect password',
     not_authenticated: 'Not authenticated',
     not_authorized: 'Not authorized',
-    not_permissions: 'Not permissions'
+    not_permissions: 'Not permissions',
+    from_mail: 'Proyecto Coder - Joyería Puga' 
 }
 
 export {

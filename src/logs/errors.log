@@ -6,3 +6,6 @@
 {"level":"error","message":"registerUser = User exists"}
 {"level":"fatal","message":"Prueba fatal"}
 {"level":"error","message":"Prueba error"}
+{"level":"error","message":"loginUser = generateTokenResetPass is not defined"}
+{"level":"error","message":"loginUser = loginNotification is not defined"}
+{"level":"error","message":"loginUser = sendEmail is not defined"}

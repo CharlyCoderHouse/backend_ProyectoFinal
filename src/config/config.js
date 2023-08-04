@@ -9,5 +9,7 @@ export default {
     port: process.env.PORT,
     gitClienteID: process.env.GITCLIENTID,
     gitClientSecret: process.env.GITCLIENTSECRET,
-    gitCallbackURL: process.env.GITCALLBACKURL
+    gitCallbackURL: process.env.GITCALLBACKURL,
+    userNodemailer: process.env.USER_NODEMAILER,
+    passNodemailer: process.env.PASS_NODEMAILER
 }
