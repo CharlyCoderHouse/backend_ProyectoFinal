@@ -23,7 +23,7 @@ const generateToken = (user) => {
 
 const authToken = (req, res, next) => {
     const authToken = req.headers.authorization;
-    
+    console.log(authToken);
     if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
 
     const token = authToken.split(' ')[1];
@@ -76,13 +76,11 @@ const generateTokenResetPass = (user) => {
 };
 
 const authTokenPass = (req, res, next) => {
-    const authToken = String(req.query.token)
-    
+    const authToken = req.query.token
+    console.log(authToken);
     if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
 
-    const token = authToken.split(' ')[1];
-
-    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+    jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
         if (error) return res.status(403).send({error: responseMessages.not_authorized});
         req.user = credentials.user;
         next();

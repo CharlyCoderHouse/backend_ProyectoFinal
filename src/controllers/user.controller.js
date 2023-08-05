@@ -144,22 +144,28 @@ const passLink = async (req, res) => {
 };
 
 const linkPass = (req, res) => {
-    //Leo el ID por parametros
-    //const token = String(req.params.token);
-    // const authToken = String(req.query.token)
-    // req.logger.warning(`tokkkken = ` + authToken); 
-    // const result = authTokenPass()
-    // req.logger.warning(`result = ` + result); 
-    // if (result) {
-        res.render('linkPassword.hbs');
-    // } else {
-    //     res.status(400).send({ status: 'error', result });
-    // }
+    console.log(req.user);
+    res.render('linkPassword.hbs');
 };
 
-const putPass = (req, res) =>{
+const putPass = async (req, res) =>{
+    try {
+        const { password } = req.body;
+        //Leo el ID por parametros
+        let email = String(req.params.email);
+        const user = await getUserService({ email });
 
-}
+        if (isValidPassword(user, password)) {
+            req.logger.warning(`loginUser = ` + responseMessages.invalid_password); 
+            return res.status(401).send({ status: 'error', error: responseMessages.invalid_password })
+        } else {
+            return res.status(200).send({ status: 'OK', payload: 'OK PASS' })
+        }
+
+    } catch(error) {
+
+    }
+};
 
 export { 
     registerUser, 

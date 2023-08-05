@@ -10,20 +10,26 @@ function navigateOk() {
     window.location.replace('/');
 };
 
-const form = document.getElementById('resetForm');
+const formPass = document.getElementById('passForm');
 
-if (form) {
-    form.addEventListener('submit', e => {
+if (formPass) {
+    formPass.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const data = new FormData(form);
+        const data = new FormData(formPass);
         const obj = {};
         data.forEach((value, key) => obj[key] = value);
+        const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const user = await prueba.json();
+        const email =user.payload.email;
+        const link = '/api/sessions/changePassword/'+email
         Swal.fire({
             position: 'center',
-            title: 'Enviando mail ...',
+            title: 'cambiando contraseña ..',
             showConfirmButton: false,
           })
-        fetch('/api/sessions/password_link', {
+        fetch(link, {
             method: 'POST',
             body: JSON.stringify(obj),
             headers: {
@@ -36,18 +42,18 @@ if (form) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Se envío mail para el reseteo de contraseña',
+                    title: 'La contraseña fue cambiada con exito',
                     showConfirmButton: true,
                   })
     
                 delayNavigateOk();
                 //window.location.replace('/');
             }else{
-                if (result.status === 400) {
+                if (result.status === 401) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'El usuario no existe, por favor registrese',
+                        title: 'La contraseña debe ser distinta a la actual.',
                         showConfirmButton: true,
                     })
                 }else{

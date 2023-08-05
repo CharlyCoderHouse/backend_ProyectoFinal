@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { registerUser, loginUser, logoutUser, passLink, linkPass, putPass, gitUser, gitCallbackUser, currentUser } from "../controllers/user.controller.js"
-import { authTokenPass, passportCall } from '../utils.js';
+import { authToken, authTokenPass, passportCall } from '../utils.js';
 
 const router = Router();
 
@@ -17,8 +17,10 @@ router.route('/password_link')
     .post(passLink);    
 
 router.route('/linkPassword')
-    .get(authTokenPass, linkPass)    
-    .put(putPass);
+    .get(authTokenPass, linkPass)      
+
+router.route('/changePassword/:email')
+    .post(putPass);
 
 router.route('/github')
     .get(passportCall('github', { scope: ['user:email']}), gitUser);

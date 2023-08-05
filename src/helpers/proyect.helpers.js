@@ -9,6 +9,7 @@ const responseMessages = {
     not_authenticated: 'Not authenticated',
     not_authorized: 'Not authorized',
     not_permissions: 'Not permissions',
+    invalid_password: 'Invalid password',
     from_mail: 'Proyecto Coder - Joyería Puga' 
 }
 
