@@ -20,7 +20,7 @@ router.route('/linkPassword')
     .get(authTokenPass, linkPass)      
 
 router.route('/changePassword')
-    .post(putPass);
+    .post(passportCall('jwt'), putPass);
 
 router.route('/github')
     .get(passportCall('github', { scope: ['user:email']}), gitUser);

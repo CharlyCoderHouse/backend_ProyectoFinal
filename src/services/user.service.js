@@ -12,7 +12,13 @@ const addUser = async (user) => {
     return result;
 }; 
 
+const updateUserPass = async (id, newPass) => {
+    const result = await usersRepository.updateUserPass(id, newPass);
+    return result;
+};
+
 export {
     getUser,
+    updateUserPass,
     addUser  
 }

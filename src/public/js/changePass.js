@@ -30,8 +30,7 @@ if (formPass) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(result => {
-            console.log(result.status);
+        }).then(result => {     
             if (result.status === 200) {
                 Swal.fire({
                     position: 'top-end',
@@ -54,7 +53,7 @@ if (formPass) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'Hay datos incompletos, vuelva a intentarlo',
+                        title: 'No se pudo actualizar la contraseña',
                         showConfirmButton: true,
                     })                
                 }    

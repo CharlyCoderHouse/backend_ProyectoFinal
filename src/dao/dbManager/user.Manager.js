@@ -8,12 +8,16 @@ export default class userManager {
     
     getUser = async (email) => {
         const products = await userModel.findOne( email );
-        //console.log("1" + JSON.stringify(products, null, '\t'));
         return products; 
     };
 
     addUser = async (user) => {
         const result = await userModel.create(user);
+        return result;
+    };
+
+    updateUserPass = async (id, newPass) => {
+        const result = await userModel.updateOne({_id: id}, {$set: {password: newPass} });
         return result;
     };
 

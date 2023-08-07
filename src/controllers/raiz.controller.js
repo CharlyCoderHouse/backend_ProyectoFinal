@@ -16,6 +16,10 @@ const resetRaiz =(req, res) => {
     res.render('resetPassword.hbs');
 };
 
+const resetRaizError =(req, res) => {
+    res.render('resetPasswordError.hbs');
+};
+
 const profileRaiz =(req, res) => {
     res.render('profile.hbs', {
         user: req.user,
@@ -27,5 +31,6 @@ export {
     regRaiz,
     loginRaiz,
     resetRaiz,
+    resetRaizError,
     profileRaiz
 }
