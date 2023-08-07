@@ -144,15 +144,16 @@ const passLink = async (req, res) => {
 };
 
 const linkPass = (req, res) => {
-    console.log(req.user);
     res.render('linkPassword.hbs');
 };
 
 const putPass = async (req, res) =>{
     try {
         const { password } = req.body;
+        const token = cookieExtractor()
+        console.log(token);
         //Leo el ID por parametros
-        let email = String(req.params.email);
+        const email = String(req.params.email);
         const user = await getUserService({ email });
 
         if (isValidPassword(user, password)) {

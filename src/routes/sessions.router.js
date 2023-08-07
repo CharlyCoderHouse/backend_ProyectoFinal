@@ -19,7 +19,7 @@ router.route('/password_link')
 router.route('/linkPassword')
     .get(authTokenPass, linkPass)      
 
-router.route('/changePassword/:email')
+router.route('/changePassword')
     .post(putPass);
 
 router.route('/github')

@@ -18,18 +18,12 @@ if (formPass) {
         const data = new FormData(formPass);
         const obj = {};
         data.forEach((value, key) => obj[key] = value);
-        const prueba = await fetch('/api/sessions/current', {
-            method: 'GET'
-        });
-        const user = await prueba.json();
-        const email =user.payload.email;
-        const link = '/api/sessions/changePassword/'+email
         Swal.fire({
             position: 'center',
             title: 'cambiando contraseña ..',
             showConfirmButton: false,
           })
-        fetch(link, {
+        fetch('/api/sessions/changePassword', {
             method: 'POST',
             body: JSON.stringify(obj),
             headers: {
