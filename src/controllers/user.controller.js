@@ -186,9 +186,27 @@ const putPass = async (req, res) =>{
     }
 };
 
-const changeRol = (req, res) => {
-    const user = new UsersDto(req.user);
-    res.send({ status: 'success', payload: user });
+const changeRol = async (req, res) => {
+    try {
+        
+        const id = String(req.params.uid);
+        const role = req.body
+        
+        const result = await updateUserService(id, role);
+        
+        //Valido que se realizo el UPDATE
+        if (result.acknowledged & result.modifiedCount!==0) {
+            const response = { status: "Success", payload: `El role fue cambiado con exito!`};       
+            //muestro resultado
+            res.status(200).json(response);
+        } else {
+            req.logger.error(`ChangeRol = No se pudo modificar el rol`);
+            //muestro resultado error
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, verifique los datos ingresados"});
+        };   
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
 };
 
 export { 

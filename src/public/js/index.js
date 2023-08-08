@@ -114,16 +114,32 @@ function procesoId(comp){
                             icon: 'success'
                         })
                     }else{
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Hubo un error al registrar el producto, intente luego',
-                            showConfirmButton: true,
-                        })
+                        if (result.status === 401) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'El producto seleccionado no puede agregarse al carrito, por ser usuario PREMIUM!',
+                                showConfirmButton: true,
+                            })
+                        }else{
+                            if (result.status === 403) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'error',
+                                    title: 'No tiene permisos para agregar productos al carrito',
+                                    showConfirmButton: true,
+                                })}else {
+                                    Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al registrar el producto, intente luego',
+                                showConfirmButton: true,
+                            })}
+                        }
                     }
-                })
-            }
-        }); 
+                });
+            }; 
+        });
     };
 };
 
@@ -149,11 +165,12 @@ const form = document.getElementById('productForm');
 
 function delayNavigateOk() {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 2000);
+        nIntervId = setInterval(navigateOk, 1500);
     };
 };
 
 function navigateOk() {
+    //window.location.replace('/realTimeProducts');
     window.location.replace('/realTimeProducts');
 };
 
@@ -191,7 +208,7 @@ if(form) {
                         Swal.fire({
                             position: 'top-end',
                             icon: 'error',
-                            title: 'Código duplicado, vuelva a intentarlo!',
+                            title: 'Ya existe el producto que quiere agregar!',
                             showConfirmButton: true,
                     })}else{       
                         if (result.status === 403) {

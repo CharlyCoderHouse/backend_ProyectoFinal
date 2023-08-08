@@ -35,7 +35,7 @@ const getProducts = async (req, res) => {
         res.render("products.hbs", products );
     } catch (error) {
         req.logger.error(`getProducts = ` + error.message);
-        res.status(500).send({ status: "error", error });
+        return res.status(500).send({ status: "error", error });
     }
 };
 
@@ -51,10 +51,13 @@ const postProduct = async (req, res) => {
         req.logger.warning(`postProduct = Hay campos que faltan completar!`);
         return res.status(400).send({error:'Hay campos que faltan completar!'});
     };
+    if (!product.owner){
+        product.owner=req.user.email;
+    };
     //MongoDB
     try {
         const result = await postProductService(product);
-
+        
          //Valido el resultado de la creacion del producto
         if (result.acknowledged) {
             const io = req.app.get('socketio');
@@ -64,15 +67,12 @@ const postProduct = async (req, res) => {
         const response = { status: "Success", payload: result};
 
         //muestro resultado
-        //Postman
-        //res.status(200).json(response);
-        //redirijo a la misma página de carga y no muestro el resultado ya que se actualiza la lista
-        res.redirect("/realTimeProducts");
+        res.status(200).json(response);
     } catch (error) {
         req.logger.error(`postProduct = Ya existe el producto que desea crear!`);
         const response = { status: "NOT FOUND", payload: `Ya existe el producto que desea crear!` };
         //Postman
-        res.status(404).json(response);
+        return res.status(501).json(response);
     }
 };
 
@@ -93,7 +93,7 @@ const getProductById = async (req,res) => {
         req.logger.error(`getProductById = El producto con ID ${id} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
         //Postman
-        res.status(404).json(response);
+        return res.status(404).json(response);
     };
 };
 
@@ -126,15 +126,27 @@ const putProductById = async(req,res) =>{
     } catch (error) {
         req.logger.error(`putProductById = El producto con ID ${id} NO existe!`);
         const reserror = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
-        res.status(404).send(reserror);
+        return res.status(404).send(reserror);
     };
 };
 
 const deleteProductById = async(req,res)=>{
     //Leo el ID por parametros
     const id = String(req.params.pid);
+    const email=req.user.email;
+    const role=req.user.role;
     //MongoDB
     try {
+        
+        const productById = await getProductByIdService(id)
+
+        if (role==="premium" & productById[0].owner!==email){
+           
+            req.logger.error(`Error deleteProductById: NO tiene permiso para eliminar este producto!`);
+            const response = { status: "NOT PERMISION", payload: `NO tiene permiso para eliminar este producto!`}; 
+            return res.status(403).json(response);
+        };
+        
         const result = await deleteProductByIdService(id);
 
         //Valido el resultado de la búsqueda
@@ -152,7 +164,7 @@ const deleteProductById = async(req,res)=>{
         };
     } catch (error) {
         req.logger.error(`deleteProductById = NO existe el producto que desea eliminar!`);
-        res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
+        return res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
     };
 };
 
@@ -162,7 +174,7 @@ const realTimeProducts = async (req, res) => {
        res.render('realTimeProducts', { products });    
     } catch (error) {
         req.logger.error(`realTimeProducts = ` + error.message);
-        res.status(500).send({ status: "error", error });
+        return res.status(500).send({ status: "error", error });
     }
 };
 

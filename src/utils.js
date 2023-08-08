@@ -52,9 +52,17 @@ const passportCall = (strategy) => {
 
 const authorization = (role) => {
     return async (req, res, next) => {
-        if(req.user.role != role) return res.status(403).send({error: responseMessages.not_permissions});
+        let flag = false;
+        const roleUser =req.user.role;
+        role.forEach(element => {
+            if (roleUser===element){
+                flag=true;
+            };
+        });
+        if(!flag) return res.status(403).send({error: responseMessages.not_permissions});
         next();
     }
+
 }
 
 const generateProduct = () => {

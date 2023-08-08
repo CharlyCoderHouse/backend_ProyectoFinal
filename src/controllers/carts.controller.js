@@ -48,6 +48,7 @@ const putCartById = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
     const { productId, quantity } = req.body;
+    
     // Primero Valido que exista el carrito 
     try {
         // OBTENGO el carrito QUE HAY EN la BASE
@@ -60,7 +61,14 @@ const putCartById = async(req, res) => {
     // Segundo Valido que exista el producto
     try {
         // OBTENGO el producto QUE HAY EN la Base
-        await getProductByIdService(productId);
+        const product = await getProductByIdService(productId);
+        
+        // Premium no puede cargar sus propios productos
+        if (req.user.role==="premium" & product[0].owner===req.user.email) {
+            req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse!` };
+            return res.status(401).json(response);
+        }
     } catch (error) {
         req.logger.error(`putCartById = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
@@ -97,6 +105,7 @@ const putProductInCart = async(req, res) => {
     const cartId = String(req.params.cid);
     const productId = String(req.params.pid);
     const { quantity } = req.body;
+    
     // Primero Valido que exista el carrito 
     try {
         // OBTENGO el carrito QUE HAY EN la BASE
@@ -108,8 +117,17 @@ const putProductInCart = async(req, res) => {
     };
     // Segundo Valido que exista el producto
     try {
-        // OBTENGO el producto QUE HAY EN la Base
-        await getProductByIdService(productId);
+        // OBTENGO el producto QUE HAY EN la Base y comparo el role si corresponde agregar
+        const product = await getProductByIdService(productId);
+        
+        // Premium no puede cargar sus propios productos
+        if (req.user.role==="premium" & product[0].owner===req.user.email) {
+            
+            req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse!` };
+            return res.status(401).json(response);
+        }
+
     } catch (error) {
         req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };

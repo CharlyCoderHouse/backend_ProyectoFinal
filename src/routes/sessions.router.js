@@ -33,7 +33,7 @@ router.route('/current')
     .get(passportCall('jwt'), currentUser);
 
 router.route('/premium/:uid')
-    .post(passportCall('jwt'), changeRol);
+    .post(changeRol);
 
 
 export default router;

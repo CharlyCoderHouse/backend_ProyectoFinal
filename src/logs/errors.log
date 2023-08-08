@@ -9,3 +9,16 @@
 {"level":"error","message":"loginUser = generateTokenResetPass is not defined"}
 {"level":"error","message":"loginUser = loginNotification is not defined"}
 {"level":"error","message":"loginUser = sendEmail is not defined"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"Error deleteProductById: NO tiene permiso para eliminar este producto!"}
+{"level":"error","message":"putProductInCart = El Producto con ID 64d277e90f282487a242b874 NO puede agregarse!"}
+{"level":"error","message":"putProductInCart = El Producto con ID 64d277e90f282487a242b874 NO puede agregarse!"}
