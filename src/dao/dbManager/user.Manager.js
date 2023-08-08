@@ -16,8 +16,8 @@ export default class userManager {
         return result;
     };
 
-    updateUserPass = async (id, newPass) => {
-        const result = await userModel.updateOne({_id: id}, {$set: {password: newPass} });
+    updateUser = async (id, user) => {
+        const result = await userModel.updateOne({_id: id}, { $set: user });
         return result;
     };
 

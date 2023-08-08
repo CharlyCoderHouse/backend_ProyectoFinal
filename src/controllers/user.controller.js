@@ -1,4 +1,4 @@
-import { getUser as getUserService, addUser as addUserService, updateUserPass as updateUserPassService } from '../services/user.service.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
@@ -144,7 +144,7 @@ const passLink = async (req, res) => {
 };
 
 const linkPass = (req, res) => {
-    
+
     const accessToken = req.query.token;
 
     res.cookie(
@@ -162,13 +162,12 @@ const putPass = async (req, res) =>{
         const user = await getUserService({ email });
 
         if (isValidPassword(user, password)) {
-            req.logger.warning(`2 User = ` + responseMessages.invalid_password); 
+            req.logger.warning(`User = ` + responseMessages.invalid_password); 
             return res.status(401).send({ status: 'error', error: responseMessages.invalid_password })
         } else {
             const id = String(user._id)
             const newPass =  createHash(password)
-    
-            const result = await updateUserPassService(id, newPass);
+            const result = await updateUserService(id, { "password": newPass });
             
             //Valido que se realizo el UPDATE
             if (result.acknowledged & result.modifiedCount!==0) {
@@ -187,6 +186,11 @@ const putPass = async (req, res) =>{
     }
 };
 
+const changeRol = (req, res) => {
+    const user = new UsersDto(req.user);
+    res.send({ status: 'success', payload: user });
+};
+
 export { 
     registerUser, 
     loginUser, 
@@ -196,5 +200,6 @@ export {
     putPass,
     gitUser, 
     gitCallbackUser, 
-    currentUser 
+    currentUser,
+    changeRol 
 }

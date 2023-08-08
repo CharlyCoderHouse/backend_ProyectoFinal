@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { registerUser, loginUser, logoutUser, passLink, linkPass, putPass, gitUser, gitCallbackUser, currentUser } from "../controllers/user.controller.js"
-import { authToken, authTokenPass, passportCall } from '../utils.js';
+import { registerUser, loginUser, logoutUser, passLink, linkPass, putPass, 
+    gitUser, gitCallbackUser, currentUser, changeRol } from "../controllers/user.controller.js"
+import { authTokenPass, passportCall } from '../utils.js';
 
 const router = Router();
 
@@ -14,21 +15,25 @@ router.route('/logout')
     .get(logoutUser);
 
 router.route('/password_link')
-    .post(passLink);    
+    .post(passLink);
 
 router.route('/linkPassword')
-    .get(authTokenPass, linkPass)      
+    .get(authTokenPass, linkPass)
 
 router.route('/changePassword')
     .post(passportCall('jwt'), putPass);
 
 router.route('/github')
-    .get(passportCall('github', { scope: ['user:email']}), gitUser);
+    .get(passportCall('github', { scope: ['user:email'] }), gitUser);
 
 router.route('/github-callback')
-    .get(passportCall('github', { failureRedirect: '/login' }), gitCallbackUser);    
+    .get(passportCall('github', { failureRedirect: '/login' }), gitCallbackUser);
 
 router.route('/current')
     .get(passportCall('jwt'), currentUser);
+
+router.route('/premium/:uid')
+    .post(passportCall('jwt'), changeRol);
+
 
 export default router;
