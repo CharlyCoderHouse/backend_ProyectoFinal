@@ -60,6 +60,7 @@ const authorization = (role) => {
             };
         });
         if(!flag) return res.status(403).send({error: responseMessages.not_permissions});
+       
         next();
     }
 

@@ -24,3 +24,7 @@ Es un Ecommerce de la Joyería PUGA de la ciudad de Azul, Provincia de Buenos Ai
 - [passport](https://www.npmjs.com/package/passport)
 - [passport-local](https://www.npmjs.com/package/passport-local)
 - [passport-github2](https://www.npmjs.com/package/passport-github2)
+- [@faker-js](https://fakerjs.dev/)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+- [nodemailer](https://nodemailer.com/about/)
