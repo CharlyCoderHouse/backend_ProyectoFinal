@@ -1,5 +1,5 @@
 import express, { json, urlencoded } from 'express';
-import { __dirname } from './utils.js';
+import { __dirname } from './utils/utils.js';
 import { join } from 'path';
 import { engine } from "express-handlebars";
 import { Server } from 'socket.io';
@@ -20,6 +20,8 @@ import cookieParser from 'cookie-parser';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 import { addLogger } from './utils/logger.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
 
 //Creo el Servidor Express
 const app = express();
@@ -27,6 +29,20 @@ app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
 
+//Para documentación del Proyecto con Swagger
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación del proyecto Joyería Puga - ecommerce',
+            description: 'API pensada para venta de artículos de Joyería y Relojería. Proyecto para comisión 39760 CoderHouse'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Middleware para cookies
 app.use(cookieParser());

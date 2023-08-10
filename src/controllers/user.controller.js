@@ -1,6 +1,6 @@
 import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
-import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils.js';
+import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
 import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.service.js';

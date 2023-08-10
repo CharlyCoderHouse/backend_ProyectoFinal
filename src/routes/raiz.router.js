@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { passportCall } from '../utils.js';
+import { passportCall } from '../utils/utils.js';
 import { iniRaiz, loginRaiz, resetRaiz, resetRaizError, profileRaiz, regRaiz } from '../controllers/raiz.controller.js';
 
 const router = Router();
