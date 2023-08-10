@@ -29,7 +29,7 @@ app.use(express.static(`${__dirname}/public`))
 app.use(json());
 app.use(urlencoded({extended: true}));
 
-//Para documentación del Proyecto con Swagger
+//Para documentación del Proyecto con Swagger 
 const swaggerOptions = {
     definition: {
         openapi: '3.0.1',
@@ -47,7 +47,7 @@ app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 // Middleware para cookies
 app.use(cookieParser());
 
-// Middleware para logger
+// Middleware para logger 
 app.use(addLogger);
 
 //middleware Log conexiones

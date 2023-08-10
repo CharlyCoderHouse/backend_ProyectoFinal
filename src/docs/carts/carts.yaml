@@ -1,50 +1,50 @@
 paths:
   /api/carts: 
-    get:
-      summary: Obtiene todos los usuarios
+    post:
+      summary: Crea un nuevo carrito
       tags:
         - Carts
       responses:
         "200":
-          description: Los usuarios fueron obtenidos satisfactoriamente de la BDD
+          description: Se creo el carrito exitosamente
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#components/schemas/User'
+                $ref: '#components/schemas/Cart'
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
-  /api/carts/{uid}:
+  /api/carts/{cid}:
     get:
-      summary: Obtiene un solo usuario a partir de su uid
+      summary: Obtiene un carrito por medio de su ID
       tags:
         - Carts
       parameters:
-        - name: uid
+        - name: cid
           in: path
           required: true
-          description: El id del usuario
+          description: El id del carrito
           schema:
-            $type: String
+            $type: array
+            items:
+                  $ref: '#components/schemas/Cart'
       responses:
         "200":
-          description: El usuario fue obttenido satisfcatoriamente de la BDD
+          description: El carrito fue obtenido satisfcatoriamente de la BDD
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/User'
-        "500":
-          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+                $ref: '#components/schemas/Cart'
+        "404":
+          description: El carrito con ID {cid} NO existe
     put:
-      summary: Actualiza el usuario a partir de su uid
+      summary: Ingreso productos en el carrito
       tags:
         - Carts
       parameters:
-        - name: uid
+        - name: cid
           in: path
           required: true
-          description: El id del usuario
+          description: El id del carrito
           schema:
             $type: String
       requestBody:
@@ -52,66 +52,169 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#components/requestBodies/updateUser'
+              $ref: '#components/requestBodies/putCartById'
       responses:
         "200":
-          description: El usuario fue actualizado correctamente
+          description: Se agrego correctamente el producto al carrito
+        "401":
+          description: El Producto con ID {productId} NO puede agregarse por ser del mismo usuario!
+        "402":
+          description: El producto con ID {productId} NO existe!
         "404":
-          description: El usuario no fue encontrado en la BDD
+          description: El carrito con ID {productId} NO existe!
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+    delete:
+      summary: Elimina todos los productos del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Se eliminaron todos los productos del carrito
+        "404":
+          description: El carrito con ID {cid} NO existe!
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/carts/{cid}/product/{pid}:
+    put:
+      summary: Ingreso productos en el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/putProductInCart'
+      responses:
+        "200":
+          description: Se agrego correctamente el producto al carrito
+        "401":
+          description: El Producto con ID {productId} NO puede agregarse por ser del mismo usuario!
+        "402":
+          description: El producto con ID {productId} NO existe!
+        "404":
+          description: El carrito con ID {productId} NO existe!
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String            
+      responses:
+        "200":
+          description: Se elimino el producto del carrito
+        "404":
+          description: El carrito con ID {cid} NO existe!
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/carts/{cid}/purchase:
+    put:
+      summary: Proceso de finalización y creación del ticket de compra.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String         
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/postPurchase'
+      responses:
+        "200":
+          description: Se genero correctamente la compra con el ID {result.code}, pueden quedar productos en el carrito que no tenían suficiente stock para la compra
+        "404":
+          description: No hay productos en el carrito o los productos tienen stock insuficiente para la compra.
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
 components:
   schemas:
-    User:
+    Cart:
       type: object
       properties:
         _id:
           type: ObjectId
           description: Id autogenerado de mongodb
-        first_name:
-          type: String
-          description: Nombre del usuario
-        last_name:
-          type: String
-          description: Apellido del usuario
-        email:
-          type: String
-          description: Correo del usuario
-        password:
-          type: String
-          description: Password del usuario
-        role:
-          type: String
-          description: Rol del usuario
+        products:
+          type: object
+          description: Productos en el carrito
+          properties:
+            product: 
+              type: ObjectId
+              description: Id autogenerado de mongodb
+            quantity:
+              type: Number
+              description: Cantidad del producto en el carrito
       example:
-        _id: ObjectId("asdad324524")
-        first_name: Jose
-        last_name: Guerra
-        email: hg@gmail.com
-        password: $asd645
-        role: admin
+        _id: ObjectId("64637d6f87eb97d9102c1c8f")
+        products: 
+          product: 6462b9af05a9b3e33768045a
+          quantity: 1
   requestBodies:
-    updateUser:
+    putCartById:
       type: object
       properties:
-        first_name:
-          type: String
-          description: Nombre del usuario
-        last_name:
-          type: String
-          description: Apellido del usuario
-        email:
-          type: String
-          description: Correo del usuario
-        password:
-          type: String
-          description: Password del usuario
-        role:
-          type: String
-          description: Rol del usuario
+        productId:
+          type: string
+          description: Id del producto
+        quantity:
+          type: Number
+          description: Cantidad del producto a agregar al carrito
       example:
-        first_name: Jose
-        last_name: Guerra
-        email: hg@gmail.com
-        password: $asd645
-        role: admin
+        productId: 64d51a7069c9eb9321b86cf4
+        quantity: 2
+    putProductInCart:
+      type: object
+      properties:
+        quantity:
+          type: Number
+          description: Cantidad del producto a agregar al carrito
+      example:
+        quantity: 2       
+    postPurchase:
+      type: object
+      properties:
+        userMail:
+          type: string
+          description: Email del usuario
+      example:
+        req.user.email: cdiblasi@bykom.com             

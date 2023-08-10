@@ -65,14 +65,14 @@ const putCartById = async(req, res) => {
         
         // Premium no puede cargar sus propios productos
         if (req.user.role==="premium" & product[0].owner===req.user.email) {
-            req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
-            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse!` };
+            req.logger.error(`putCartById = El Producto con ID ${productId} NO puede agregarse!`);
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse por ser del mismo usuario!` };
             return res.status(401).json(response);
         }
     } catch (error) {
         req.logger.error(`putCartById = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
-        return res.status(404).json(response);
+        return res.status(402).json(response);
     }
     // Una vez validado llamar al metodo addProductInCart en Service
     try {
@@ -124,14 +124,14 @@ const putProductInCart = async(req, res) => {
         if (req.user.role==="premium" & product[0].owner===req.user.email) {
             
             req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
-            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse!` };
+            const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse por ser del mismo usuario!` };
             return res.status(401).json(response);
         }
 
     } catch (error) {
         req.logger.error(`putProductInCart = El Producto con ID ${productId} NO existe!`);
         const response = { status: "Error", payload: `El Producto con ID ${productId} NO existe!` };
-        return res.status(404).json(response);
+        return res.status(402).json(response);
     };
     // Una vez validado llamar al metodo addProductInCart en service
     try {
@@ -141,7 +141,7 @@ const putProductInCart = async(req, res) => {
         };
     } catch (error) {
         req.logger.error(`putProductInCart = No se pudo actualizar el Producto al carrito!`);
-        res.status(404).send({ status: "NOT FOUND", payload: `No se pudo actualizar el Producto al carrito!` });
+        res.status(500).send({ status: "NOT FOUND", payload: `No se pudo actualizar el Producto al carrito!` });
     };
 };
 
@@ -209,7 +209,7 @@ const postPurchase = async(req, res) => {
     } catch (error) {
         req.logger.error(`postPurchase = ` + error.message);
         const response = { status: "Error", payload: error };
-        return res.status(404).json(response);
+        return res.status(500).json(response);
     };
     
 };
