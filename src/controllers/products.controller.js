@@ -106,7 +106,7 @@ const putProductById = async(req,res) =>{
     //Valido que el campo ID no venga para actualizar
     if("id" in product){
         req.logger.warning(`putProductById = Error no se puede modificar el id`);
-        return res.status(404).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
+        return res.status(401).json({ status: "NOT FOUND", data: "Error no se puede modificar el id"});
     };
 
     //MongoDB
@@ -126,7 +126,7 @@ const putProductById = async(req,res) =>{
     } catch (error) {
         req.logger.error(`putProductById = El producto con ID ${id} NO existe!`);
         const reserror = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };
-        return res.status(404).send(reserror);
+        return res.status(500).send(reserror);
     };
 };
 
@@ -160,11 +160,11 @@ const deleteProductById = async(req,res)=>{
             req.logger.error(`deleteProductById = NO existe el producto que desea eliminar!`);
             const response = { status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!`}; 
             //muestro resultado
-            res.status(200).json(response);
+            res.status(404).json(response);
         };
     } catch (error) {
         req.logger.error(`deleteProductById = NO existe el producto que desea eliminar!`);
-        return res.status(404).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
+        return res.status(500).json({ status: "NOT FOUND", payload: `NO existe el producto que desea eliminar!` });
     };
 };
 

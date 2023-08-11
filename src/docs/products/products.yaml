@@ -1,12 +1,17 @@
 paths:
   /api/products: 
     get:
-      summary: Obtiene todos los usuarios
+      summary: Obtiene todos los productos
       tags:
         - Products
+      parameters: 
+        - $ref: '#/components/parameters/sortParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/queryParam'   
       responses:
         "200":
-          description: Los usuarios fueron obtenidos satisfactoriamente de la BDD
+          description: Los productos fueron obtenidos satisfactoriamente de la BDD
           content:
             application/json:
               schema:
@@ -15,36 +20,61 @@ paths:
                   $ref: '#components/schemas/Product'
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
-  /api/products/{uid}:
+    post:
+      security: 
+        - bearerAuth: []
+      summary: Crea un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/postProduct'
+      responses:
+        "200":
+          description: El producto fue creado correctamente
+        "400":
+          description: Hay campos que faltan completar!
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+        "501":
+          description: Ya existe el producto que quiere crear!
+  /api/products/{pid}:
     get:
-      summary: Obtiene un solo usuario a partir de su uid
+      summary: Obtiene un solo producto a partir de su ID
       tags:
         - Products
       parameters:
-        - name: uid
+        - name: pid
           in: path
           required: true
-          description: El id del usuario
+          description: El id del producto
           schema:
             $type: String
       responses:
         "200":
-          description: El usuario fue obttenido satisfcatoriamente de la BDD
+          description: El producto se obtuvo satisfcatoriamente de la BDD
           content:
             application/json:
               schema:
                 $ref: '#components/schemas/Product'
+        "404":
+          description: El prodcuto con ID {pid} NO existe!
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
     put:
-      summary: Actualiza el usuario a partir de su uid
+      security: 
+        - bearerAuth: []    
+      summary: Actualiza el producto a partir de su ID
       tags:
         - Products
       parameters:
-        - name: uid
+        - name: pid
           in: path
           required: true
-          description: El id del usuario
+          description: El id del producto
           schema:
             $type: String
       requestBody:
@@ -52,15 +82,48 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#components/requestBodies/updateUser'
+              $ref: '#components/requestBodies/putProduct'
       responses:
         "200":
-          description: El usuario fue actualizado correctamente
+          description: El producto fue actualizado correctamente
         "404":
-          description: El usuario no fue encontrado en la BDD
+          description: Error no se pudo actualizar el producto
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+    delete:
+      security: 
+        - bearerAuth: []    
+      summary: Elimina un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/deleteProduct'                  
+      responses:
+        "200":
+          description: Se elimino el producto del correctamente
+        "403":
+          description: NO tiene permiso para eliminar este producto!          
+        "404":
+          description: El producto con ID {pid} NO existe!
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Product:
       type: object
@@ -116,27 +179,104 @@ components:
         status: true
         owner: cdiblasi@bykom.com
   requestBodies:
-    updateUser:
+    postProduct:
       type: object
       properties:
-        first_name:
+        title:
           type: String
-          description: Nombre del usuario
-        last_name:
+          description: Nombre del producto
+        description:
           type: String
-          description: Apellido del usuario
-        email:
+          description: Descripción del producto
+        code:
           type: String
-          description: Correo del usuario
-        password:
+          description: Código único del producto
+        price:
+          type: Number
+          description: Precio de venta del producto
+        stock:
+          type: Numbrer
+          description: Existencia del producto. Por defecto en 0
+        category:
           type: String
-          description: Password del usuario
-        role:
-          type: String
-          description: Rol del usuario
+          description: Categoría del producto  
+        thumbnail:
+          type: Array
+          description: Imágenes del producto, las mismas se almacen en link
       example:
-        first_name: Jose
-        last_name: Guerra
-        email: hg@gmail.com
-        password: $asd645
-        role: admin
+        title: Anillo de Diamantes
+        description: compralo hasta en 12 cuotas.
+        price: 3500
+        code: 101
+        stock: 22
+        category: Joyeria
+        thumbnail: ["https://i.postimg.cc/zvSK4m47/Anillo1.png"]
+    putProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio de venta del producto
+        stock:
+          type: Numbrer
+          description: Existencia del producto. Por defecto en 0
+        category:
+          type: String
+          description: Categoría del producto  
+        thumbnail:
+          type: Array
+          description: Imágenes del producto, las mismas se almacen en link
+      example:
+        title: Anillo de Diamantes
+        description: compralo hasta en 12 cuotas.
+        price: 3500
+        stock: 22
+        category: Joyeria
+        thumbnail: ["https://i.postimg.cc/zvSK4m47/Anillo1.png"]  
+    deleteProduct:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email del usuario
+        role:
+          type: string
+          description: Role del usuario          
+      example:
+        req.user.email: cdiblasi@bykom.com    
+        req.user.role: admin              
+  parameters:
+    sortParam:
+      name: sort
+      in: query
+      description: " Orden por precio"
+      example: "{price: sort}"
+      schema:
+        type: string
+    limitParam:
+      name: limit
+      in: query
+      description: "número de resultados a obtener por página"
+      example: 10
+      schema:
+        type: integer    
+    pageParam:
+      name: page
+      in: query
+      description: "número de página actual"
+      example: 0
+      schema:
+        type: integer    
+    queryParam:
+      name: query
+      in: query
+      description: " Filtro por categoría"
+      example: "{category: query}"
+      schema:
+        type: string                

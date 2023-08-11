@@ -15,6 +15,8 @@ paths:
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
   /api/carts/{cid}:
     get:
+      security: 
+        - bearerAuth: []
       summary: Obtiene un carrito por medio de su ID
       tags:
         - Carts
@@ -37,6 +39,8 @@ paths:
         "404":
           description: El carrito con ID {cid} NO existe
     put:
+      security: 
+        - bearerAuth: []
       summary: Ingreso productos en el carrito
       tags:
         - Carts
@@ -65,6 +69,8 @@ paths:
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
     delete:
+      security: 
+        - bearerAuth: []    
       summary: Elimina todos los productos del carrito
       tags:
         - Carts
@@ -84,6 +90,8 @@ paths:
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
   /api/carts/{cid}/product/{pid}:
     put:
+      security: 
+        - bearerAuth: []    
       summary: Ingreso productos en el carrito
       tags:
         - Carts
@@ -118,6 +126,8 @@ paths:
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
     delete:
+      security: 
+        - bearerAuth: []    
       summary: Elimina un producto del carrito
       tags:
         - Carts
@@ -143,6 +153,8 @@ paths:
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
   /api/carts/{cid}/purchase:
     put:
+      security: 
+        - bearerAuth: []    
       summary: Proceso de finalización y creación del ticket de compra.
       tags:
         - Carts
@@ -167,6 +179,11 @@ paths:
         "500":
           description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Cart:
       type: object
