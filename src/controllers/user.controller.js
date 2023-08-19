@@ -1,4 +1,4 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService } from '../services/user.service.js';
+import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, deleteUserById as deleteUserByIdService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
@@ -209,6 +209,28 @@ const changeRol = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    try {
+        
+        const id = String(req.params.uid);
+        
+        const result = await deleteUserByIdService(id);
+        
+        //Valido que se realizo el UPDATE
+        if (result.acknowledged & result.deletedCount!==0) {
+            const response = { status: "Success", payload: `El usuario fue eliminado con Exito!`};       
+            //muestro resultado
+            res.status(200).json(response);
+        } else {
+            req.logger.error(`deleteUser = No se pudo eliminar el user`);
+            //muestro resultado error
+            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
+        };   
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+};
+
 export { 
     registerUser, 
     loginUser, 
@@ -219,5 +241,6 @@ export {
     gitUser, 
     gitCallbackUser, 
     currentUser,
-    changeRol 
+    changeRol,
+    deleteUser 
 }

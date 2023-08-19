@@ -14,6 +14,11 @@ const getCartById = async (cartId) => {
     return cart;
 };
 
+const deleteCartById = async (cartId) => {
+    const cart = await cartsRepository.deleteCartById(cartId);
+    return cart;
+};
+
 const putCartById = async (cartId, productId, quantity) => {
     const result = await cartsRepository.addProductInCart(cartId, productId, quantity);
     return result;
@@ -36,7 +41,6 @@ const deleteProductInCart = async (cartId,productId) => {
 
 const postPurchase = async (cart, userMail) => {
     //suma precio
-    //console.log("1A Ingreso a service grabar ticket");
     const sum = cart.reduce((acc, prev) => {
         acc += prev.price * prev.quantity;
         return acc;
@@ -51,16 +55,15 @@ const postPurchase = async (cart, userMail) => {
         purchaser: userMail
     };
 
-    //console.log(ticket);
-
     const result = await ticketRepository.createTicket(ticket);
-    //console.log(result);
+    
     return result;
 };
 
 export {
     postCart,
     getCartById,
+    deleteCartById,
     putCartById,
     deleteAllProductsInCart, 
     putProductInCart,

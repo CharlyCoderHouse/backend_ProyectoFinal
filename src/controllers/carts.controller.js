@@ -5,7 +5,8 @@ import {
     deleteAllProductsInCart as deleteAllProductsInCartService,  
     putProductInCart as putProductInCartService,
     deleteProductInCart as deleteProductInCartService, 
-    postPurchase as postPurchaseService
+    postPurchase as postPurchaseService,
+    deleteCartById as deleteCartByIdService
 } from '../services/carts.service.js';
 import { 
     getProductById as getProductByIdService, 
@@ -41,6 +42,20 @@ const getCartById = async(req, res) => {
         req.logger.error(`getCartById = El carrito con ID ${cartId} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
         res.status(404).send(response);
+    };
+};
+
+const deleteCartById = async(req, res) => {
+    //Leo el ID por parametros
+    let cartId = String(req.params.cid);
+    try {
+        const cart = await deleteCartByIdService(cartId);
+        const response ={ status: "Success", payload: cart};
+        res.status(200).json(response);
+    } catch (error) {
+        req.logger.error(`deleteCartById = El carrito con ID ${cartId} NO existe!`);
+        const response = { status: "NOT FOUND", payload: `El carrito con ID ${cartId} NO existe!` };
+        res.status(500).send(response);
     };
 };
 
@@ -163,8 +178,8 @@ const deleteProductInCart = async(req, res) => {
 const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
-    //const userMail = req.user.email; PARA CUANDO TENGA VISTA SACO EL MAIL DEL USER
-    const userMail = "cdiblasi@bykom.com"
+    const userMail = req.user.email;
+    // const userMail = "cdiblasi@bykom.com" 
     // Primero Valido que exista el carrito 
     try {
         const newCart = [];
@@ -192,7 +207,7 @@ const postPurchase = async(req, res) => {
             const result = await postPurchaseService(newCart, userMail);
             if (noStockCart.length > 0) {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
-                res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
+                res.status(200).send({ status: 'success with error', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
             } else {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}`);
                 res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
@@ -214,10 +229,10 @@ const postPurchase = async(req, res) => {
     
 };
 
-
 export {
     postCart, 
     getCartById, 
+    deleteCartById, 
     putCartById, 
     deleteAllProductsInCart,
     putProductInCart,

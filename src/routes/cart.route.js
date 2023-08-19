@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart, deleteProductInCart, postPurchase } from '../controllers/carts.controller.js';
+import { postCart, getCartById, putCartById, deleteAllProductsInCart, putProductInCart, deleteProductInCart, postPurchase, deleteCartById } from '../controllers/carts.controller.js';
 import { authorization, passportCall } from '../utils/utils.js';
 
 //INICIALIZO ROUTER
@@ -13,12 +13,14 @@ router.route('/:cid')
     .put(passportCall('jwt'), authorization(['user', 'premium']), putCartById)
     .delete(passportCall('jwt'), authorization(['user']), deleteAllProductsInCart);
 
+router.route('/delete/:cid')
+    .delete(deleteCartById)
+    
 router.route('/:cid/product/:pid')
     .put(passportCall('jwt'), authorization(['user', 'premium']), putProductInCart)
     .delete(passportCall('jwt'), authorization(['user']), deleteProductInCart);    
 
 router.route('/:cid/purchase')
-//    .put(passportCall('jwt'), postPurchase); PARA CUANDO TENGA LA VISTA para comprar y validar usuario
-    .put(postPurchase);
+    .put(passportCall('jwt'), postPurchase); 
 
 export default router;

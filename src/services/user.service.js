@@ -17,8 +17,14 @@ const updateUser = async (id, user) => {
     return result;
 };
 
+const deleteUserById = async (id) => {
+    const result = await usersRepository.deleteUserById(id);
+    return result;
+};
+
 export {
     getUser,
     updateUser,
-    addUser  
+    addUser ,
+    deleteUserById 
 }

@@ -21,5 +21,10 @@ export default class userManager {
         return result;
     };
 
+    deleteUserById = async (id) => {
+        const result = await userModel.deleteOne({_id: id});
+        return result;
+    };
+
 };
 

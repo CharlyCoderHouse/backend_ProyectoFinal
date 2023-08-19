@@ -9,6 +9,7 @@ import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/cart.route.js';
 import viewsProdRouter from './routes/viewsProd.route.js';
 import sessionsRouter from './routes/sessions.router.js';
+import usersRouter from './routes/users.router.js';
 import mockingproducts from './routes/mockingproducts.route.js';
 import loggerTest from './routes/loggerTest.route.js';
 import './dao/dbManager/dbConfig.js'
@@ -80,6 +81,8 @@ app.use("/home", homeRouter);
 app.use("/api/products", productsRouter);
 // Carrito
 app.use("/api/carts", cartsRouter);
+// MANEJO DE USUARIOS
+app.use('/api/users', usersRouter);
 // Carga de productos
 app.use('/realtimeproducts', viewsProdRouter)
 // Page Chat

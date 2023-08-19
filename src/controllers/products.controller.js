@@ -86,9 +86,9 @@ const getProductById = async (req,res) => {
         const response = { status: "OK", payload: productById} 
         //muestro resultado
         //Postman
-        // res.status(200).json(response);
+        res.status(200).json(response);
         //Render page
-        res.render("products.hbs", { productById });
+        // res.render("products.hbs", { productById } );
     } catch (error) {
         req.logger.error(`getProductById = El producto con ID ${id} NO existe!`);
         const response = { status: "NOT FOUND", payload: `El producto con ID ${id} NO existe!` };

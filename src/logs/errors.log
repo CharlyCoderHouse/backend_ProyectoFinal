@@ -22,3 +22,10 @@
 {"level":"error","message":"Error deleteProductById: NO tiene permiso para eliminar este producto!"}
 {"level":"error","message":"putProductInCart = El Producto con ID 64d277e90f282487a242b874 NO puede agregarse!"}
 {"level":"error","message":"putProductInCart = El Producto con ID 64d277e90f282487a242b874 NO puede agregarse!"}
+{"level":"error","message":"getCartById = El carrito con ID 648c5210b6d45fb7738be22a NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0c8a9313605899a1b5926 NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0c9e0608a796e36942dfb NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0c9e0608a796e36942dfb NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0c9e0608a796e36942dfb NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0d0c8784a3056ef6191bb NO existe!"}
+{"level":"error","message":"getProductById = El producto con ID 64e0d0c8784a3056ef6191bb NO existe!"}

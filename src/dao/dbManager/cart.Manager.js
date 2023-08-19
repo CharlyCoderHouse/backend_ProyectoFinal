@@ -18,7 +18,11 @@ export default class cartManager {
 
     getCartById = async (cartId) => {
         const cart = await cartModel.find({_id: cartId}).lean();
-        //console.log(cart);
+        return cart;    
+    };
+
+    deleteCartById = async (cartId) => {
+        const cart = await cartModel.deleteOne({_id: cartId});
         return cart;    
     };
 
