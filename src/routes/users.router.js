@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { deleteUser , changeRol } from "../controllers/user.controller.js"
+import { deleteUser , changeRol, insertFile } from "../controllers/user.controller.js"
+import { uploader } from '../utils/utils.js';
 
 const router = Router();
 
@@ -10,6 +11,6 @@ router.route('/premium/:uid')
     .post(changeRol);
 
 router.route('/:uid/documents')
-    .post(changeRol);
+    .post(uploader.single('file'), insertFile);
 
 export default router;

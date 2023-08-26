@@ -7,10 +7,15 @@ export default class userManager {
     };
     
     getUser = async (email) => {
-        const products = await userModel.findOne( email );
-        return products; 
+        const user = await userModel.findOne( email );
+        return user; 
     };
 
+    getUserById = async (id) => {
+        const user = await userModel.findOne( id );
+        return user; 
+    };
+    
     addUser = async (user) => {
         const result = await userModel.create(user);
         return result;

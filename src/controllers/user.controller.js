@@ -1,4 +1,7 @@
-import { getUser as getUserService, addUser as addUserService, updateUser as updateUserService, deleteUserById as deleteUserByIdService } from '../services/user.service.js';
+import { getUser as getUserService, 
+    addUser as addUserService, 
+    updateUser as updateUserService, 
+    deleteUserById as deleteUserByIdService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
@@ -6,6 +9,7 @@ import UsersDto from '../dao/DTOs/users.dto.js';
 import { postCart } from '../services/carts.service.js';
 import { loginNotification } from '../utils/custom-html.js';
 import { sendEmail } from "../services/mail.js";
+import moment from "moment";
 
 const registerUser = async (req, res) => {
     try {
@@ -71,7 +75,7 @@ const loginUser =  async (req, res) => {
 
         // Guardo la ultima conexión
         const userId = String(user._id)
-        const newLastConnect =  new Date();
+        const newLastConnect =  moment().format('LLL');
         await updateUserService(userId, { "last_connection": newLastConnect });
 
         res.cookie(
@@ -87,7 +91,7 @@ const loginUser =  async (req, res) => {
 const logoutUser = async (req, res) => {
     // Guardo la ultima conexión
     const userId = String(req.user._id)
-    const newLastConnect =  new Date();
+    const newLastConnect =  moment().format('LLL');;
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.clearCookie(PRIVATE_COOKIE);
@@ -115,7 +119,7 @@ const gitCallbackUser = async (req, res) => {
     
     // Guardo la ultima conexión
     const userId = String(user._id)
-    const newLastConnect =  new Date();
+    const newLastConnect =  moment().format('LLL');;
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.cookie(
@@ -247,6 +251,30 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const insertFile = async (req, res) => {
+
+    const id = String(req.params.uid);
+    //console.log(req.file);
+    const filename = req.file.filename;
+    const newDocument = {
+        name: req.file.fieldname,
+        reference: `http://localhost:8080/data/profiles/${filename}`
+    }
+
+    const result = await updateUserService(id, {documents: newDocument});
+    
+    //Valido que se realizo el UPDATE
+    if (result.acknowledged & result.modifiedCount!==0) {
+        const response = { status: "Success", payload: `Se adjunto el archivo al usuario!`};       
+        //muestro resultado
+        res.status(200).json(response);
+    } else {
+        req.logger.error(`insertFile = No se ingresar la imagen`);
+        //muestro resultado error
+        res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, verifique los datos ingresados"});
+    }; 
+}
+
 export { 
     registerUser, 
     loginUser, 
@@ -258,5 +286,6 @@ export {
     gitCallbackUser, 
     currentUser,
     changeRol,
-    deleteUser 
+    deleteUser,
+    insertFile
 }

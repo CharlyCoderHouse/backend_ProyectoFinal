@@ -30,3 +30,5 @@
 {"level":"error","message":"getProductById = El producto con ID 64e0d0c8784a3056ef6191bb NO existe!"}
 {"level":"error","message":"getProductById = El producto con ID 64e0d0c8784a3056ef6191bb NO existe!"}
 {"level":"error","message":"loginUser = id is not defined"}
+{"level":"error","message":"insertFile = No se ingresar la imagen"}
+{"level":"error","message":"insertFile = No se ingresar la imagen"}

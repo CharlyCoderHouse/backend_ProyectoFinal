@@ -8,6 +8,7 @@ import { responseMessages } from '../helpers/proyect.helpers.js';
 import { fakerES as faker } from '@faker-js/faker';
 import nodemailer from 'nodemailer';
 import config from "../config/config.js"
+import multer from "multer";
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
@@ -106,6 +107,21 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `${__dirname}/public/data/profiles`);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const uploader = multer({
+    storage, onError: (err, next) => {
+        console.log(err);
+        next();
+    }
+});
 
 export {
     __dirname,
@@ -118,5 +134,6 @@ export {
     authorization,
     generateProduct,
     generateTokenResetPass,
-    transporter
+    transporter,
+    uploader
 }
