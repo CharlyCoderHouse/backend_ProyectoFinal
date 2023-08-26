@@ -9,4 +9,7 @@ router.route('/delete/:uid')
 router.route('/premium/:uid')
     .post(changeRol);
 
+router.route('/:uid/documents')
+    .post(changeRol);
+
 export default router;

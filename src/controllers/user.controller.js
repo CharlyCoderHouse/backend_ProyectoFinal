@@ -69,16 +69,27 @@ const loginUser =  async (req, res) => {
 
         const accessToken = generateToken(user);
 
+        // Guardo la ultima conexión
+        const userId = String(user._id)
+        const newLastConnect =  new Date();
+        await updateUserService(userId, { "last_connection": newLastConnect });
+
         res.cookie(
             PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }
         ).send({ status: 'success', message: responseMessages.login_ok });
+
     } catch (error) {
         req.logger.error(`loginUser = ` + error.message);
         res.status(500).send({ status: 'error', error });
     }
 };
 
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
+    // Guardo la ultima conexión
+    const userId = String(req.user._id)
+    const newLastConnect =  new Date();
+    await updateUserService(userId, { "last_connection": newLastConnect });
+
     res.clearCookie(PRIVATE_COOKIE);
     res.redirect('/login')
 };
@@ -101,6 +112,11 @@ const gitCallbackUser = async (req, res) => {
         req.user.role = "admin";
     }
     const accessToken = generateToken(req.user);
+    
+    // Guardo la ultima conexión
+    const userId = String(user._id)
+    const newLastConnect =  new Date();
+    await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.cookie(
         PRIVATE_COOKIE, accessToken, { maxAge: 60 * 60 * 1000, httpOnly: true }

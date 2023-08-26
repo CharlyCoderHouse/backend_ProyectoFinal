@@ -12,7 +12,7 @@ router.route('/login')
     .post(loginUser);
 
 router.route('/logout')
-    .get(logoutUser);
+    .get(passportCall('jwt'), logoutUser);
 
 router.route('/password_link')
     .post(passLink);
@@ -31,9 +31,5 @@ router.route('/github-callback')
 
 router.route('/current')
     .get(passportCall('jwt'), currentUser);
-
-router.route('/premium/:uid')
-    .post(changeRol);
-
 
 export default router;
