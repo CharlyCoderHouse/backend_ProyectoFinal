@@ -11,6 +11,8 @@ router.route('/premium/:uid')
     .post(changeRol);
 
 router.route('/:uid/documents')
-    .post(uploader.single('file'), insertFile);
+    .post(uploader.fields([{name: 'profiles', maxCount: 1}, 
+        {name: 'products', maxCount: 1},
+        {name: 'documents', maxCount: 3}]), insertFile);
 
 export default router;

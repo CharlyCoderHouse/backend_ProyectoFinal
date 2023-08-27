@@ -253,12 +253,38 @@ const deleteUser = async (req, res) => {
 
 const insertFile = async (req, res) => {
 
-    const id = String(req.params.uid);
-    //console.log(req.file);
-    const filename = req.file.filename;
-    const newDocument = {
-        name: req.file.fieldname,
-        reference: `http://localhost:8080/data/profiles/${filename}`
+    const id = String(req.params.uid); 
+    
+    const newDocument = [];
+
+    if (!req.files) {
+        return res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, porque no hay archivos"});
+    }
+    if (req.files.profiles) {
+        for (let i=0; i < req.files.profiles.length; i ++){  
+        //req.files.profiles.forEach(element => {
+            console.log('profiles: ',req.files.profiles.length);
+            const filename = req.files.profiles[i].filename;
+            const name = req.files.profiles[i].fieldname
+            const obj1 = {
+                name: name,
+                reference: `http://localhost:8080/data/${name}/${filename}`
+            }
+            newDocument.push(obj1)
+        };
+    };
+    if (req.files.documents) {
+        //req.files.documents.forEach(element => {
+        for (let i=0; i < req.files.documents.length; i ++){    
+            console.log('documents: ',req.files.documents.length);
+            const filename = req.files.documents[i].filename;
+            const name = req.files.documents[i].fieldname
+            const obj2 = {
+                name: name,
+                reference: `http://localhost:8080/data/${name}/${filename}`
+            }
+            newDocument.push(obj2)
+        };
     }
 
     const result = await updateUserService(id, {documents: newDocument});

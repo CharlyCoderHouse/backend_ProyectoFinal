@@ -109,7 +109,20 @@ const transporter = nodemailer.createTransport({
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `${__dirname}/public/data/profiles`);
+    
+        switch (file.fieldname) {
+            case "profiles":
+                cb(null, `${__dirname}/public/data/profiles`);
+                break;
+            case "products":
+                cb(null, `${__dirname}/public/data/products`);
+                break;
+            case "documents":
+                cb(null, `${__dirname}/public/data/documents`);
+                break;    
+            default:
+                break;
+        }  
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
