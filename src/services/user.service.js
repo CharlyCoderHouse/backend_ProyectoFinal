@@ -22,6 +22,11 @@ const updateUser = async (id, user) => {
     return result;
 };
 
+const updatePushUser = async (id, data) => {
+    const result = await usersRepository.updatePushUser(id, data);
+    return result;
+};
+
 const deleteUserById = async (id) => {
     const result = await usersRepository.deleteUserById(id);
     return result;
@@ -31,6 +36,7 @@ export {
     getUser,
     getUserById,
     updateUser,
+    updatePushUser,
     addUser ,
     deleteUserById 
 }

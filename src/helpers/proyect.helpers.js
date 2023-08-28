@@ -10,7 +10,8 @@ const responseMessages = {
     not_authorized: 'Not authorized',
     not_permissions: 'Not permissions',
     invalid_password: 'Invalid password',
-    from_mail: '"Proyecto Coder - Joyería Puga" <charly.coder.23@gmail.com>' 
+    from_mail: '"Proyecto Coder - Joyería Puga" <charly.coder.23@gmail.com>',
+    not_complete_user: 'No puede cambiar de role ya que no cuenta con la documentación completa' 
 }
 
 export {

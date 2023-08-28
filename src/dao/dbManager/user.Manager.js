@@ -26,6 +26,11 @@ export default class userManager {
         return result;
     };
 
+    updatePushUser = async (id, data) => {
+        const result = await userModel.updateOne({_id: id}, {$push: data});
+        return result;
+    };
+
     deleteUserById = async (id) => {
         const result = await userModel.deleteOne({_id: id});
         return result;

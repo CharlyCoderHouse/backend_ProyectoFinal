@@ -9,6 +9,7 @@ import { fakerES as faker } from '@faker-js/faker';
 import nodemailer from 'nodemailer';
 import config from "../config/config.js"
 import multer from "multer";
+import { getUserById } from "../services/user.service.js";
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
@@ -129,12 +130,47 @@ const storage = multer.diskStorage({
     }
 });
 
-const uploader = multer({
-    storage, onError: (err, next) => {
-        console.log(err);
-        next();
-    }
-});
+const uploader = (req, res, next) => {
+    const upload = multer({storage, onError: (err, next) => {
+                            console.log(err);
+                            next();
+                        }}).fields([{name: 'profiles', maxCount: 1}, 
+                                {name: 'products', maxCount: 1},
+                                {name: 'documents', maxCount: 3}])
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json({ status: "NOT FOUND", data: "Error al cargar el archivo, verifique el nombre del post"});
+        } else if (err) {
+            return res.status(401).json({ status: "NOT FOUND", data: `Error en el archivo ${err}`});
+        } 
+        next(); 
+    })
+};
+
+const userComplete = async (req, res, next) => {
+    const id = String(req.params.uid);
+    const user = await getUserById({_id: id});
+    if(!user) return res.status(403).send({error: responseMessages.not_found});
+    if (user.role === "user"){
+        let flagId, flagAddr, flagAcc;
+        user.status.forEach(element => {
+            switch (element) {
+                case "IDENTIFICATION":
+                    flagId=true;
+                    break;
+                case "ADDRESS":
+                    flagAddr=true;
+                    break;
+                case "ACCOUNT":
+                    flagAcc=true;
+                    break;
+                }
+        });
+
+        if (!(flagId && flagAddr && flagAcc)) return res.status(403).send({error: responseMessages. not_complete_user})     
+    } 
+    next();
+};
 
 export {
     __dirname,
@@ -148,5 +184,6 @@ export {
     generateProduct,
     generateTokenResetPass,
     transporter,
-    uploader
+    uploader,
+    userComplete
 }

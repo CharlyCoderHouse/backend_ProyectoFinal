@@ -1,6 +1,7 @@
 import { getUser as getUserService, 
     addUser as addUserService, 
     updateUser as updateUserService, 
+    updatePushUser as updatePushUserService,
     deleteUserById as deleteUserByIdService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
@@ -260,34 +261,45 @@ const insertFile = async (req, res) => {
     if (!req.files) {
         return res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, porque no hay archivos"});
     }
+    
+    if (req.files.products) {
+        return res.status(200).json({ status: "Success", data: "Se almaceno la imagen del producto correctamente"});
+    }
+
     if (req.files.profiles) {
-        for (let i=0; i < req.files.profiles.length; i ++){  
-        //req.files.profiles.forEach(element => {
-            console.log('profiles: ',req.files.profiles.length);
-            const filename = req.files.profiles[i].filename;
-            const name = req.files.profiles[i].fieldname
+
+        req.files.profiles.forEach(element => {    
+            const filename = element.filename;
+            const name = element.fieldname
             const obj1 = {
                 name: name,
                 reference: `http://localhost:8080/data/${name}/${filename}`
             }
             newDocument.push(obj1)
-        };
+        });
     };
+
     if (req.files.documents) {
-        //req.files.documents.forEach(element => {
-        for (let i=0; i < req.files.documents.length; i ++){    
-            console.log('documents: ',req.files.documents.length);
-            const filename = req.files.documents[i].filename;
-            const name = req.files.documents[i].fieldname
+        const { type } = req.body;
+        
+        req.files.documents.forEach(element => {
+            const filename = element.filename;
+            let name = element.fieldname;
+
+            if (type){
+                name = String(type);
+                updatePushUserService(id, {status: name});
+            };
+
             const obj2 = {
                 name: name,
-                reference: `http://localhost:8080/data/${name}/${filename}`
+                reference: `http://localhost:8080/data/${element.fieldname}/${filename}`
             }
             newDocument.push(obj2)
-        };
+        });
     }
 
-    const result = await updateUserService(id, {documents: newDocument});
+    const result = await updatePushUserService(id, {documents: newDocument});
     
     //Valido que se realizo el UPDATE
     if (result.acknowledged & result.modifiedCount!==0) {
@@ -295,7 +307,7 @@ const insertFile = async (req, res) => {
         //muestro resultado
         res.status(200).json(response);
     } else {
-        req.logger.error(`insertFile = No se ingresar la imagen`);
+        req.logger.error(`insertFile = No se pudo ingresar la imagen`);
         //muestro resultado error
         res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, verifique los datos ingresados"});
     }; 

@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
             }
         ],
         default: []
+    },
+    status: {
+        type: Array,
+        default: []
     }
 });
 
