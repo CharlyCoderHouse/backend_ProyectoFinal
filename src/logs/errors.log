@@ -36,3 +36,5 @@
 {"level":"error","message":"insertFile = No se ingresar la imagen"}
 {"level":"error","message":"insertFile = No se ingresar la imagen"}
 {"level":"error","message":"insertFile = No se ingresar la imagen"}
+{"level":"error","message":"ChangeRol = No se pudo modificar el rol"}
+{"level":"error","message":"ChangeRol = No se pudo modificar el rol"}

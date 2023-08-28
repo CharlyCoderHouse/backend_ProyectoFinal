@@ -149,8 +149,13 @@ const uploader = (req, res, next) => {
 
 const userComplete = async (req, res, next) => {
     const id = String(req.params.uid);
-    const user = await getUserById({_id: id});
-    if(!user) return res.status(403).send({error: responseMessages.not_found});
+    let user;
+    try {
+        user = await getUserById({_id: id});
+    } catch (error) {
+        return res.status(500).send({error: responseMessages.incorrect_user});
+    }
+    if(!user) return res.status(403).send({error: responseMessages.incorrect_user});
     if (user.role === "user"){
         let flagId, flagAddr, flagAcc;
         user.status.forEach(element => {
