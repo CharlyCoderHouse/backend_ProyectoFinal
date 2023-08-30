@@ -6,6 +6,11 @@ export default class userManager {
         console.log('Working user with DB');
     };
     
+    getAllUser = async () => {
+        const user = await userModel.find().lean();
+        return user; 
+    };
+
     getUser = async (email) => {
         const user = await userModel.findOne( email );
         return user; 
@@ -33,6 +38,11 @@ export default class userManager {
 
     deleteUserById = async (id) => {
         const result = await userModel.deleteOne({_id: id});
+        return result;
+    };
+
+    deleteAllUser = async (condition) => {
+        const result = await userModel.deleteMany(condition);
         return result;
     };
 

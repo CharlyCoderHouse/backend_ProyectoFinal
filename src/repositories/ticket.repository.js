@@ -1,8 +1,6 @@
-import TicketsDao from '../dao/dbManager/ticket.Manager.js';
-
 export default class TicketRepository {
-    constructor() {
-        this.dao = new TicketsDao();
+    constructor(dao) {
+        this.dao = dao;
     }
 
     getTickets = async () => {

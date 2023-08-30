@@ -151,6 +151,14 @@ if(viewProfile) {
     });
 };
 
+// Botón para Administrar Users
+const adminUser = document.getElementById('adminUsers')
+if(adminUser) {
+    adminUser.addEventListener('click', (event) => {
+        window.location= "/api/users/usersadmin";
+     });
+};
+
 // Botón para logout
 const logout = document.getElementById('logout')
 if(logout) {

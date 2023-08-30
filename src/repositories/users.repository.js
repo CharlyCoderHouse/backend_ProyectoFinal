@@ -1,8 +1,11 @@
-import UsersDao from '../dao/dbManager/user.Manager.js';
-
 export default class UsersRepository {
-    constructor() {
-        this.dao = new UsersDao();
+    constructor(dao) {
+        this.dao = dao;
+    }
+
+    getAllUser = async () => {
+        const result = await this.dao.getAllUser();
+        return result;
     }
 
     getUser = async (email) => {
@@ -32,6 +35,11 @@ export default class UsersRepository {
 
     deleteUserById = async (id) => {
         const result = await this.dao.deleteUserById(id);
+        return result;
+    };
+
+    deleteAllUser = async (condition) => {
+        const result = await this.dao.deleteAllUser(condition);
         return result;
     };
 

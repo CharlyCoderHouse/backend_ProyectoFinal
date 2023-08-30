@@ -1,6 +1,9 @@
-import UsersRepository from '../repositories/users.repository.js';
+import { usersRepository } from '../repositories/index.js';
 
-const usersRepository = new UsersRepository();
+const getAllUser = async () => {
+    const user = await usersRepository.getAllUser();
+    return user;
+};
 
 const getUser = async (email) => {
     const user = await usersRepository.getUser(email);
@@ -32,11 +35,18 @@ const deleteUserById = async (id) => {
     return result;
 };
 
+const deleteAllUser = async (condition) => {
+    const result = await usersRepository.deleteAllUser(condition);
+    return result;
+};
+
 export {
+    getAllUser,
     getUser,
     getUserById,
     updateUser,
     updatePushUser,
     addUser ,
-    deleteUserById 
+    deleteUserById, 
+    deleteAllUser 
 }

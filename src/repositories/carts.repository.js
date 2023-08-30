@@ -1,8 +1,6 @@
-import CartsDao from '../dao/dbManager/cart.Manager.js';
-
 export default class CartsRepository {
-    constructor() {
-        this.dao = new CartsDao();
+    constructor(dao) {
+        this.dao = dao;
     }
 
     getCarts = async () => {

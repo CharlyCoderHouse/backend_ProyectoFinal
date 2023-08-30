@@ -1,4 +1,5 @@
-import { getUser as getUserService, 
+import { getAllUser as getAllUserService,
+    getUser as getUserService, 
     addUser as addUserService, 
     updateUser as updateUserService, 
     updatePushUser as updatePushUserService,
@@ -313,6 +314,26 @@ const insertFile = async (req, res) => {
     }; 
 }
 
+const getUsersAll = async(req, res) => {
+    try {
+        const usersAll = await getAllUserService();
+        const users = [];
+        usersAll.forEach(element => {
+            users.push(new UsersDto(element))
+        })
+          
+        const response ={ status: "Success", payload: users};
+        users.isValid = users.length > 0
+        // VISTA DE USUARIOS
+        //res.status(200).json(response);
+        res.render("users.hbs", { users });
+    } catch (error) {
+        req.logger.error(`getUsersAll = No se pudieron mostrar los usuarios!`);
+        const response = { status: "NOT FOUND", payload: 'No se pudieron mostrar los usuarios', error };
+        res.status(404).send(response);
+    };
+};
+
 export { 
     registerUser, 
     loginUser, 
@@ -325,5 +346,6 @@ export {
     currentUser,
     changeRol,
     deleteUser,
-    insertFile
+    insertFile, 
+    getUsersAll
 }

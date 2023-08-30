@@ -1,6 +1,4 @@
-import ProductsRepository from '../repositories/products.repository.js';
-
-const productsRepository = new ProductsRepository();
+import { productsRepository } from '../repositories/index.js';
 
 const getProducts = async (limit, page, query1, sort1) => {
         const products = await productsRepository.getProducts(limit, page, query1, sort1);

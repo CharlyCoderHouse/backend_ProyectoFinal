@@ -15,8 +15,9 @@ import loggerTest from './routes/loggerTest.route.js';
 import './dao/dbManager/dbConfig.js'
 import config from './config/config.js';
 import viewsMessage from "./routes/viewsMessage.router.js"
-import productManager from './dao/dbManager/product.Manager.js';
-import messageManager from './dao/dbManager/message.Manager.js';
+//import productManager from './dao/dbManager/product.Manager.js';
+//import messageManager from './dao/dbManager/message.Manager.js';
+import { productsRepository, messagesRepository } from './repositories/index.js';
 import cookieParser from 'cookie-parser';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
@@ -106,14 +107,14 @@ const io = new Server(server);
 app.set('socketio',io);
 
 //Creamos la instancia de la clase MONGODB
-const ProductManager = new productManager();
-const MessageManager = new messageManager();
+//const ProductManager = new productManager();
+//const MessageManager = new messageManager();
 
 const messages = [];
 
 io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
-     const products = await ProductManager.getProducts()
+     const products = await productsRepository.getProducts()
      //console.log(JSON.stringify(products, null, '\t'));
      io.emit("showProducts", products.docs);
 
@@ -123,7 +124,7 @@ io.on('connection', async socket => {
         
         // Persistir en MONGO el chat
         try {
-            const messageUser = MessageManager.addMessage(data);
+            const messageUser = messagesRepository.addMessage(data);
         } catch (error) {
             console.log("Error",error);
         }
