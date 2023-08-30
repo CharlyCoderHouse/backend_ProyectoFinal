@@ -3,15 +3,77 @@
 
 <div>
     <h3>Bienvenid@</h3>
-    <p>{{user.last_name}} {{user.first_name}}</p>
+    <p>{{user.name}}</p>
 </div>
 
-<button id="viewProduct" class="btn btn-warning"> Ver Productos</button>
-<button id="addProduct" class="btn btn-warning"> Ir a Cargar Productos</button>
-<button id="viewChat" class="btn btn-warning"> Ir al Chat</button>
-<button id="viewCart" class="btn btn-warning"> Ver Mi Carrito</button>
-<button id="viewProfile" class="btn btn-warning"> Mi Perfil</button>
-<button id="adminUsers" class="btn btn-warning"> Administración de Usuarios</button>
-<button id="logout" class="btn btn-warning"> Salir</button>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Lista de productos</h5>
+        <p class="card-text">Ingrese a ver los productos para realizar su compra.</p>
+        <button id="viewProduct" class="btn btn-warning"> Ver Productos</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Perfil</h5>
+        <p class="card-text">En esta opción puede ver sus datos.</p>
+        <button id="viewProfile" class="btn btn-warning"> Ver Mi Perfil</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Sala de Chat</h5>
+        <p class="card-text">En esta opción puede contactarse con nuestros operadores.</p>
+        <button id="viewChat" class="btn btn-warning"> Ir al Chat</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Carrito de compra</h5>
+        <p class="card-text">En esta opción puede ver sus productos y finalizar su compra.</p>
+        <button id="viewCart" class="btn btn-warning"> Ver Mi Carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Administración de Usuarios</h5>
+        <p class="card-text">Ingrese a administrar los usuarios (debe ser Administrador).</p>
+        <button id="adminUsers" class="btn btn-warning"> Ver Usuarios</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Administración de productos</h5>
+        <p class="card-text">En esta opción puede administrar los productos.</p>
+        <button id="addProduct" class="btn btn-warning"> Ir a Cargar Productos</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">Cerrar la sesión</h5>
+        <p class="card-text">En esta opción puede cerrar la sesión.</p>
+        <button id="logout" class="btn btn-warning"> Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script src="/js/index.js"></script>

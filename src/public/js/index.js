@@ -154,9 +154,26 @@ if(viewProfile) {
 // Botón para Administrar Users
 const adminUser = document.getElementById('adminUsers')
 if(adminUser) {
-    adminUser.addEventListener('click', (event) => {
+    adminUser.addEventListener('click', async (event) => {
+        // const prueba = await fetch('/api/users/usersadmin', {
+        //     method: 'GET'
+        // })
+        // .then((result) => {
+        //     if (result.status === 200) {
+        //         window.location= "/api/users/usersadmin";
+        //     }else{
+        //         if (result.status === 403) {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'error',
+        //                 title: 'No tiene permisos para agregar productos al carrito',
+        //                 showConfirmButton: true,
+        //             })
+        //         }
+        //     }
+        // })
         window.location= "/api/users/usersadmin";
-     });
+    });
 };
 
 // Botón para logout
