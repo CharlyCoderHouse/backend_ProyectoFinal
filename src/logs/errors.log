@@ -60,3 +60,4 @@
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
+{"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}

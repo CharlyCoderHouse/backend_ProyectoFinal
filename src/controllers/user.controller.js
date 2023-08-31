@@ -3,7 +3,8 @@ import { getAllUser as getAllUserService,
     addUser as addUserService, 
     updateUser as updateUserService, 
     updatePushUser as updatePushUserService,
-    deleteUserById as deleteUserByIdService } from '../services/user.service.js';
+    deleteUserById as deleteUserByIdService,
+    deleteAllUser as deleteAllUserService } from '../services/user.service.js';
 import { responseMessages } from '../helpers/proyect.helpers.js';
 import { generateToken, generateTokenResetPass, createHash, isValidPassword } from '../utils/utils.js';
 import { PRIVATE_COOKIE } from '../helpers/proyect.constants.js';
@@ -77,7 +78,7 @@ const loginUser =  async (req, res) => {
 
         // Guardo la ultima conexión
         const userId = String(user._id)
-        const newLastConnect =  moment().format('LLL');
+        const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
         await updateUserService(userId, { "last_connection": newLastConnect });
 
         res.cookie(
@@ -93,7 +94,7 @@ const loginUser =  async (req, res) => {
 const logoutUser = async (req, res) => {
     // Guardo la ultima conexión
     const userId = String(req.user._id)
-    const newLastConnect =  moment().format('LLL');;
+    const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.clearCookie(PRIVATE_COOKIE);
@@ -121,7 +122,7 @@ const gitCallbackUser = async (req, res) => {
     
     // Guardo la ultima conexión
     const userId = String(user._id)
-    const newLastConnect =  moment().format('LLL');;
+    const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.cookie(
@@ -334,6 +335,32 @@ const getUsersAll = async(req, res) => {
     };
 };
 
+const deleteAllUser = async (req, res) => {
+    try {
+        const { day } = req.body;
+    
+        const condition = moment().subtract(day, 'days').format("DD/MM/YYYY hh:mm:ss");
+        console.log(condition);
+
+        const usersDelete = await deleteAllUserService({ last_connection: {$lt: condition}});
+        
+        console.log(usersDelete);
+        //Valido que se realizo el UPDATE
+        //if (result.acknowledged & result.deletedCount!==0) {
+            const response = { status: "Success", payload: `El usuario fue eliminado con Exito!`};       
+            //muestro resultado
+            res.status(200).send(response);
+            
+        // } else {
+        //     req.logger.error(`deleteUser = No se pudo eliminar el user`);
+        //     //muestro resultado error
+        //     res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
+        // };   
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+};
+
 export { 
     registerUser, 
     loginUser, 
@@ -347,5 +374,6 @@ export {
     changeRol,
     deleteUser,
     insertFile, 
-    getUsersAll
+    getUsersAll,
+    deleteAllUser
 }

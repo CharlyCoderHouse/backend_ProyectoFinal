@@ -155,24 +155,24 @@ if(viewProfile) {
 const adminUser = document.getElementById('adminUsers')
 if(adminUser) {
     adminUser.addEventListener('click', async (event) => {
-        // const prueba = await fetch('/api/users/usersadmin', {
-        //     method: 'GET'
-        // })
-        // .then((result) => {
-        //     if (result.status === 200) {
-        //         window.location= "/api/users/usersadmin";
-        //     }else{
-        //         if (result.status === 403) {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'error',
-        //                 title: 'No tiene permisos para agregar productos al carrito',
-        //                 showConfirmButton: true,
-        //             })
-        //         }
-        //     }
-        // })
-        window.location= "/api/users/usersadmin";
+        const prueba = await fetch('/api/users/usersadmin', {
+            method: 'GET'
+        })
+        .then((result) => {
+            console.log(result);
+            if (result.status === 200) {
+                window.location= "/api/users/usersadmin";
+            }else{
+                if (result.status === 403) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'No tiene permisos para la Administración de Usuarios',
+                        showConfirmButton: true,
+                    })
+                }
+            }
+        })
     });
 };
 
@@ -188,15 +188,25 @@ let nIntervId;
 
 const form = document.getElementById('productForm');
 
+// function delayNavigateOk() {
+//     if (!nIntervId) {
+//         nIntervId = setInterval(navigateOk, 1500);
+//     };
+// };
+
+// function navigateOk() {
+//     //window.location.replace('/realTimeProducts');
+//     window.location.replace('/realTimeProducts');
+// };
 function delayNavigateOk() {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 1500);
+        nIntervId = setTimeout(navigateOk(), 2000);
+        nIntervId = null;
     };
 };
-
+    
 function navigateOk() {
-    //window.location.replace('/realTimeProducts');
-    window.location.replace('/realTimeProducts');
+    window.location.reload()
 };
 
 if(form) {
@@ -255,4 +265,53 @@ if(form) {
             }
         });
     });
+};
+
+// Botón para Eliminar usuarios por inactividad
+const deleteUsers = document.getElementById('deleteUsers')
+if(deleteUsers) {
+    deleteUsers.addEventListener('click', (event) => {
+        Swal.fire({
+            title: 'Eliminar Usuarios por Inactividad',
+            text: 'Ingrese la cantidad de días de inactividad',
+            input: 'text',
+            inputValidator: (value) =>{
+                return !value && "Ingrese la cantidad de días de inactividad";
+            },
+            showCancelButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'Eliminar'
+        }).then(async result =>{
+            if (result.isConfirmed) {
+                const obj=`{"day": ${result.value}}`;
+                await fetch('delete', {
+                    method: 'DELETE',
+                    body: obj,
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                })
+                .then((result) => {
+                    console.log(result);
+                    if (result.status === 200) {
+                        Swal.fire({
+                            title: 'Se eliminaron los usuarios correctamente',
+                            icon: 'success',
+                            timer: 2000
+                        })
+                        //delayNavigateOk();
+                    }else{
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Hubo un error al querer eliminar usuarios, intente luego',
+                            showConfirmButton: true,
+                        })
+                    }
+                })
+            }        
+        })        
+    })
 };

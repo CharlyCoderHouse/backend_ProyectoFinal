@@ -42,7 +42,7 @@ export default class userManager {
     };
 
     deleteAllUser = async (condition) => {
-        const result = await userModel.deleteMany(condition);
+        const result = await userModel.find(condition);
         return result;
     };
 

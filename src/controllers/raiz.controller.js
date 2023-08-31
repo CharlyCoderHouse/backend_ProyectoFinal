@@ -1,7 +1,8 @@
+import UsersDto from "../dao/DTOs/users.dto.js";
+
 const iniRaiz =  (req, res) => {
-    res.render('home.hbs', {
-        user: req.user
-    });
+    const user = new UsersDto(req.user);
+    res.render('home.hbs', { user } );
 };
 
 const regRaiz = (req, res) => {
@@ -21,9 +22,8 @@ const resetRaizError =(req, res) => {
 };
 
 const profileRaiz =(req, res) => {
-    res.render('profile.hbs', {
-        user: req.user,
-    });
+    const user = new UsersDto(req.user);
+    res.render('profile.hbs', { user } );
 };
 
 export {
