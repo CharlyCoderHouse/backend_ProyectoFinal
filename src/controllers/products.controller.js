@@ -140,7 +140,7 @@ const deleteProductById = async(req,res)=>{
         
         const productById = await getProductByIdService(id)
 
-        if (role==="premium" & productById[0].owner!==email){
+        if (role==="Premium" & productById[0].owner!==email){
            
             req.logger.error(`Error deleteProductById: NO tiene permiso para eliminar este producto!`);
             const response = { status: "NOT PERMISION", payload: `NO tiene permiso para eliminar este producto!`}; 
@@ -148,6 +148,21 @@ const deleteProductById = async(req,res)=>{
         };
         
         const result = await deleteProductByIdService(id);
+
+        // if (productById[0].owner===email && role==="Premium"){
+
+        //     // Envío mail de aviso
+        //     const type = "Usuario"
+        //     const detail = `usuario con mail ${element.email}`
+        //     const reason = "Por inactividad de la cuenta"
+        //     const mail = { 
+        //         to: element.email,
+        //         subject: 'Eliminación de Usuario',
+        //         html: deleteNotification(type,detail,reason)
+        //     }
+            
+        //     await sendEmail(mail); 
+        // }
 
         //Valido el resultado de la búsqueda
         if (result.acknowledged & result.deletedCount!==0) {
