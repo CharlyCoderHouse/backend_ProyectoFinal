@@ -321,16 +321,30 @@ function deleteUserId(comp){
     const delUser = document.getElementById(`${id}`)
     if(delUser){ 
         Swal.fire({
-            title: `Está seguro de eliminar el user ${id}? `,
+            title: `Está seguro de eliminar el usuario? `,
+            icon: 'warning',
+            input: 'text',
+            inputLabel: "Ingrese el motivo de la eliminación!",
+            inputValidator: (value) =>{
+                return !value && 'Por favor ingrese un motivo';
+            },
             showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(async (result) =>{
             if (result.isConfirmed) {
-                //id = result.value;
+                const obj= `{"motivo": "${result.value}"}`;
+                console.log(obj);
                 const url='/api/users/delete/'+id
                 await fetch(url, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    body: obj,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                     })
                     .then((result) => {
                         if (result.status === 200) {

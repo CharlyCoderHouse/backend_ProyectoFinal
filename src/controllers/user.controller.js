@@ -14,6 +14,7 @@ import { deleteCartById, postCart } from '../services/carts.service.js';
 import { loginNotification } from '../utils/custom-html.js';
 import { sendEmail } from "../services/mail.js";
 import moment from "moment";
+import { deleteNotification } from '../utils/custom-html-delete.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -325,15 +326,29 @@ const deleteUser = async (req, res) => {
     try {
         // Leo el Id del usuario por parámetro y el carrito que le corresponde
         const id = String(req.params.uid);
+        const { motivo } = req.body;
+        console.log(motivo);
         const user = await getUserByIdService(id);
-        console.log(user);
+        
         if(user) {
             const cartId = user.cart;
             //Elimino el carrito asociado al usuario
             await deleteCartById(cartId);
 
             //Una vez elimando el carrito, intento eliminar el usuario
-             const result = await deleteUserByIdService(id);
+            const result = await deleteUserByIdService(id);
+            
+            // Envío mail de aviso
+            const type = "Usuario"
+            const detail = `usuario con mail ${user.email}`
+            const reason = `${motivo}`
+            const mail = { 
+                to: user.email,
+                subject: 'Eliminación de Usuario',
+                html: deleteNotification(type,detail,reason)
+            }
+            
+            await sendEmail(mail); 
             
             //Valido que se realizo el DELETE
             if (result.acknowledged & result.deletedCount!==0) {
@@ -359,17 +374,28 @@ const deleteAllUser = async (req, res) => {
     try {
         const { day } = req.body;
         const condition = moment().subtract(day, 'days').format("DD/MM/YYYY hh:mm:ss");
-
+        const conditionAdmin = { role: { $ne: "Admin" }}
         // busco los usuarios qeu coinciden para eliminar sus carros
-        const usersAll = await getAllUserService({ last_connection: {$lt: condition}});
+        const usersAll = await getAllUserService({$and: [{ last_connection: {$lt: condition} }, conditionAdmin]});
 
         //Elimino los carritos asociados a los usuarios a eliminar
         usersAll.forEach(async (element) => {
             //Elimino el carrito asociado al usuario
             await deleteCartById(element.cart);
+            // Envío mail de aviso
+            const type = "Usuario"
+            const detail = `usuario con mail ${element.email}`
+            const reason = "Por inactividad de la cuenta"
+            const mail = { 
+                to: element.email,
+                subject: 'Eliminación de Usuario',
+                html: deleteNotification(type,detail,reason)
+            }
+            
+            await sendEmail(mail); 
         })
 
-        const usersDelete = await deleteAllUserService({ last_connection: {$lt: condition}});
+        const usersDelete = await deleteAllUserService({$and: [{ last_connection: {$lt: condition} }, conditionAdmin]});
         
         //Valido que se realizo el UPDATE
         if (usersDelete.acknowledged & usersDelete.deletedCount!==0) {
