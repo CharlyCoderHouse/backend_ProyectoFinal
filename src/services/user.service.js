@@ -1,7 +1,7 @@
 import { usersRepository } from '../repositories/index.js';
 
-const getAllUser = async () => {
-    const user = await usersRepository.getAllUser();
+const getAllUser = async (condition) => {
+    const user = await usersRepository.getAllUser(condition);
     return user;
 };
 

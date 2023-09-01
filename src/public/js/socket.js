@@ -18,7 +18,6 @@ socket.on('showProducts', data => {
                 <th scope="row"> ${prod.stock}</th>
                 <th scope="row"> <img src="${prod.thumbnail}" alt="products" width="200" height="100"></th> 
                 <th scope="row">
-                    <!-- Botón Modal Carrito -->
                     <button type="button" class="btn btncaja btn-warning" 
                         id="${prod._id}" onclick="procesDelId(id)">
                         Eliminar

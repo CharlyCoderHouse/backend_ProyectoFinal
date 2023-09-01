@@ -3,8 +3,8 @@ export default class UsersRepository {
         this.dao = dao;
     }
 
-    getAllUser = async () => {
-        const result = await this.dao.getAllUser();
+    getAllUser = async (condition) => {
+        const result = await this.dao.getAllUser(condition);
         return result;
     }
 

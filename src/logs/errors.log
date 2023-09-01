@@ -61,3 +61,5 @@
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
 {"level":"error","message":"getAllUser = No se pudieron mostrar los usuarios!"}
 {"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
+{"level":"error","message":"deleteUser = No existe el usuario a eliminar."}
+{"level":"error","message":"deleteUser = No existe el usuario a eliminar."}

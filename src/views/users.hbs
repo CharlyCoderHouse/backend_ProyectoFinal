@@ -10,8 +10,10 @@ no cambia hasta refrescar --}}
                 <tr>
                     <th scope="col"> Nombre y Apellido </th>
                     <th scope="col"> Role </th>
+                    <th scope="col"> Cambiar Role </th>
                     <th scope="col"> Email </th>
-                    <th scope="col"> Last Connection </th>
+                    <th scope="col"> Ultima Conexión </th>
+                    <th scope="col"> Eliminar </th>
                 </tr>
             </thead>
             <tbody>
@@ -19,8 +21,20 @@ no cambia hasta refrescar --}}
                     <tr>
                         <th scope="row"> {{this.name}} </th>
                         <th scope="row"> {{this.role}}</th>
+                        <th scope="row">
+                            <button type="button" class="btn btncaja btn-warning" 
+                                id="{{this._id}}" onclick="roleChangeUserId(this)">
+                                Cambiar
+                            </button>
+                        </th>
                         <th scope="row"> {{this.email}} </th>
                         <th scope="row"> {{this.last_connection}}</th>
+                        <th scope="row">
+                            <button type="button" class="btn btncaja btn-warning" 
+                                id="{{this._id}}" onclick="deleteUserId(this)">
+                                Eliminar
+                            </button>
+                        </th>
                     </tr>
                 {{/each}}
             </tbody>

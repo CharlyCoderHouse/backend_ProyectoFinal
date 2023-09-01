@@ -6,8 +6,8 @@ export default class userManager {
         console.log('Working user with DB');
     };
     
-    getAllUser = async () => {
-        const user = await userModel.find().lean();
+    getAllUser = async (condition) => {
+        const user = await userModel.find(condition).lean();
         return user; 
     };
 
@@ -17,7 +17,7 @@ export default class userManager {
     };
 
     getUserById = async (id) => {
-        const user = await userModel.findOne( id );
+        const user = await userModel.findOne( {_id: id} );
         return user; 
     };
     
@@ -42,7 +42,7 @@ export default class userManager {
     };
 
     deleteAllUser = async (condition) => {
-        const result = await userModel.find(condition);
+        const result = await userModel.deleteMany(condition);
         return result;
     };
 

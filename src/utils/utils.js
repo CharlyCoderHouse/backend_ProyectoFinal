@@ -155,7 +155,7 @@ const userComplete = async (req, res, next) => {
     } catch (error) {
         return res.status(500).send({error: responseMessages.incorrect_user});
     }
-    if(!user) return res.status(403).send({error: responseMessages.incorrect_user});
+    if(!user) return res.status(404).send({error: responseMessages.incorrect_user});
     if (user.role === "user"){
         let flagId, flagAddr, flagAcc;
         user.status.forEach(element => {
