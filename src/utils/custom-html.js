@@ -8,7 +8,7 @@ export const loginNotification = (link) => {
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
+        background-color: white;
         margin: 0;
         padding: 0;
         display: flex;
@@ -35,19 +35,6 @@ export const loginNotification = (link) => {
         color: #777;
       }
 
-      .btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-
-      .btn:hover {
-        background-color: #0056b3;
-      }
     </style>
   </head>
   <body>

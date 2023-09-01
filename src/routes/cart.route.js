@@ -10,15 +10,15 @@ router.route('/')
 
 router.route('/:cid')
     .get(passportCall('jwt'), getCartById)
-    .put(passportCall('jwt'), authorization(['user', 'premium']), putCartById)
-    .delete(passportCall('jwt'), authorization(['user']), deleteAllProductsInCart);
+    .put(passportCall('jwt'), authorization(['User', 'Premium']), putCartById)
+    .delete(passportCall('jwt'), authorization(['User']), deleteAllProductsInCart);
 
 router.route('/delete/:cid')
     .delete(deleteCartById)
     
 router.route('/:cid/product/:pid')
-    .put(passportCall('jwt'), authorization(['user', 'premium']), putProductInCart)
-    .delete(passportCall('jwt'), authorization(['user']), deleteProductInCart);    
+    .put(passportCall('jwt'), authorization(['User', 'Premium']), putProductInCart)
+    .delete(passportCall('jwt'), authorization(['User']), deleteProductInCart);    
 
 router.route('/:cid/purchase')
     .put(passportCall('jwt'), postPurchase); 

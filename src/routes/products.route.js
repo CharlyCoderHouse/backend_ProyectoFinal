@@ -7,12 +7,12 @@ const router = Router();
 //Ruta /products + query limits
 router.route('/')
     .get(getProducts)
-    .post(passportCall('jwt'), authorization(['admin', 'premium']), postProduct);
+    .post(passportCall('jwt'), authorization(['Admin', 'Premium']), postProduct);
 
 //Ruta /products/:id Busco producto por ID 
 router.route('/:pid')
     .get(getProductById)
-    .put(passportCall('jwt'), authorization(['admin', 'premium']), putProductById)
-    .delete(passportCall('jwt'), authorization(['admin', 'premium']), deleteProductById);
+    .put(passportCall('jwt'), authorization(['Admin', 'Premium']), putProductById)
+    .delete(passportCall('jwt'), authorization(['Admin', 'Premium']), deleteProductById);
 
 export default router;

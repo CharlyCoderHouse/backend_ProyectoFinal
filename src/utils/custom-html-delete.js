@@ -35,19 +35,6 @@ export const deleteNotification = (type,detail,reason) => {
           color: #777;
         }
   
-        .btn {
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-        }
-  
-        .btn:hover {
-          background-color: #0056b3;
-        }
       </style>
     </head>
     <body>

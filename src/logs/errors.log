@@ -63,3 +63,9 @@
 {"level":"error","message":"postProduct = Ya existe el producto que desea crear!"}
 {"level":"error","message":"deleteUser = No existe el usuario a eliminar."}
 {"level":"error","message":"deleteUser = No existe el usuario a eliminar."}
+{"level":"error","message":"ChangeRol = No se pudo modificar el rol"}
+{"level":"error","message":"ChangeRol = No se pudo modificar el rol"}
+{"level":"error","message":"ChangeRol = No se pudo modificar el rol"}
+{"level":"error","message":"deleteProductById = NO existe el producto que desea eliminar!"}
+{"level":"error","message":"deleteProductById = NO existe el producto que desea eliminar!"}
+{"level":"error","message":"deleteProductById = NO existe el producto que desea eliminar!"}

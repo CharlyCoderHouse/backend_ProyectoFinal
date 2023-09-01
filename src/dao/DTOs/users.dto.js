@@ -8,6 +8,7 @@ export default class UsersDto {
         this.cart = user.cart._id
         this._id = user._id 
         this.last_connection = user.last_connection
+        this.status = user.status
     }
 
 }

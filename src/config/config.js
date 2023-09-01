@@ -11,5 +11,6 @@ export default {
     gitClientSecret: process.env.GITCLIENTSECRET,
     gitCallbackURL: process.env.GITCALLBACKURL,
     userNodemailer: process.env.USER_NODEMAILER,
-    passNodemailer: process.env.PASS_NODEMAILER
+    passNodemailer: process.env.PASS_NODEMAILER,
+    url_base: process.env.URL_BASE
 }

@@ -386,9 +386,9 @@ function roleChangeUserId(comp){
             text: 'Seleccione el role a cambiar',
             input: 'select', 
             inputOptions:{
-                admin: 'Admin',
-                premium: 'Premium',
-                user: 'User'
+                Admin: 'Admin',
+                Premium: 'Premium',
+                User: 'User'
             },
             showCancelButton: true,
             allowOutsideClick: false,
@@ -421,12 +421,22 @@ function roleChangeUserId(comp){
                                 title: 'Para pasar a Premium debe completar los documentos requeridos!',
                             })
                         }else{
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Hubo un error al cambiar el role, intente luego',
-                            showConfirmButton: true,
-                        })}
+                            if (result.status === 404) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'warning',
+                                    title: 'Esta asignando el mismo Role, verifique los datos ingresados!',
+                                })
+                            }else{
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al cambiar el role, intente luego',
+                                showConfirmButton: true,
+                                })
+                            }
+                        }    
+                        
                     }
                 })
             }

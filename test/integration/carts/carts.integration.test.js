@@ -1,9 +1,10 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import { responseMessages } from '../../../src/helpers/proyect.helpers.js';
+import config from '../../../src/config/config.js';
 
 const expect = chai.expect;
-const requester = supertest('http://localhost:8080');
+const requester = supertest(`http://${config.url_base}`);
 
 describe('Testing Carts', () => {
     let cookie;

@@ -1,8 +1,9 @@
 import chai from 'chai';
 import supertest from 'supertest';
+import config from '../../../src/config/config';
 
 const expect = chai.expect;
-const requester = supertest('http://localhost:8080');
+const requester = supertest(`http://${config.url_base}`);
 
 describe('Testing Products', () => {
 

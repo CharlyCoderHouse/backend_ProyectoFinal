@@ -4,7 +4,7 @@ const socket = io();
 const container = document.getElementById('container');
 
 //Socket
-socket.on('showProducts', data => {
+socket.on('showProducts', (data) => {
     container.innerHTML = ``
     data.forEach(prod => {
         container.innerHTML += `
@@ -29,11 +29,11 @@ socket.on('showProducts', data => {
 });
 
 function procesDelId(comp){
-    //console.log("1 " + comp);
+    
     const delProduct = document.getElementById(`${comp}`)
     if(delProduct){ 
         Swal.fire({
-            title: `Está seguro de eliminar el producto ${comp}? `,
+            title: `Está seguro de eliminar el producto? `,
             showCancelButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false

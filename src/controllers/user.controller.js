@@ -15,6 +15,7 @@ import { loginNotification } from '../utils/custom-html.js';
 import { sendEmail } from "../services/mail.js";
 import moment from "moment";
 import { deleteNotification } from '../utils/custom-html-delete.js';
+import config from '../config/config.js';
 
 const registerUser = async (req, res) => {
     try {
@@ -152,7 +153,7 @@ const passLink = async (req, res) => {
 
         const accessToken = generateTokenResetPass(user);
 
-        const link = `http://localhost:8080/api/sessions/linkPassword?token=${accessToken}`
+        const link = `http://${config.url_base}/api/sessions/linkPassword?token=${accessToken}`
         const mail = {
             to: user.email,
             subject: 'Reseteo de Contraseña',
@@ -257,7 +258,7 @@ const insertFile = async (req, res) => {
                 const name = element.fieldname
                 const obj1 = {
                     name: name,
-                    reference: `http://localhost:8080/data/${name}/${filename}`
+                    reference: `http://${config.url_base}/data/${name}/${filename}`
                 }
                 newDocument.push(obj1)
             });
@@ -276,7 +277,7 @@ const insertFile = async (req, res) => {
     
                 const obj2 = {
                     name: name,
-                    reference: `http://localhost:8080/data/${element.fieldname}/${filename}`
+                    reference: `http://${config.url_base}/data/${element.fieldname}/${filename}`
                 }
                 newDocument.push(obj2)
             });

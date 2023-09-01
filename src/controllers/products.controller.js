@@ -4,7 +4,11 @@ import {
     getProductById as getProductByIdService, 
     putProductById as putProductByIdService,
     deleteProductById as deleteProductByIdService  
-} from '../services/products.service.js'
+} from '../services/products.service.js';
+import { sendEmail } from "../services/mail.js";
+import { deleteNotification } from '../utils/custom-html-delete.js';
+import { getUser as getUserService} from '../services/user.service.js';
+import config from "../config/config.js";
 
 const getProducts = async (req, res) => {
     //leo el parametro por req.query
@@ -26,8 +30,8 @@ const getProducts = async (req, res) => {
             sort1= {price: sort};
         }
         const products = await getProductsService(limit, page, query1, sort1);
-        products.prevLink = products.hasPrevPage?`http://localhost:8080/api/products?page=${products.prevPage}&query=${query2}&sort=${sort2}`:'';
-        products.nextLink = products.hasNextPage?`http://localhost:8080/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
+        products.prevLink = products.hasPrevPage?`http://${config.url_base}/api/products?page=${products.prevPage}&query=${query2}&sort=${sort2}`:'';
+        products.nextLink = products.hasNextPage?`http://${config.url_base}/api/products?page=${products.nextPage}&query=${query2}&sort=${sort2}`:'';
         products.isValid= !(page<=0||page>products.totalPages)
         //Postman
         // res.send({ status: "success", payload: products}); 
@@ -149,20 +153,24 @@ const deleteProductById = async(req,res)=>{
         
         const result = await deleteProductByIdService(id);
 
-        // if (productById[0].owner===email && role==="Premium"){
+        // si el producto es de user premium debo notificarle por email que se elimino el producto
+        if (productById[0].owner){
 
-        //     // Envío mail de aviso
-        //     const type = "Usuario"
-        //     const detail = `usuario con mail ${element.email}`
-        //     const reason = "Por inactividad de la cuenta"
-        //     const mail = { 
-        //         to: element.email,
-        //         subject: 'Eliminación de Usuario',
-        //         html: deleteNotification(type,detail,reason)
-        //     }
-            
-        //     await sendEmail(mail); 
-        // }
+            const user = await getUserService({ email: productById[0].owner });
+
+            if (user.role==="Premium"){
+                // Envío mail de aviso
+                const type = "Producto"
+                const detail = `producto codigo: ${productById[0].title}`
+                const reason = "El articulo fue eliminado por el Administrador, ya que fue discontinuado."
+                const mail = { 
+                    to: productById[0].owner,
+                    subject: 'Eliminación de Producto',
+                    html: deleteNotification(type, detail, reason)
+                }
+                await sendEmail(mail);
+            };
+        };
 
         //Valido el resultado de la búsqueda
         if (result.acknowledged & result.deletedCount!==0) {

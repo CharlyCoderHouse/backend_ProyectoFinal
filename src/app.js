@@ -106,16 +106,12 @@ const server = app.listen(config.port, (error) => {
 const io = new Server(server);
 app.set('socketio',io);
 
-//Creamos la instancia de la clase MONGODB
-//const ProductManager = new productManager();
-//const MessageManager = new messageManager();
-
 const messages = [];
 
 io.on('connection', async socket => {
      console.log('Nuevo cliente conectado');
      const products = await productsRepository.getProducts()
-     //console.log(JSON.stringify(products, null, '\t'));
+     
      io.emit("showProducts", products.docs);
 
      socket.on('message', data => {
