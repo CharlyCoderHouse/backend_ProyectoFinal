@@ -42,7 +42,6 @@ form.addEventListener('submit', e => {
                 showConfirmButton: true,
               })
             delayNavigateOk();
-            //window.location.replace('/');
         }else{
             if (result.status === 400) {
                 Swal.fire({
@@ -60,7 +59,6 @@ form.addEventListener('submit', e => {
                 })
             }
             delayNavigateRegister();
-            //window.location.replace('/register');
         }
 
     });

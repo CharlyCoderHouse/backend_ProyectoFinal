@@ -5,9 +5,37 @@
     <p>{{user.age}}</p>
     <p>{{user.role}}</p>
     <p>Ultima conexión {{user.last_connection}}</p>
-    <a href="/api/sessions/logout"><button class="btn btn-primary" >Salir</button></a>
+    <div>
+        <h2>Ingreso de Archivos para ser Premium</h2>
+        <form id="fileInputForm">
+            <div class="row">
+                <div class="mb-3 col">
+                    <label for="profiles">Foto de perfil</label>
+                    <br/>
+                    <input type="file" name="profiles" id="profiles" accept="image/*" /> 
+                    <br/>
+                    <label for="IDENTIFICATION">Identificación</label>
+                    <br/>
+                    <input type="file" name="IDENTIFICATION" id="IDENTIFICATION" accept="image/*,.pdf" />
+                    <br/>
+                    <label for="ADDRESS">Comprobante de domicilio</label>
+                    <br/>
+                    <input type="file" name="ADDRESS" id="ADDRESS" accept="image/*,.pdf" />
+                    <br/>
+                    <label for="ACCOUNT">Comprobante de estado de cuenta</label>
+                    <br/>
+                    <input type="file" name="ACCOUNT" id="ACCOUNT" accept="image/*,.pdf" />
+                    <br/>
+                    <br/>
+                    <input type="submit"class="btn btn-warning" id="{{user._id}}" onclick="fileUserId(this)">
+                <div/>
+            <div/>
+        </form>
+    </div>
 </div>
 <br>
 <button id="goHome" class="btn btn-secondary"> Ir al Home</button>
+<button id="goExit" class="btn btn-primary" >Salir</button>
 
-<script src="/js/index.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/insertFile.js"></script>

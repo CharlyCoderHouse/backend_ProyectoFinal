@@ -188,16 +188,6 @@ let nIntervId;
 
 const form = document.getElementById('productForm');
 
-// function delayNavigateOk() {
-//     if (!nIntervId) {
-//         nIntervId = setInterval(navigateOk, 1500);
-//     };
-// };
-
-// function navigateOk() {
-//     //window.location.replace('/realTimeProducts');
-//     window.location.replace('/realTimeProducts');
-// };
 function delayNavigateOk() {
     if (!nIntervId) {
         nIntervId = setInterval(navigateOk, 2000);
@@ -205,7 +195,17 @@ function delayNavigateOk() {
 };
     
 function navigateOk() {
-    window.location.reload()
+    window.location.replace('/realTimeProducts');
+};
+
+function delayNavigateUser() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateUser, 2000);
+    };
+};
+    
+function navigateUser() {
+    window.location.replace('/api/users/usersadmin');
 };
 
 if(form) {
@@ -273,7 +273,7 @@ if(deleteUsers) {
         Swal.fire({
             title: 'Eliminar Usuarios por Inactividad',
             text: 'Ingrese la cantidad de días de inactividad',
-            input: 'text',
+            input: 'number',
             inputValidator: (value) =>{
                 return !value && "Ingrese la cantidad de días de inactividad";
             },
@@ -283,6 +283,11 @@ if(deleteUsers) {
             confirmButtonText: 'Eliminar'
         }).then(async result =>{
             if (result.isConfirmed) {
+                Swal.fire({
+                    position: 'center',
+                    title: 'Enviando mail ...',
+                    showConfirmButton: false,
+                  })
                 const obj=`{"day": ${result.value}}`;
                 await fetch('delete', {
                     method: 'DELETE',
@@ -300,14 +305,22 @@ if(deleteUsers) {
                             icon: 'success',
                             timer: 2000
                         })
-                        delayNavigateOk();
-                    }else{
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Hubo un error al querer eliminar usuarios, intente luego',
-                            showConfirmButton: true,
-                        })
+                        delayNavigateUser();
+                    }else{       
+                        if (result.status === 403) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'warning',
+                                title: 'No se encontraron usuarios a eliminar!',
+                                showConfirmButton: true,
+                        })}else{
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al querer eliminar usuarios, intente luego',
+                                showConfirmButton: true,
+                            })
+                        }
                     }
                 })
             }        
@@ -338,6 +351,11 @@ function deleteUserId(comp){
             if (result.isConfirmed) {
                 const obj= `{"motivo": "${result.value}"}`;
                 console.log(obj);
+                Swal.fire({
+                    position: 'center',
+                    title: 'Enviando mail ...',
+                    showConfirmButton: false,
+                  })
                 const url='/api/users/delete/'+id
                 await fetch(url, {
                     method: 'DELETE',
@@ -352,7 +370,7 @@ function deleteUserId(comp){
                                 title: 'Usuario Eliminado',
                                 icon: 'success'
                             })
-                            delayNavigateOk();
+                            delayNavigateUser();
                         }else{
                             if (result.status === 403) {
                                 Swal.fire({
@@ -412,7 +430,7 @@ function roleChangeUserId(comp){
                             title: 'Ha cambiado el role correctamente',
                             icon: 'success'
                         })
-                        delayNavigateOk();
+                        delayNavigateUser();
                     }else{
                         if (result.status === 403) {
                             Swal.fire({
@@ -443,3 +461,5 @@ function roleChangeUserId(comp){
         }); 
     };
 };
+
+

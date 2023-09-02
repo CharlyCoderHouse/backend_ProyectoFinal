@@ -79,7 +79,7 @@ const putCartById = async(req, res) => {
         const product = await getProductByIdService(productId);
         
         // Premium no puede cargar sus propios productos
-        if (req.user.role==="premium" & product[0].owner===req.user.email) {
+        if (req.user.role==="Premium" & product[0].owner===req.user.email) {
             req.logger.error(`putCartById = El Producto con ID ${productId} NO puede agregarse!`);
             const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse por ser del mismo usuario!` };
             return res.status(401).json(response);
@@ -136,7 +136,7 @@ const putProductInCart = async(req, res) => {
         const product = await getProductByIdService(productId);
         
         // Premium no puede cargar sus propios productos
-        if (req.user.role==="premium" & product[0].owner===req.user.email) {
+        if (req.user.role==="Premium" & product[0].owner===req.user.email) {
             
             req.logger.error(`putProductInCart = El Producto con ID ${productId} NO puede agregarse!`);
             const response = { status: "Error", payload: `El Producto con ID ${productId} NO puede agregarse por ser del mismo usuario!` };

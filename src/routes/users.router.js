@@ -17,6 +17,6 @@ router.route('/premium/:uid')
     .post(userComplete,changeRol);
 
 router.route('/:uid/documents')
-    .post(uploader, insertFile);
+    .post(passportCall('jwt'), uploader, insertFile);
 
 export default router;

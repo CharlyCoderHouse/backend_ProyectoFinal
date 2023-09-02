@@ -44,9 +44,7 @@ const passportCall = (strategy) => {
             if (err) return next(err);
             if(!user) {
                 return res.redirect('/login')
-                //return res.status(401).send({error: info.messages ? info.messages : info.toString()})
             }
-            //console.log(user);
             req.user = user;
             next();
         })(req, res, next)
@@ -110,18 +108,16 @@ const transporter = nodemailer.createTransport({
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-    
+        
         switch (file.fieldname) {
             case "profiles":
                 cb(null, `${__dirname}/public/data/profiles`);
                 break;
             case "products":
                 cb(null, `${__dirname}/public/data/products`);
-                break;
-            case "documents":
-                cb(null, `${__dirname}/public/data/documents`);
-                break;    
+                break;  
             default:
+                cb(null, `${__dirname}/public/data/documents`);
                 break;
         }  
     },
@@ -136,7 +132,10 @@ const uploader = (req, res, next) => {
                             next();
                         }}).fields([{name: 'profiles', maxCount: 1}, 
                                 {name: 'products', maxCount: 1},
-                                {name: 'documents', maxCount: 3}])
+                                {name: 'IDENTIFICATION', maxCount: 1},
+                                {name: 'ADDRESS', maxCount: 1},
+                                {name: 'ACCOUNT', maxCount: 1}])
+                                  
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json({ status: "NOT FOUND", data: "Error al cargar el archivo, verifique el nombre del post"});
@@ -145,13 +144,14 @@ const uploader = (req, res, next) => {
         } 
         next(); 
     })
+    
 };
 
 const userComplete = async (req, res, next) => {
     const id = String(req.params.uid);
     let user;
     try {
-        user = await getUserById({_id: id});
+        user = await getUserById(id);
     } catch (error) {
         return res.status(500).send({error: responseMessages.incorrect_user});
     }

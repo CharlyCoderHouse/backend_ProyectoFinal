@@ -28,6 +28,16 @@ socket.on('showProducts', (data) => {
     })
 });
 
+function delayNavigateOk() {
+    if (!nIntervId) {
+        nIntervId = setInterval(navigateOk, 2000);
+    };
+};
+    
+function navigateOk() {
+    window.location.replace('/realTimeProducts');
+};
+
 function procesDelId(comp){
     
     const delProduct = document.getElementById(`${comp}`)
@@ -39,6 +49,11 @@ function procesDelId(comp){
             allowEscapeKey: false
         }).then(result =>{
             if (result.isConfirmed) {
+                Swal.fire({
+                    position: 'center',
+                    title: 'Procesando ...',
+                    showConfirmButton: false,
+                  })
                 id = result.value;
                 fetch('/api/products/' + comp, {
                     method: 'DELETE'
@@ -49,7 +64,7 @@ function procesDelId(comp){
                                 title: 'Producto Eliminado',
                                 icon: 'success'
                             })
-                            window.location= "/realTimeProducts";
+                            delayNavigateOk();
                         }else{
                             if (result.status === 403) {
                                 Swal.fire({

@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
         default: 'user'
     },
     last_connection: {
-        type: String
+        type: Date
     },
     documents: {
         type: [

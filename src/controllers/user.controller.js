@@ -68,20 +68,20 @@ const loginUser =  async (req, res) => {
             last_name: user.last_name,
             email: user.email,
             age: user.age, 
-            role: "user",
+            role: "User",
             cartId: user.cart._id
         }
         
         if(user.email === 'adminCoder@coder.com') {
             //&& password === 'adminCod3r123'
-            req.user.role = "admin";
+            req.user.role = "Admin";
         }
 
         const accessToken = generateToken(user);
 
         // Guardo la ultima conexión
         const userId = String(user._id)
-        const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
+        const newLastConnect =  new Date();
         await updateUserService(userId, { "last_connection": newLastConnect });
 
         res.cookie(
@@ -97,7 +97,7 @@ const loginUser =  async (req, res) => {
 const logoutUser = async (req, res) => {
     // Guardo la ultima conexión
     const userId = String(req.user._id)
-    const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
+    const newLastConnect =  new Date();
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.clearCookie(PRIVATE_COOKIE);
@@ -115,17 +115,17 @@ const gitCallbackUser = async (req, res) => {
         last_name: req.user.last_name,
         age: req.user.age,
         email: req.user.email, 
-        role: "user", 
+        role: "User", 
     };
 
     if(req.user.email === 'adminCoder@coder.com' ) {
-        req.user.role = "admin";
+        req.user.role = "Admin";
     }
     const accessToken = generateToken(req.user);
     
     // Guardo la ultima conexión
     const userId = String(user._id)
-    const newLastConnect =  moment().format("DD/MM/YYYY hh:mm:ss");
+    const newLastConnect =  new Date();
     await updateUserService(userId, { "last_connection": newLastConnect });
 
     res.cookie(
@@ -238,9 +238,11 @@ const changeRol = async (req, res) => {
 const insertFile = async (req, res) => {
 
     const id = String(req.params.uid); 
+    const user = await getUserByIdService(id);
     
     const newDocument = [];
-
+    let flagID = false;
+    
     if (!req.files) {
         return res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo actualizar el usuario, porque no hay archivos"});
     }
@@ -263,26 +265,73 @@ const insertFile = async (req, res) => {
                 newDocument.push(obj1)
             });
         };
-        if (req.files.documents) {
-            const { type } = req.body;
+
+        if (req.files.IDENTIFICATION) {
             
-            req.files.documents.forEach(element => {
+            req.files.IDENTIFICATION.forEach((element) => {
                 const filename = element.filename;
-                let name = element.fieldname;
-    
-                if (type){
-                    name = String(type);
-                    updatePushUserService(id, {status: name});
-                };
+                const name = element.fieldname;
+
+                user.status.forEach((element)=> {
+                    if (element === "IDENTIFICATION"){
+                        flagID=true;
+                    }
+                })
+                //Update de Status en el cliente
+                flagID ? flagID = false : updatePushUserService(id, {status: name});
     
                 const obj2 = {
                     name: name,
-                    reference: `http://${config.url_base}/data/${element.fieldname}/${filename}`
+                    reference: `http://${config.url_base}/data/documents/${filename}`
                 }
                 newDocument.push(obj2)
             });
         }
+
+        if (req.files.ADDRESS) {
+            
+            req.files.ADDRESS.forEach((element) => {
+                const filename = element.filename;
+                const name = element.fieldname;
+
+                user.status.forEach((element)=> {
+                    if (element === "ADDRESS"){
+                        flagID=true;
+                    }
+                })
+                //Update de Status en el cliente
+                flagID ? flagID = false : updatePushUserService(id, {status: name});                
     
+                const obj2 = {
+                    name: name,
+                    reference: `http://${config.url_base}/data/documents/${filename}`
+                }
+                newDocument.push(obj2)
+            });
+        }
+
+        if (req.files.ACCOUNT) {
+            
+            req.files.ACCOUNT.forEach((element) => {
+                const filename = element.filename;
+                const name = element.fieldname;
+
+                user.status.forEach((element)=> {
+                    if (element === "ACCOUNT"){
+                        flagID=true;
+                    }
+                })
+                //Update de Status en el cliente
+                flagID ? flagID = false : updatePushUserService(id, {status: name});  
+    
+                const obj2 = {
+                    name: name,
+                    reference: `http://${config.url_base}/data/documents/${filename}`
+                }
+                newDocument.push(obj2)
+            });
+        }
+
         const result = await updatePushUserService(id, {documents: newDocument});
         
         //Valido que se realizo el UPDATE
@@ -374,40 +423,48 @@ const deleteUser = async (req, res) => {
 const deleteAllUser = async (req, res) => {
     try {
         const { day } = req.body;
-        const condition = moment().subtract(day, 'days').format("DD/MM/YYYY hh:mm:ss");
+        const condition = moment().subtract(day, 'days');
+        // Condicion para no eliminar users Admin
         const conditionAdmin = { role: { $ne: "Admin" }}
-        // busco los usuarios qeu coinciden para eliminar sus carros
+        // busco los usuarios que coinciden para eliminar sus carros
         const usersAll = await getAllUserService({$and: [{ last_connection: {$lt: condition} }, conditionAdmin]});
 
-        //Elimino los carritos asociados a los usuarios a eliminar
-        usersAll.forEach(async (element) => {
-            //Elimino el carrito asociado al usuario
-            await deleteCartById(element.cart);
-            // Envío mail de aviso
-            const type = "Usuario"
-            const detail = `usuario con mail ${element.email}`
-            const reason = "Por inactividad de la cuenta"
-            const mail = { 
-                to: element.email,
-                subject: 'Eliminación de Usuario',
-                html: deleteNotification(type,detail,reason)
-            }
-            
-            await sendEmail(mail); 
-        })
+        if (usersAll.length > 0){
 
-        const usersDelete = await deleteAllUserService({$and: [{ last_connection: {$lt: condition} }, conditionAdmin]});
-        
-        //Valido que se realizo el UPDATE
-        if (usersDelete.acknowledged & usersDelete.deletedCount!==0) {
-            const response = { status: "Success", payload: `Se eliminaron ${usersDelete.deletedCount} usuarios!`};       
-            //muestro resultado
-            res.status(200).send(response);
+            //Elimino los carritos asociados a los usuarios a eliminar
+            usersAll.forEach(async (element) => {
+                //Elimino el carrito asociado al usuario
+                await deleteCartById(element.cart);
+                // Envío mail de aviso
+                const type = "Usuario"
+                const detail = `usuario con mail ${element.email}`
+                const reason = "Por inactividad de la cuenta"
+                const mail = { 
+                    to: element.email,
+                    subject: 'Eliminación de Usuario',
+                    html: deleteNotification(type,detail,reason)
+                }
+                
+                await sendEmail(mail); 
+            })
+
+            const usersDelete = await deleteAllUserService({$and: [{ last_connection: {$lt: condition} }, conditionAdmin]});
             
+            //Valido que se realizo el UPDATE
+            if (usersDelete.acknowledged & usersDelete.deletedCount!==0) {
+                const response = { status: "Success", payload: `Se eliminaron ${usersDelete.deletedCount} usuarios!`};       
+                //muestro resultado
+                res.status(200).send(response);
+                
+            } else {
+                req.logger.error(`deleteAllUser = No se pudo eliminar el user`);
+                //muestro resultado error
+                res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
+            };   
         } else {
-            req.logger.error(`deleteAllUser = No se pudo eliminar el user`);
+            req.logger.error(`deleteAllUser = No hay usuarios a eliminar`);
             //muestro resultado error
-            res.status(404).json({ status: "NOT FOUND", data: "Error no se pudo eliminar el usuario, verifique los datos ingresados"});
+            res.status(403).json({ status: "NOT FOUND", data: "No hay usuarios para eliminar"});
         };   
     } catch (error) {
         res.status(500).send({ status: 'error', error });
