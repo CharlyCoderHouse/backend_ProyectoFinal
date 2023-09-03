@@ -1,0 +1,41 @@
+<h1>Bienvenidos al servidor express - Joyería Puga</h1> <br>
+<h2>Su compra se realizó con Exito!</h2>
+<br/>
+<br/>
+<h2>Estimad@ , el pedido ya se encuentra en preparación!</h2>
+<br></br>
+<h4 style="font-weight: bolder;">Tu número de compra es: {{code}}</h4>
+<h4 style="font-weight: bolder;">Total de la compra $ {{amount}}</h4> 
+</br>
+<div class="table-responsive tabla">
+    <table class="table table-primary table-striped">
+        <thead>
+            <tr>
+                <th scope="col"> Nombre </th>
+                <th scope="col"> Precio </th>
+                <th scope="col"> Cantidad </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each productBuy}}
+                <tr>
+                    <th scope="row"> {{this.name}}</th>
+                    <th scope="row"> $ {{this.prices}}</th>
+                    <th scope="row"> {{this.quantitys}}</th>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>    
+</div>
+
+<br></br>
+<h4>En unos instantes le llegara a su correo {{purchaser}} los datos de su compra.</h4>
+<h4>Muchas gracias por comprar en nuestra Tienda Virtual</h4>
+<h2>Joyería Puga</h2>
+
+<br/>
+<button id="viewCart" class="btn btn-warning"> Ver Mi Carrito</button>
+<br/>
+<button id="goHome" class="btn btn-secondary"> Ir al Home</button>
+
+<script src="/js/cartsjs.js"></script>

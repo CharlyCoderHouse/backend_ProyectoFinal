@@ -10,7 +10,17 @@ const ticketSchema = new mongoose.Schema({
     },
     purchase_datetime: Date,
     amount: Number,
-    purchaser: String
+    purchaser: String,
+    productBuy: {
+        type: [
+            {
+                name: String,
+                prices: Number,
+                quantitys: Number
+            }
+        ],
+        default: [],
+    }
 });
 
 

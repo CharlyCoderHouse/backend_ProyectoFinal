@@ -54,7 +54,7 @@ if(viewChat){
     });
 }
 
-// Botón para ver el carrito de prueba
+// Botón para ver el carrito 
 const viewCart = document.getElementById('viewCart')
 if(viewCart) {
     viewCart.addEventListener('click', async (event) => {
@@ -76,7 +76,7 @@ function procesoId(comp){
         Swal.fire({
             title: 'Muy buena eleccion',
             text: 'Ingrese la cantidad a pedir',
-            input: 'text',
+            input: 'number',
             inputValidator: (value) =>{
                 return !value && "Ingrese la cantidad a pedir";
             },

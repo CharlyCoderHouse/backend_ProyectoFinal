@@ -1,8 +1,8 @@
-{{!-- Esta pagina es estática, como pide la consigna, se da la vista al cargar pero
-no cambia hasta refrescar --}}
 <h1>Bienvenidos al servidor express - Joyería Puga</h1> <br>
 <h2>Vista de su Carrito de compra</h2>
-  
+<br/>
+<h3 style="font-weight: bolder;">Total de la compra $ {{totalPrice}}</h3>  <br/>
+<h5>Cantidad de productos {{cantProd}}</h5>  <br/>
 {{#if isValid}}
     <div class="table-responsive tabla">
         <table class="table table-primary table-striped">
@@ -25,7 +25,7 @@ no cambia hasta refrescar --}}
                         <th scope="row"> {{this.product.title}}</th>
                         <th scope="row"> {{this.product.description}}</th>
                         <th scope="row"> {{this.product.category}} </th>
-                        <th scope="row"> {{this.product.price}}</th>
+                        <th scope="row"> $ {{this.product.price}}</th>
                         <th scope="row"> {{this.quantity}}</th>
                         <th scope="row"> <img src="{{this.product.thumbnail}}" alt="products" width="200" height="100"></th>     
                         <th scope="row">
@@ -44,7 +44,7 @@ no cambia hasta refrescar --}}
 {{/if}}
 <br/>
 <button id="viewProduct" class="btn btn-secondary"> Agregar otros Productos</button>
-<button id="finCompra" class="btn btn-warning"> Finalizar Compra</button>
+<button id="finalCart" class="btn btn-warning" style="font-weight: bold;"> Finalizar Compra</button>
 <br/>
 <button id="deleteCart" class="btn btn-secondary"> Vaciar Carrito</button>
 <br/>

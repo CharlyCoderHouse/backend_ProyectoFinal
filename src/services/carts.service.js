@@ -36,6 +36,7 @@ const deleteProductInCart = async (cartId,productId) => {
 };
 
 const postPurchase = async (cart, userMail) => {
+    
     //suma precio
     const sum = cart.reduce((acc, prev) => {
         acc += prev.price * prev.quantity;
@@ -43,16 +44,31 @@ const postPurchase = async (cart, userMail) => {
     }, 0);
 
     const code = Date.now() + Math.floor(Math.random() * 100000 + 1);
+    const newCart= []
+    cart.forEach( (product) => {
+        const prodData = {
+            name: product.title,
+            prices: product.price,
+            quantitys: product.quantity
+        }
+        newCart.push(prodData)
+    })
 
     const ticket = {
         code: code,
         purchase_datetime: new Date(),
         amount: sum,
-        purchaser: userMail
+        purchaser: userMail,
+        productBuy: newCart
     };
 
     const result = await ticketsRepository.createTicket(ticket);
     
+    return result;
+};
+
+const getTicketById = async (ticketId) => {
+    const result = await ticketsRepository.getTicketsById(ticketId);
     return result;
 };
 
@@ -64,5 +80,6 @@ export {
     deleteAllProductsInCart, 
     putProductInCart,
     deleteProductInCart,
-    postPurchase   
+    postPurchase,
+    getTicketById   
 }

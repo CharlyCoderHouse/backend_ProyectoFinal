@@ -109,3 +109,9 @@
 {"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
 {"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
 {"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"postPurchase = Invalid status code: ticketCart.hbs"}
+{"level":"error","message":"postPurchase = Invalid status code: ticketCart.hbs"}

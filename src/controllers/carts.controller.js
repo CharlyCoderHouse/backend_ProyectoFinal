@@ -6,7 +6,8 @@ import {
     putProductInCart as putProductInCartService,
     deleteProductInCart as deleteProductInCartService, 
     postPurchase as postPurchaseService,
-    deleteCartById as deleteCartByIdService
+    deleteCartById as deleteCartByIdService,
+    getTicketById as getTicketByIdService
 } from '../services/carts.service.js';
 import { 
     getProductById as getProductByIdService, 
@@ -30,6 +31,7 @@ const postCart = async(req, res) => {
 const getCartById = async(req, res) => {
     //Leo el ID por parametros
     let cartId = String(req.params.cid);
+    const newCart = [];
     try {
         const cart = await getCartByIdService(cartId);
         const response ={ status: "Success", payload: cart};
@@ -37,6 +39,26 @@ const getCartById = async(req, res) => {
         cart[0].isValid= cart[0].products.length > 0
         // Guardo el ID del carrito para el uso en el front
         cart[0].cartId = cartId
+        // Calculo cantidad de Artículos y el total de la compra.
+        cart[0].products.forEach( (product) => {
+            const prodData = {
+                price: product.product.price,
+                quantity: product.quantity
+            }
+            newCart.push(prodData)
+        });
+        // Calculo el total Precio
+        const sumPrice = newCart.reduce((acc, prev) => {
+            acc += prev.price * prev.quantity;
+            return acc;
+        }, 0);
+        cart[0].totalPrice = sumPrice
+        // Calculo la cantida de productos
+        const sumCant = newCart.reduce((acc, prev) => {
+            acc += prev.quantity;
+            return acc;
+        }, 0);
+        cart[0].cantProd = sumCant
         //muestro resultado postman
         //res.status(200).json(response);
         //REnderizo vista
@@ -182,7 +204,7 @@ const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
     const userMail = req.user.email;
-    // const userMail = "cdiblasi@bykom.com" 
+    const name = `${req.user.first_name}, ${req.user.last_name}`
     // Primero Valido que exista el carrito 
     try {
         const newCart = [];
@@ -193,6 +215,7 @@ const postPurchase = async(req, res) => {
             if (product.product.stock > product.quantity) {
                 const resultStock = stockProductService(product.product._id, product.quantity*-1)
                 const prodData = {
+                    title: product.product.title,
                     price: product.product.price,
                     quantity: product.quantity
                 }
@@ -208,12 +231,22 @@ const postPurchase = async(req, res) => {
         
         if (newCart.length > 0){
             const result = await postPurchaseService(newCart, userMail);
+            result.userMail = userMail;
+            result.name = name;
+            result.products = [];
+            result.products.push(newCart);
+            console.log(result);
             if (noStockCart.length > 0) {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
-                res.status(200).send({ status: 'success with error', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
+                //res.status(200).send({ status: 'success with error', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
+                result.sinStock = true;
+                res.status(200).send({status:200, ticketId: `${result._id}`})
             } else {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}`);
-                res.status(200).send({ status: 'success', payload: `Se genero correctamente la compra con el ID ${result.code}`  })
+                result.sinStock = false;
+                console.log("estoy OK");
+                res.status(200).send({status:200, ticketId: `${result._id}`})
+                
             }    
         } else {
             if (noStockCart.length > 0) {
@@ -232,6 +265,24 @@ const postPurchase = async(req, res) => {
     
 };
 
+const getPurchase = async(req, res) => {
+    const ticketId = String(req.params.tid);
+    try {
+        const ticket = await getTicketByIdService({_id: ticketId}) 
+        console.log(ticket);
+       res.render("ticketCart.hbs", ticket);  
+    //    const response ={ status: "Success", payload: ticket};
+    //    //muestro resultado
+    //    res.status(200).json(response);     
+    }
+    catch (error) {
+        req.logger.error(`getPurchase = ` + error.message);
+        const response = { status: "Error", payload: error };
+        return res.status(500).json(response);
+    }
+        
+}
+
 export {
     postCart, 
     getCartById, 
@@ -240,5 +291,6 @@ export {
     deleteAllProductsInCart,
     putProductInCart,
     deleteProductInCart,
-    postPurchase
+    postPurchase,
+    getPurchase
 }

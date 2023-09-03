@@ -4,7 +4,7 @@ if(viewProduct){
     viewProduct.addEventListener('click', (event) => {
         window.location= "/api/products";
     });
-}
+};
 
 // Botón para ir al HOME
 let goHome = document.getElementById('goHome')
@@ -12,7 +12,20 @@ if(goHome){
     goHome.addEventListener('click', (event) => {
         window.location= "/";
     });
-}
+};
+
+// Botón para ver el carrito 
+const viewCart = document.getElementById('viewCart')
+if(viewCart) {
+    viewCart.addEventListener('click', async (event) => {
+        const prueba = await fetch('/api/sessions/current', {
+            method: 'GET'
+        });
+        const data = await prueba.json();
+        const cart =data.payload.cart;
+        window.location= "/api/carts/"+cart;
+    });
+};
 
 let nIntervId;
 
@@ -26,7 +39,7 @@ function navigateCart() {
     window.location.reload();
 };
 
-// Botón para Eliminar un usuario
+// Botón para Eliminar un producto del carrito
 function deleteCartId(comp){
     const productId = comp.id;
     const cartComp = document.getElementsByName('cartId');
@@ -99,7 +112,7 @@ if(deleteCart) {
                     method: 'DELETE',
                 })
                 .then((result) => {
-                    console.log(result);
+                    
                     if (result.status === 200) {
                         Swal.fire({
                             title: 'Se vació el carrito correctamente',
@@ -125,5 +138,65 @@ if(deleteCart) {
                 })
             }        
         })        
+    })
+};
+
+// Botón Finalizar la compra
+const finalCart = document.getElementById('finalCart')
+if(finalCart) {
+    let ticketId;
+    let status;
+    const cartComp = document.getElementsByName('cartId');
+    const cartId = cartComp[0].id
+    finalCart.addEventListener('click', (event) => {
+        Swal.fire({
+            title: 'Esta seguro de Finalizar su compra',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, voy a comprar!',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(async result =>{
+            if (result.isConfirmed) {
+                const url='/api/carts/'+cartId+"/purchase"
+                await fetch(url, {
+                    method: 'POST',
+                })
+                .then((response) =>
+                    //status = response.status
+                    response.json()
+                )
+                .then((json) => {
+                    console.log(json);
+                    ticketId = json.ticketId;
+                    //console.log(ticketId);
+                    if (json.status === 200) {
+                        Swal.fire({
+                            title: 'Muchas gracias por su compra',
+                            icon: 'success',
+                            timer: 3000
+                        })
+                        window.location.replace(`/api/carts/purchase/${ticketId}`);
+                        // delayNavigateCart();
+                    }else{       
+                        if (json.status === 404) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'warning',
+                                title: 'No hay productos disponibles para la compra!',
+                                showConfirmButton: true,
+                        })}else{
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Hubo un error al registrar al realizar la compra, intente luego',
+                                showConfirmButton: true,
+                            })
+                        }
+                    };
+                })       
+            }        
+        })
     })
 };
