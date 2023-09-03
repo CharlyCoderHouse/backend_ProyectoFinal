@@ -15,9 +15,10 @@ no cambia hasta refrescar --}}
                     <th scope="col"> Precio </th>
                     <th scope="col"> Cantidad </th>
                     <th scope="col"> Imagen </th>
+                    <th scope="col"> Eliminar </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody name="cartId" id="{{cartId}}">
                 {{#each products}}
                     <tr>
                         <th scope="row"> {{this.product.code}} </th>
@@ -27,6 +28,12 @@ no cambia hasta refrescar --}}
                         <th scope="row"> {{this.product.price}}</th>
                         <th scope="row"> {{this.quantity}}</th>
                         <th scope="row"> <img src="{{this.product.thumbnail}}" alt="products" width="200" height="100"></th>     
+                        <th scope="row">
+                            <button type="button" class="btn btncaja btn-warning" 
+                                id="{{this.product._id}}" onclick="deleteCartId(this)">
+                                Eliminar
+                            </button>
+                        </th>
                     </tr>
                 {{/each}}
             </tbody>
@@ -38,6 +45,10 @@ no cambia hasta refrescar --}}
 <br/>
 <button id="viewProduct" class="btn btn-secondary"> Agregar otros Productos</button>
 <button id="finCompra" class="btn btn-warning"> Finalizar Compra</button>
+<br/>
+<button id="deleteCart" class="btn btn-secondary"> Vaciar Carrito</button>
+<br/>
 <button id="goHome" class="btn btn-secondary"> Ir al Home</button>
 
-<script src="/js/index.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/cartsjs.js"></script>

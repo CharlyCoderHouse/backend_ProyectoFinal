@@ -102,3 +102,10 @@
 {"level":"error","message":"insertFile = No se pudieron insertar los documentos!"}
 {"level":"error","message":"insertFile = No se pudieron insertar los documentos!"}
 {"level":"error","message":"insertFile = No se pudieron insertar los documentos!"}
+{"level":"error","message":"getCartById = El carrito con ID 64f3a3e4a6a57a807a0a8dc0 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 64f3a3e4a6a57a807a0a8dc0 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID 6467a3d8f77829babb4827a6 NO existe!"}

@@ -130,3 +130,13 @@ a {
     flex-direction: row;
     align-items: center;
     justify-content: center; }
+
+.tabla {
+  margin: 20px;
+  padding: 20px;
+}    
+
+button {
+  margin: 5px;
+  padding: 5px;
+}    

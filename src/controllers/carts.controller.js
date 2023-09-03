@@ -33,7 +33,10 @@ const getCartById = async(req, res) => {
     try {
         const cart = await getCartByIdService(cartId);
         const response ={ status: "Success", payload: cart};
+        // Valido que el carrito tenga productos
         cart[0].isValid= cart[0].products.length > 0
+        // Guardo el ID del carrito para el uso en el front
+        cart[0].cartId = cartId
         //muestro resultado postman
         //res.status(200).json(response);
         //REnderizo vista
