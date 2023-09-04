@@ -144,3 +144,16 @@
 {"level":"error","message":"getPurchase = email is not defined"}
 {"level":"error","message":"getPurchase = email is not defined"}
 {"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getCartById = El carrito con ID mypurchase NO existe!"}
+{"level":"error","message":"getAllPurchase = TypeError: Cannot set properties of undefined (setting 'isValid')"}
+{"level":"error","message":"getAllPurchase = TypeError: Cannot set properties of undefined (setting 'isValid')"}
+{"level":"error","message":"getAllPurchase = TypeError: Cannot set properties of undefined (setting 'isValid')"}
+{"level":"error","message":"getAllPurchase = ReferenceError: moment is not defined"}

@@ -377,7 +377,7 @@ const deleteUser = async (req, res) => {
         // Leo el Id del usuario por parámetro y el carrito que le corresponde
         const id = String(req.params.uid);
         const { motivo } = req.body;
-        console.log(motivo);
+    
         const user = await getUserByIdService(id);
         
         if(user) {

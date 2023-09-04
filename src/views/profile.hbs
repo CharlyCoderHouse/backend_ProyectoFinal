@@ -10,21 +10,24 @@
         <form id="fileInputForm">
             <div class="row">
                 <div class="mb-3 col">
-                    <label for="profiles">Foto de perfil</label>
+                    <label for="profiles" style="font-weight: bold;">Foto de perfil</label>
                     <br/>
-                    <input type="file" name="profiles" id="profiles" accept="image/*" /> 
+                    <input class="custom-file-input" type="file" name="profiles" id="profiles" accept="image/*" /> 
                     <br/>
-                    <label for="IDENTIFICATION">Identificación</label>
                     <br/>
-                    <input type="file" name="IDENTIFICATION" id="IDENTIFICATION" accept="image/*,.pdf" />
+                    <label for="IDENTIFICATION" style="font-weight: bold;">Identificación</label>
                     <br/>
-                    <label for="ADDRESS">Comprobante de domicilio</label>
+                    <input class="custom-file-input" type="file" name="IDENTIFICATION" id="IDENTIFICATION" accept="image/*,.pdf" />
                     <br/>
-                    <input type="file" name="ADDRESS" id="ADDRESS" accept="image/*,.pdf" />
                     <br/>
-                    <label for="ACCOUNT">Comprobante de estado de cuenta</label>
+                    <label for="ADDRESS" style="font-weight: bold;">Comprobante de domicilio</label>
                     <br/>
-                    <input type="file" name="ACCOUNT" id="ACCOUNT" accept="image/*,.pdf" />
+                    <input class="custom-file-input" type="file" name="ADDRESS" id="ADDRESS" accept="image/*,.pdf" />
+                    <br/>
+                    <br/>
+                    <label for="ACCOUNT" style="font-weight: bold;">Comprobante de estado de cuenta</label>
+                    <br/>
+                    <input class="custom-file-input" type="file" name="ACCOUNT" id="ACCOUNT" accept="image/*,.pdf" />
                     <br/>
                     <br/>
                     <input type="submit"class="btn btn-warning" id="{{user._id}}" onclick="fileUserId(this)">

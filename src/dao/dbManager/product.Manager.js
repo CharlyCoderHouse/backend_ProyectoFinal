@@ -19,9 +19,8 @@ export default class productManager {
         //Si no hay limite no hago el paginate
         if (!limit) options = { pagination: false };
         //Leo de la base devolviendo los productos
-        //console.log(querys,options);
         const products = await productModel.paginate(querys, options)
-        //console.log("1" + JSON.stringify(products, null, '\t'));
+        
         return products; 
     };
 

@@ -18,6 +18,7 @@ import { sendEmail } from "../services/mail.js";
 import { loginNotificationVentas } from '../utils/custom-html-ventas.js';
 import { getUser as getUserService} from '../services/user.service.js';
 import config from '../config/config.js';
+import moment from "moment";
 
 const postCart = async(req, res) => {
     // Inicializo el carrito sin productos
@@ -39,7 +40,7 @@ const getCartById = async(req, res) => {
     const newCart = [];
     try {
         const cart = await getCartByIdService(cartId);
-        const response ={ status: "Success", payload: cart};
+        //const response ={ status: "Success", payload: cart};
         // Valido que el carrito tenga productos
         cart[0].isValid= cart[0].products.length > 0
         // Guardo el ID del carrito para el uso en el front
@@ -240,7 +241,7 @@ const postPurchase = async(req, res) => {
             const link = `http://${config.url_base}/api/carts/purchase/${result._id}`
             const mail = {
                 to: userMail,
-                subject: 'Reseteo de Contraseña',
+                subject: 'Su compra fue un éxito!',
                 html: loginNotificationVentas(link, result.code)
             }
             
@@ -275,9 +276,9 @@ const getPurchase = async(req, res) => {
     const ticketId = String(req.params.tid);
     try {
         const ticket = await getTicketByIdService({_id: ticketId}) 
-        //console.log(ticket);
-        // const user = await getUserService({ email })
-        // ticket.name = `${user.first_name} ${user.last_name}`
+        const email = ticket.purchaser
+        const user = await getUserService({ email })
+        ticket.name = `${user.first_name} ${user.last_name}`
         res.render("ticketCart.hbs", ticket);      
     }
     catch (error) {
@@ -287,24 +288,46 @@ const getPurchase = async(req, res) => {
     }
 }
 
-// const getAllPurchase = async(req, res) => {
-    
-//     try {
-//         const email = "cdiblasi@bykom.com"//req.user.email
-//         console.log(email);
-//         const tickets = await getTicketsService({purchaser: email}) 
-//         console.log(tickets);
-//         tickets.isValid= tickets.length > 0
-//         tickets.name = `${req.user.first_name} ${req.user.last_name}`
-//         res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
-//         //res.render("ticketAllUser.hbs", tickets);      
-//     }
-//     catch (error) {
-//         req.logger.error(`getAllPurchase = ` + error);
-//         const response = { status: "Error", payload: error };
-//         return res.status(500).json(response);
-//     }
-// }
+const getAllPurchase = async(req, res) => {
+    const email = req.user.email
+    let newTicket = [];
+    try {
+        //Busco todas las compras de este usuario por mail
+        const tickets = await getTicketsService({purchaser: email}) 
+        if (tickets.length > 0) {
+            // Si registra compras, las recorro para formatear cada campo necesario
+            let newCart=[];
+            tickets.forEach( (ticket) => {
+                const prodData = {
+                    code: ticket.code,
+                    purchase_datetime: moment(ticket.purchase_datetime).format("DD/MM/YYYY HH:MM a"),
+                    amount: ticket.amount,
+                    products: ticket.products
+                }
+                newCart.push(prodData)
+            });
+            newTicket = {
+                name: `${req.user.first_name} ${req.user.last_name}`,
+                isValid: true,
+                tickets: newCart
+            }
+            // Renderizo vista con el nuevo arreglo formateado
+            res.render("ticketsAllUser.hbs", newTicket);      
+        }else {
+            // No hay compras pero muestro correctamente la vista
+            newTicket = {
+                name: `${req.user.first_name} ${req.user.last_name}`,
+                isValid: false
+            }
+            res.render("ticketsAllUser.hbs",newTicket); 
+        }
+    }
+    catch (error) {
+        req.logger.error(`getAllPurchase = ` + error);
+        const response = { status: "Error", payload: error };
+        return res.status(500).json(response);
+    }
+}
 
 export {
     postCart, 
@@ -315,5 +338,6 @@ export {
     putProductInCart,
     deleteProductInCart,
     postPurchase,
-    getPurchase
+    getPurchase,
+    getAllPurchase
 }

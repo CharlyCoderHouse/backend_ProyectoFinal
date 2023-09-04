@@ -140,3 +140,22 @@ button {
   margin: 5px;
   padding: 5px;
 }    
+
+.custom-file-input::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: chocolate;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+.custom-file-input::file-selector-button:hover {
+  background: coral;
+}
+
+.custom-file-input {
+  width: 4500px;
+}

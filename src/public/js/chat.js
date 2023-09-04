@@ -46,3 +46,11 @@ socket.on('newUserConnected', data => {
         icon: 'success'
     });
 });
+
+// Botón para ir al HOME
+let goHome = document.getElementById('goHome')
+if(goHome){
+    goHome.addEventListener('click', (event) => {
+        window.location= "/";
+    });
+};

@@ -144,7 +144,7 @@ function delayNavigateFin(link) {
     if (!nIntervId) {
         nIntervId = setTimeout(() => {
             window.location.replace(link)
-        }, 5000);
+        }, 4000);
     };
 };
 
@@ -165,6 +165,11 @@ if(finalCart) {
             allowEscapeKey: false
         }).then(async result =>{
             if (result.isConfirmed) {
+                Swal.fire({
+                    position: 'center',
+                    title: 'Procesando tu pedido ...',
+                    showConfirmButton: false,
+                  })
                 const url='/api/carts/'+cartId+"/purchase"
                 await fetch(url, {
                     method: 'POST',
@@ -173,19 +178,20 @@ if(finalCart) {
                     response.json()
                 )
                 .then((json) => {
-                    console.log(json);
                     ticketId = json.ticketId;
                     if (json.status === 200) {
                         if (json.sinStock){
                             Swal.fire({
                                 title: 'Algunos productos están sin Stock, pero se pudo procesar una parte del pedido',
                                 text: 'Revise su compra y el carrito resultante de los productos sin stock',
-                                icon: 'success'
+                                icon: 'success',
+                                timer: 4000
                             })
                         }else{
                             Swal.fire({
                                 title: 'Muchas gracias por su compra',
-                                icon: 'success'
+                                icon: 'success',
+                                timer: 4000
                             })
                         }
                         

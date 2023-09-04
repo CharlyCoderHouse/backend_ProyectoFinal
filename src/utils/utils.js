@@ -26,7 +26,6 @@ const generateToken = (user) => {
 
 const authToken = (req, res, next) => {
     const authToken = req.headers.authorization;
-    console.log(authToken);
     if(!authToken) return res.status(401).send({error: responseMessages.not_authenticated});
 
     const token = authToken.split(' ')[1];
@@ -87,7 +86,6 @@ const generateTokenResetPass = (user) => {
 
 const authTokenPass = (req, res, next) => {
     const authToken = req.query.token
-    console.log(authToken);
     if(!authToken) return res.redirect('/resetPasswordError');//res.status(401).send({error: responseMessages.not_authenticated});
 
     jwt.verify(authToken, PRIVATE_KEY, (error, credentials) => {
