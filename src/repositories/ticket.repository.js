@@ -3,8 +3,8 @@ export default class TicketRepository {
         this.dao = dao;
     }
 
-    getTickets = async () => {
-        const result = await this.dao.getTickets();
+    getTickets = async (condition) => {
+        const result = await this.dao.getTickets(condition);
         return result;
     }
 

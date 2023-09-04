@@ -6,13 +6,13 @@ export default class TicketsDao {
         console.log('Working tickets with DB');
     };
 
-    getTickets = async () => {
-        const result = await ticketModel.find().lean();
+    getTickets = async (condition) => {
+        const result = await ticketModel.find(condition).lean();
         return result;
     }
 
     getTicketsById = async (id) => {
-        const result = await ticketModel.findById(id);
+        const result = await ticketModel.findById(id).lean();
         return result;
     }
 

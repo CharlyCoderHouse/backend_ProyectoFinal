@@ -1,23 +1,11 @@
 let nIntervId;
 
-function delayNavigateRegister() {
+function delayNavigateOk(link) {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateToRegister, 3000);
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 2500);
     };
-};
-
-function navigateToRegister() {
-    window.location.replace('/register');
-};
-
-function delayNavigateOk() {
-    if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 3000);
-    };
-};
-
-function navigateOk() {
-    window.location.replace('/');
 };
 
 const form = document.getElementById('registerForm');
@@ -41,7 +29,7 @@ form.addEventListener('submit', e => {
                 title: 'El registro fue exitoso, ya puede ingresar su login',
                 showConfirmButton: true,
               })
-            delayNavigateOk();
+            delayNavigateOk('/');
         }else{
             if (result.status === 400) {
                 Swal.fire({
@@ -58,7 +46,7 @@ form.addEventListener('submit', e => {
                     showConfirmButton: true,
                 })
             }
-            delayNavigateRegister();
+            delayNavigateOk('/register');
         }
 
     });

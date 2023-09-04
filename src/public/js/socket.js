@@ -28,14 +28,12 @@ socket.on('showProducts', (data) => {
     })
 });
 
-function delayNavigateOk() {
+function delayNavigateOk(link) {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 2000);
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 2500);
     };
-};
-    
-function navigateOk() {
-    window.location.replace('/realTimeProducts');
 };
 
 function procesDelId(comp){
@@ -64,7 +62,7 @@ function procesDelId(comp){
                                 title: 'Producto Eliminado',
                                 icon: 'success'
                             })
-                            delayNavigateOk();
+                            delayNavigateOk('/realTimeProducts');
                         }else{
                             if (result.status === 403) {
                                 Swal.fire({

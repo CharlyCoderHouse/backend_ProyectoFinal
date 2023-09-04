@@ -22,9 +22,6 @@ chatbox.addEventListener('keyup', evt => {
         if(chatbox.value.trim().length > 0) {
             socket.emit('message', { user, message: chatbox.value});
             chatbox.value='';
-            
-            /* const products = messageManager.addMessage({ user, message: chatbox.value}); */
-
         }
     }
 });

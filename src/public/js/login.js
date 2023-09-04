@@ -1,13 +1,11 @@
 let nIntervId;
 
-function delayNavigateOk() {
+function delayNavigateOk(link) {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 2000);
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 2500);
     };
-};
-
-function navigateOk() {
-    window.location.replace('/home');
 };
 
 const form = document.getElementById('loginForm');
@@ -33,8 +31,7 @@ form.addEventListener('submit', e => {
                 showConfirmButton: true,
               })
 
-            delayNavigateOk();
-            //window.location.replace('/');
+            delayNavigateOk('/home');
         }else{
             if (result.status === 400) {
                 Swal.fire({

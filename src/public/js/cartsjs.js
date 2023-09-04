@@ -31,14 +31,12 @@ let nIntervId;
 
 function delayNavigateCart() {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateCart, 2000);
+        nIntervId = setTimeout(() => {
+            window.location.reload()
+        }, 3000);
     };
 };
     
-function navigateCart() {
-    window.location.reload();
-};
-
 // Botón para Eliminar un producto del carrito
 function deleteCartId(comp){
     const productId = comp.id;
@@ -141,11 +139,19 @@ if(deleteCart) {
     })
 };
 
+
+function delayNavigateFin(link) {
+    if (!nIntervId) {
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 5000);
+    };
+};
+
 // Botón Finalizar la compra
 const finalCart = document.getElementById('finalCart')
 if(finalCart) {
     let ticketId;
-    let status;
     const cartComp = document.getElementsByName('cartId');
     const cartId = cartComp[0].id
     finalCart.addEventListener('click', (event) => {
@@ -164,21 +170,26 @@ if(finalCart) {
                     method: 'POST',
                 })
                 .then((response) =>
-                    //status = response.status
                     response.json()
                 )
                 .then((json) => {
                     console.log(json);
                     ticketId = json.ticketId;
-                    //console.log(ticketId);
                     if (json.status === 200) {
-                        Swal.fire({
-                            title: 'Muchas gracias por su compra',
-                            icon: 'success',
-                            timer: 3000
-                        })
-                        window.location.replace(`/api/carts/purchase/${ticketId}`);
-                        // delayNavigateCart();
+                        if (json.sinStock){
+                            Swal.fire({
+                                title: 'Algunos productos están sin Stock, pero se pudo procesar una parte del pedido',
+                                text: 'Revise su compra y el carrito resultante de los productos sin stock',
+                                icon: 'success'
+                            })
+                        }else{
+                            Swal.fire({
+                                title: 'Muchas gracias por su compra',
+                                icon: 'success'
+                            })
+                        }
+                        
+                        delayNavigateFin(`/api/carts/purchase/${ticketId}`);
                     }else{       
                         if (json.status === 404) {
                             Swal.fire({

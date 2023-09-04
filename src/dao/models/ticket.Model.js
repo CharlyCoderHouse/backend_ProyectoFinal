@@ -11,12 +11,12 @@ const ticketSchema = new mongoose.Schema({
     purchase_datetime: Date,
     amount: Number,
     purchaser: String,
-    productBuy: {
+    products: {
         type: [
             {
-                name: String,
-                prices: Number,
-                quantitys: Number
+                title: String,
+                price: Number,
+                quantity: Number
             }
         ],
         default: [],

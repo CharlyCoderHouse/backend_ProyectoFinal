@@ -7,12 +7,17 @@ import {
     deleteProductInCart as deleteProductInCartService, 
     postPurchase as postPurchaseService,
     deleteCartById as deleteCartByIdService,
-    getTicketById as getTicketByIdService
+    getTicketById as getTicketByIdService,
+    getTickets as getTicketsService
 } from '../services/carts.service.js';
 import { 
     getProductById as getProductByIdService, 
     stockProduct as stockProductService
 } from "../services/products.service.js";
+import { sendEmail } from "../services/mail.js";
+import { loginNotificationVentas } from '../utils/custom-html-ventas.js';
+import { getUser as getUserService} from '../services/user.service.js';
+import config from '../config/config.js';
 
 const postCart = async(req, res) => {
     // Inicializo el carrito sin productos
@@ -204,7 +209,6 @@ const postPurchase = async(req, res) => {
     //Leo el ID del carrito y producto por parametros 
     const cartId = String(req.params.cid);
     const userMail = req.user.email;
-    const name = `${req.user.first_name}, ${req.user.last_name}`
     // Primero Valido que exista el carrito 
     try {
         const newCart = [];
@@ -231,35 +235,37 @@ const postPurchase = async(req, res) => {
         
         if (newCart.length > 0){
             const result = await postPurchaseService(newCart, userMail);
-            result.userMail = userMail;
-            result.name = name;
-            result.products = [];
-            result.products.push(newCart);
-            console.log(result);
+
+            // Envío mail de aviso
+            const link = `http://${config.url_base}/api/carts/purchase/${result._id}`
+            const mail = {
+                to: userMail,
+                subject: 'Reseteo de Contraseña',
+                html: loginNotificationVentas(link, result.code)
+            }
+            
+            await sendEmail(mail);
+        
             if (noStockCart.length > 0) {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
-                //res.status(200).send({ status: 'success with error', payload: `Se genero correctamente la compra con el ID ${result.code}  y no pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`  })
-                result.sinStock = true;
-                res.status(200).send({status:200, ticketId: `${result._id}`})
+                res.status(200).send({status:200, ticketId: `${result._id}`, sinStock: true})
             } else {
                 req.logger.info(`postPurchase = Se genero correctamente la compra con el ID ${result.code}`);
-                result.sinStock = false;
-                console.log("estoy OK");
-                res.status(200).send({status:200, ticketId: `${result._id}`})
+                res.status(200).send({status:200, ticketId: `${result._id}`, sinStock: false})
                 
             }    
         } else {
             if (noStockCart.length > 0) {
                 req.logger.info(`postPurchase = No pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}`);
-                res.status(404).send({ status: "NOT FOUND", payload: `No pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}` });
+                res.status(404).send({ status: 404, payload: `No pudieron procesarse por falta de stock ${JSON.stringify(noStockCart, null)}` });
             } else {
                 req.logger.info(`postPurchase = No hay productos en el carrito!`);
-                res.status(404).send({ status: "NOT FOUND", payload: `No hay productos en el carrito!` });
+                res.status(404).send({ status: 404, payload: `No hay productos en el carrito!` });
             }
         } 
     } catch (error) {
         req.logger.error(`postPurchase = ` + error.message);
-        const response = { status: "Error", payload: error };
+        const response = { status: 500, payload: error };
         return res.status(500).json(response);
     };
     
@@ -269,19 +275,36 @@ const getPurchase = async(req, res) => {
     const ticketId = String(req.params.tid);
     try {
         const ticket = await getTicketByIdService({_id: ticketId}) 
-        console.log(ticket);
-       res.render("ticketCart.hbs", ticket);  
-    //    const response ={ status: "Success", payload: ticket};
-    //    //muestro resultado
-    //    res.status(200).json(response);     
+        //console.log(ticket);
+        // const user = await getUserService({ email })
+        // ticket.name = `${user.first_name} ${user.last_name}`
+        res.render("ticketCart.hbs", ticket);      
     }
     catch (error) {
         req.logger.error(`getPurchase = ` + error.message);
         const response = { status: "Error", payload: error };
         return res.status(500).json(response);
     }
-        
 }
+
+// const getAllPurchase = async(req, res) => {
+    
+//     try {
+//         const email = "cdiblasi@bykom.com"//req.user.email
+//         console.log(email);
+//         const tickets = await getTicketsService({purchaser: email}) 
+//         console.log(tickets);
+//         tickets.isValid= tickets.length > 0
+//         tickets.name = `${req.user.first_name} ${req.user.last_name}`
+//         res.status(200).send({ status: 'success', payload: 'Se actualizo correctamente el producto al carrito' })
+//         //res.render("ticketAllUser.hbs", tickets);      
+//     }
+//     catch (error) {
+//         req.logger.error(`getAllPurchase = ` + error);
+//         const response = { status: "Error", payload: error };
+//         return res.status(500).json(response);
+//     }
+// }
 
 export {
     postCart, 

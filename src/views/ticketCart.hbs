@@ -2,7 +2,7 @@
 <h2>Su compra se realizó con Exito!</h2>
 <br/>
 <br/>
-<h2>Estimad@ , el pedido ya se encuentra en preparación!</h2>
+<h2>Estimad@ {{name}}, el pedido ya se encuentra en preparación!</h2>
 <br></br>
 <h4 style="font-weight: bolder;">Tu número de compra es: {{code}}</h4>
 <h4 style="font-weight: bolder;">Total de la compra $ {{amount}}</h4> 
@@ -17,11 +17,11 @@
             </tr>
         </thead>
         <tbody>
-            {{#each productBuy}}
+            {{#each products}}
                 <tr>
-                    <th scope="row"> {{this.name}}</th>
-                    <th scope="row"> $ {{this.prices}}</th>
-                    <th scope="row"> {{this.quantitys}}</th>
+                        <th scope="row"> {{title}}</th>
+                        <th scope="row"> $ {{price}}</th>
+                        <th scope="row"> {{quantity}}</th>
                 </tr>
             {{/each}}
         </tbody>

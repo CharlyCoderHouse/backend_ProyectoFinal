@@ -67,6 +67,14 @@ if(viewCart) {
     });
 };
 
+// Botón para ir a Mis COmpras
+const viewTickets = document.getElementById('viewTickets')
+if(viewTickets){
+    viewTickets.addEventListener('click', (event) => {
+        window.location= "/api/carts/mypurchase";
+    });
+}
+
 // Botón para insertar en carro
 function procesoId(comp){
     const id = comp.id
@@ -188,24 +196,12 @@ let nIntervId;
 
 const form = document.getElementById('productForm');
 
-function delayNavigateOk() {
+function delayNavigateOk(link) {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateOk, 2000);
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 2500);
     };
-};
-    
-function navigateOk() {
-    window.location.replace('/realTimeProducts');
-};
-
-function delayNavigateUser() {
-    if (!nIntervId) {
-        nIntervId = setInterval(navigateUser, 2000);
-    };
-};
-    
-function navigateUser() {
-    window.location.replace('/api/users/usersadmin');
 };
 
 if(form) {
@@ -228,7 +224,7 @@ if(form) {
                     title: 'Producto creado con éxito',
                     showConfirmButton: true,
                 })
-                delayNavigateOk();
+                delayNavigateOk('/realTimeProducts');
             }else{
                 if (result.status === 400) {
                     Swal.fire({
@@ -305,7 +301,7 @@ if(deleteUsers) {
                             icon: 'success',
                             timer: 2000
                         })
-                        delayNavigateUser();
+                        delayNavigateOk('/api/users/usersadmin');
                     }else{       
                         if (result.status === 403) {
                             Swal.fire({
@@ -370,7 +366,7 @@ function deleteUserId(comp){
                                 title: 'Usuario Eliminado',
                                 icon: 'success'
                             })
-                            delayNavigateUser();
+                            delayNavigateOk('/api/users/usersadmin');
                         }else{
                             if (result.status === 403) {
                                 Swal.fire({
@@ -430,7 +426,7 @@ function roleChangeUserId(comp){
                             title: 'Ha cambiado el role correctamente',
                             icon: 'success'
                         })
-                        delayNavigateUser();
+                        delayNavigateOk('/api/users/usersadmin');
                     }else{
                         if (result.status === 403) {
                             Swal.fire({

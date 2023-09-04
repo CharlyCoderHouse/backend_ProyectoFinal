@@ -18,14 +18,12 @@ if(goExit){
 
 let nIntervId;
 
-function delayNavigateProfile() {
+function delayNavigateOk(link) {
     if (!nIntervId) {
-        nIntervId = setInterval(navigateProfile, 2000);
+        nIntervId = setTimeout(() => {
+            window.location.replace(link)
+        }, 2500);
     };
-};
-    
-function navigateProfile() {
-    window.location.replace('/profile');
 };
 
 const fileForm = document.getElementById('fileInputForm');
@@ -73,7 +71,7 @@ if(fileForm) {
                         }
                     }
                 }
-                delayNavigateProfile();
+                delayNavigateOk('/profile');
             });
         });
     }
